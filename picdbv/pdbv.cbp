@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="picdbv" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/picdbv" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Linker>
+			<Add library="GL" />
+			<Add library="glut" />
+			<Add library="png" />
+			<Add library="jpeg" />
+		</Linker>
+		<Unit filename="../common/DirectoryFileList.cpp" />
+		<Unit filename="../common/DirectoryFileList.h" />
+		<Unit filename="../common/StringUtils.cpp" />
+		<Unit filename="../common/StringUtils.h" />
+		<Unit filename="../common/graphics/GLImageStructure.cpp" />
+		<Unit filename="../common/graphics/GLImageStructure.h" />
+		<Unit filename="../common/graphics/ImageLoader.cpp" />
+		<Unit filename="../common/graphics/ImageLoader.h" />
+		<Unit filename="../common/graphics/readBMP.cpp" />
+		<Unit filename="../common/graphics/readBMP.h" />
+		<Unit filename="../common/graphics/readJPEG.cpp" />
+		<Unit filename="../common/graphics/readJPEG.h" />
+		<Unit filename="../common/graphics/readPNG.cpp" />
+		<Unit filename="../common/graphics/readPNG.h" />
+		<Unit filename="../common/graphics/readPPM.cpp" />
+		<Unit filename="../common/graphics/readPPM.h" />
+		<Unit filename="Configuration.cpp" />
+		<Unit filename="Configuration.h" />
+		<Unit filename="GUI.cpp" />
+		<Unit filename="GUI.h" />
+		<Unit filename="GUIMultiLinePanel.cpp" />
+		<Unit filename="GUIMultiLinePanel.h" />
+		<Unit filename="GUITextPanel.cpp" />
+		<Unit filename="GUITextPanel.h" />
+		<Unit filename="IncludeGLUT.h" />
+		<Unit filename="PicDataBase.cpp" />
+		<Unit filename="PicDataBase.h" />
+		<Unit filename="Splitter.cpp" />
+		<Unit filename="Splitter.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
