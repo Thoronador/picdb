@@ -130,7 +130,7 @@ void GUIMultiLinePanel::clearLines()
 
 
 GUIMultiLineAdjustedPanel::GUIMultiLineAdjustedPanel(const std::string& msg, const PanelAdjustment adj)
-: GUIMultiLinePanel(msg), GUIAdjustedTextPanel(msg, adj), GUITextPanel(msg)
+: GUITextPanel(msg), GUIMultiLinePanel(msg), GUIAdjustedTextPanel(msg, adj)
 {
   m_string = msg;
   explodeStringToLines(msg);
@@ -139,7 +139,7 @@ GUIMultiLineAdjustedPanel::GUIMultiLineAdjustedPanel(const std::string& msg, con
 }
 
 GUIMultiLineAdjustedPanel::GUIMultiLineAdjustedPanel(const std::string& msg, const PanelAdjustment adj, const float red, const float green, const float blue)
-: GUIMultiLinePanel(msg, red, green, blue), GUIAdjustedTextPanel(msg, adj, red, green, blue), GUITextPanel(msg, red, green, blue)
+: GUITextPanel(msg, red, green, blue), GUIMultiLinePanel(msg, red, green, blue), GUIAdjustedTextPanel(msg, adj, red, green, blue)
 {
   m_string = msg;
   explodeStringToLines(msg);
