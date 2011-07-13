@@ -34,7 +34,7 @@ class GUITextPanel
     GUITextPanel(const std::string& msg, const float red, const float green, const float blue);
 
     /* destructor */
-    ~GUITextPanel();
+    virtual ~GUITextPanel();
 
     void setColour(const float red, const float green, const float blue);
 

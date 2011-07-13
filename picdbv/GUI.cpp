@@ -131,15 +131,12 @@ void GUI::addPanel(GUITextPanel* panel)
 
 void GUI::removeAllPanels()
 {
-  std::cout << "Debug: GUI has "<<m_Panels.size() << " panels.\n";
   while (!m_Panels.empty())
   {
     GUITextPanel* p = m_Panels.back();
     m_Panels.pop_back();
     if (p!=NULL)
     {
-      std::cout << "deleting last panel\n";
-      std::cout.flush();
       delete p;
       p = NULL;
     }
