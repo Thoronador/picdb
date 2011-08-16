@@ -486,12 +486,7 @@ void GUI::showNext()
         //delete file from the DB, it does not exist any more
         DataBase::getSingleton().deleteFile(selectedFiles[currentIndex]);
         //delete file from the selected files vector, too
-        int i;
-        for (i=currentIndex; i<selectedFiles.size()-1; ++i)
-        {
-          selectedFiles.at(i) = selectedFiles.at(i-1);
-        }
-        selectedFiles.pop_back();
+        selectedFiles.erase(selectedFiles.begin()+currentIndex);
       }//if
       else
       {
@@ -547,12 +542,7 @@ void GUI::showPrevious()
         //delete file from the DB, it does not exist any more
         DataBase::getSingleton().deleteFile(selectedFiles[currentIndex]);
         //delete file from the selected files vector, too
-        int i;
-        for (i=currentIndex; i<selectedFiles.size()-1; ++i)
-        {
-          selectedFiles.at(i) = selectedFiles.at(i-1);
-        }
-        selectedFiles.pop_back();
+        selectedFiles.erase(selectedFiles.begin()+currentIndex);
       }//if
       else
       {
