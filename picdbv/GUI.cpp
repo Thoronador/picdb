@@ -473,7 +473,7 @@ void GUI::showNext()
 {
   ++currentIndex;
   //are we out of range?
-  if (currentIndex>=selectedFiles.size())
+  if ((currentIndex>=selectedFiles.size()) or (currentIndex<0))
     currentIndex = 0; //reset to begin
 
   if (!selectedFiles.empty())
