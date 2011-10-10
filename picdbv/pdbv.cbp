@@ -30,6 +30,7 @@
 		<Unit filename="../common/DirectoryFileList.cpp" />
 		<Unit filename="../common/DirectoryFileList.h" />
 		<Unit filename="../common/IntegerUtils.cpp" />
+		<Unit filename="../common/IntegerUtils.h" />
 		<Unit filename="../common/StringUtils.cpp" />
 		<Unit filename="../common/StringUtils.h" />
 		<Unit filename="../common/graphics/GLImageStructure.cpp" />
