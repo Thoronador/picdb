@@ -507,7 +507,7 @@ void GUI::showNext()
     if (DataBase::getSingleton().hasFile(selectedFiles[currentIndex]))
     {
       const PicData& info = DataBase::getSingleton().getData(selectedFiles[currentIndex]);
-      if (setCurrentImage(config.Directory+selectedFiles[currentIndex], selectedFiles[currentIndex]))
+      if (setCurrentImageByIndex(currentIndex))
       {
         //update info stuff
         updateInfoPanels(info.who, info.tags, info.artist);
@@ -565,7 +565,7 @@ void GUI::showPrevious()
       std::cout << "DBG: Accessing database...\n";
       const PicData& info = DataBase::getSingleton().getData(selectedFiles[currentIndex]);
       std::cout << "DBG: Setting image...\n";
-      if (setCurrentImage(config.Directory+selectedFiles[currentIndex], selectedFiles[currentIndex]))
+      if (setCurrentImageByIndex(currentIndex))
       {
         //update info stuff
         updateInfoPanels(info.who, info.tags, info.artist);
@@ -584,7 +584,6 @@ void GUI::showPrevious()
 
 void GUI::specialWrapper(int Key, int x, int y)
 {
-  std::cout << "special\n";
   if ((Key==GLUT_KEY_RIGHT) and (!selectedFiles.empty()))
   {
     std::cout << "right pressed\n";
@@ -657,7 +656,7 @@ void GUI::centerText(const std::string& text, const float y, const float z)
   writeText(text, -dx*text.length()*4, y, z);
 }
 
-bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortName)
+bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortName, const int32_t index_first, const int32_t index_total)
 {
   freeGLTexture();
   glis.freeBuffer();
@@ -704,7 +703,16 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   updateCenterTopPanel(shortName);
-  glutSetWindowTitle(("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px)").c_str());
+  if ((index_first<=0) or (index_total<=0))
+  {
+    glutSetWindowTitle(("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px)").c_str());
+  }
+  else
+  {
+    //show title with index
+    glutSetWindowTitle(("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px) "
+                      +intToString(index_first)+" of "+intToString(index_total)).c_str());
+  }
   glutPostRedisplay();
   std::cout << "Info: Successfully set new image \""<<shortName<<"\" as active image.\n";
   return true;
@@ -715,7 +723,7 @@ bool GUI::setCurrentImageByIndex(const int32_t idx)
   //check range
   if ((idx<0) or (idx>=selectedFiles.size()))
     return false;
-  if (setCurrentImage(config.Directory+selectedFiles.at(idx), selectedFiles.at(idx)))
+  if (setCurrentImage(config.Directory+selectedFiles.at(idx), selectedFiles.at(idx), idx+1, selectedFiles.size()))
   {
     currentIndex = idx;
     std::cout << "Info: Successfully set new image index "<<idx<<" as active image.\n";
@@ -790,7 +798,7 @@ void GUI::updateInfoPanels(const std::set<std::string>& who, const std::set<std:
   }
   if (!tag.empty())
   {
-    updateMultiLinePanel(GUIAdjustedTextPanel::paRightTop, "tags:", tag);
+    updateMultiLinePanel(GUIAdjustedTextPanel::paRightTop, "tags ("+intToString(tag.size())+"):", tag);
   }
   else
   {

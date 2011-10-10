@@ -53,10 +53,12 @@ class GUI
        true on success, false on failure.
 
        parameters:
-           FileName  - full file name of the current image
-           shortName - short file name
+           FileName    - full file name of the current image
+           shortName   - short file name
+           index_first - one-based index of the image (for display purpose only)
+           index_total - total number of files in index ( "   "       "      " )
     */
-    bool setCurrentImage(const std::string& FileName, const std::string& shortName);
+    bool setCurrentImage(const std::string& FileName, const std::string& shortName, const int32_t index_first=-1, const int32_t index_total=-1);
 
     bool setCurrentImageByIndex(const int32_t idx);
 
