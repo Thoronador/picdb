@@ -683,7 +683,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   glBindTexture(GL_TEXTURE_2D, image_tex);
 
   std::cout << "DBG: TexImage2D\n";
-
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   if ((glis.getFormatGL()==GL_RGB) or (glis.getFormatGL()==GL_BGR))
   {
     glTexImage2D(GL_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
