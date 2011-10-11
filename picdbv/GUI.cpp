@@ -681,15 +681,65 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   glGenTextures(1, &image_tex);
   glBindTexture(GL_TEXTURE_2D, image_tex);
 
-  std::cout << "DBG: TexImage2D\n";
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   if ((glis.getFormatGL()==GL_RGB) or (glis.getFormatGL()==GL_BGR))
   {
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    //proxy stuff
+    glTexImage2D(GL_PROXY_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    GLint test_width = 0;
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &test_width);
+    if (test_width!=0)
+    {
+      //the real stuff
+      glTexImage2D(GL_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    }
+    else
+    {
+      //proxy test failed
+      std::cout << "Your GL implementation cannot handle this texture size ("
+                << glis.getWidth()<<"x"<<glis.getHeight()<<"px) properly! Trying"
+                << " half size.\n";
+      if (glis.resizeToHalf())
+      {
+        //the real stuff
+        glTexImage2D(GL_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+      }
+      else
+      {
+        std::cout << "Error during resize attempt!\n";
+        return false;
+      }
+    }
   }
   else if (glis.getFormatGL()==GL_RGBA)
   {
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    //proxy stuff
+    glTexImage2D(GL_PROXY_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    GLint test_width = 0;
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &test_width);
+    if (test_width!=0)
+    {
+      //the real stuff
+      glTexImage2D(GL_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    }
+    else
+    {
+      //proxy test failed
+      std::cout << "Your GL implementation cannot handle this texture size ("
+                << glis.getWidth()<<"x"<<glis.getHeight()<<"px) properly! Trying"
+                << " half size.\n";
+      if (glis.resizeToHalf())
+      {
+        //the real stuff
+        glTexImage2D(GL_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+      }
+      else
+      {
+        std::cout << "Error during resize attempt!\n";
+        return false;
+      }
+      return false;
+    }
   }
   else
   {
@@ -699,7 +749,6 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
     GUI::image_tex = 0;
     return false;
   }
-  std::cout << "DBG: TexParameter\n";
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   updateCenterTopPanel(shortName);
