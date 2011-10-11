@@ -872,7 +872,7 @@ void GUI::updateInfoPanels(const std::set<std::string>& who, const std::set<std:
 
 void GUI::freeGLTexture()
 {
-  if (glIsTexture(image_tex)==GL_TRUE)
+  if ((image_tex!=0) and (glIsTexture(image_tex)==GL_TRUE))
   {
     glDeleteTextures(1, &image_tex);
     image_tex = 0;

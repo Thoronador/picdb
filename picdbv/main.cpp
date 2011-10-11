@@ -69,7 +69,10 @@ void showHelp()
             << "  --save      - saves database to predefined file\n"
             << "  --nosave    - does not save database (default)\n"
             << "  --purge     - removes not existing files from database\n"
-            << "  --nopurge   - does not remove files (default)\n";
+            << "  --nopurge   - does not remove files (default)\n"
+            << "  --stats-only\n"
+            << "              - just shows DB statistics and does not start the graphical user\n"
+            << "                interface\n";
 }
 
 int main(int argc, char **argv)
@@ -80,6 +83,7 @@ int main(int argc, char **argv)
   bool doTagging = true;
   bool doSearchNewFiles = true;
   bool doPurge = false;
+  bool onlyStats = false;
 
   config.initialiseValues();
   const std::string configFileName = "picdbv.ini";
@@ -156,6 +160,10 @@ int main(int argc, char **argv)
     else if (arg_string == "--nopurge")
     {
       doPurge = false;
+    }
+    else if (arg_string == "--stats-only")
+    {
+      onlyStats = true;
     }
     else
     {
@@ -236,41 +244,44 @@ int main(int argc, char **argv)
     }
   }
 
-  //setup GLUT library
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowPosition(0,0);
-  glutInitWindowSize(640, 400);
-  if (glutCreateWindow("picdbv window")<=0)
+  if (!onlyStats)
   {
-    std::cout << "ERROR: Could not create GLUT window.\n";
-    return 0;
-  }
-  //assign callback functions
-  glutDisplayFunc(GLUTdrawWrapper);
-  //glutReshapeFunc(the_gui.resizeWrapper);
-  glutKeyboardFunc(GLUTkeyWrapper);
-  glutSpecialFunc(GLUTspecialWrapper);
-  #ifdef APP_USING_FREEGLUT
-  //If we use freeglut API instead of the usual one, we like to return from the
-  //main loop instead of exiting without prior notice.
-  glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-  #endif
-  the_gui.initGL();
-  the_gui.getAllFiles();
+    //setup GLUT library
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowPosition(0,0);
+    glutInitWindowSize(640, 400);
+    if (glutCreateWindow("picdbv window")<=0)
+    {
+      std::cout << "ERROR: Could not create GLUT window.\n";
+      return 0;
+    }
+    //assign callback functions
+    glutDisplayFunc(GLUTdrawWrapper);
+    //glutReshapeFunc(the_gui.resizeWrapper);
+    glutKeyboardFunc(GLUTkeyWrapper);
+    glutSpecialFunc(GLUTspecialWrapper);
+    #ifdef APP_USING_FREEGLUT
+    //If we use freeglut API instead of the usual one, we like to return from the
+    //main loop instead of exiting without prior notice.
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+    #endif
+    the_gui.initGL();
+    the_gui.getAllFiles();
 
-  bool success = the_gui.setCurrentImageByIndex(0);
-  unsigned int i = 1;
-  while (!success and (i<the_gui.getNumberOfFilesInList()))
-  {
-    //set another image
-    success = the_gui.setCurrentImageByIndex(i);
-    ++i;
-  }//while
+    bool success = the_gui.setCurrentImageByIndex(0);
+    unsigned int i = 1;
+    while (!success and (i<the_gui.getNumberOfFilesInList()))
+    {
+      //set another image
+      success = the_gui.setCurrentImageByIndex(i);
+      ++i;
+    }//while
 
-  //Starting GLUT
-  std::cout << "glutMainLoop\n";
-  glutMainLoop();
+    //Starting GLUT
+    std::cout << "glutMainLoop\n";
+    glutMainLoop();
+  }//if not only stats
 
   db.showTagStatistics();
   db.showWhoStatistics();
