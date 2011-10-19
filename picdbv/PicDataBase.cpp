@@ -102,18 +102,22 @@ void DataBase::clearAllData()
 
 bool DataBase::getFilesFromDirectory(const std::string& directory)
 {
-  std::vector<FileEntry> temp = getDirectoryFileList(directory);
-  unsigned int i;
+  std::vector<FileEntry> temp;
+  if (!getDirectoryFileList(directory, temp, "", false))
+  {
+    return false;
+  }
   if (temp.size()==0)
   {
     return false;
   }
-  bool result = false;
   PicData temp_data;
   temp_data.artist = Splitter::cUnknownArtist;
   temp_data.name = "";
   temp_data.tags.clear();
   temp_data.who.clear();
+  bool result = false;
+  unsigned int i;
   for (i=0; i<temp.size(); i=i+1)
   {
     if (!(temp.at(i).IsDirectory))

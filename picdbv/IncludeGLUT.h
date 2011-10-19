@@ -21,7 +21,7 @@
 #ifndef INCLUDEGLUT_H
 #define INCLUDEGLUT_H
 
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(_WIN32_) || defined(__WIN32__)
   #warning Using usual glut header.
   #include <GL/glut.h>
 #elif defined(__linux__) || defined(linux) || defined(FREEGLUT)
