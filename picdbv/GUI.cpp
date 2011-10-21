@@ -305,6 +305,30 @@ void GUI::processInput()
         std::cout << "done.\n";
       }
     }//if not fullscreen
+    else if (((m_InputLine.substr(0,5)=="?jump") or (m_InputLine.substr(0,5)=="?goto"))
+          and (m_InputLine.length()>5))
+    {
+      std::string jump_index = m_InputLine.substr(5);
+      trim(jump_index);
+      int newIndex = 0;
+      if (stringToInt(jump_index, newIndex))
+      {
+        if ((newIndex<1) or (newIndex>selectedFiles.size()))
+        {
+          std::cout << "Warning; jump index "<<newIndex<<" is out of range. "
+                    << "Valid range is [1;"<<selectedFiles.size()<<"].\n";
+        }
+        else
+        {
+          setCurrentImageByIndex(newIndex-1);
+        }
+      }//if conversion was successful
+      else
+      {
+        //conversion failed
+        std::cout << "Error: The string \""<<jump_index<<"\" does not represent a integer value.\n";
+      }
+    }//jump/go to specified index
     else
     {
       std::cout << "Unknown operation \""<<m_InputLine<<"\" requested!\n";
