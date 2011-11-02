@@ -152,6 +152,13 @@ class DataBase
     void showWhoStatistics() const;
     bool saveToFile(const std::string& FileName) const;
     bool loadFromFile(const std::string& FileName);
+
+    /* translates the given string into query conditions and returns a list of
+       all files that match the given query conditions
+
+       parameters:
+           query - the query string
+    */
     std::vector<std::string> executeQuery(const std::string& query) const;
 
     /* returns iterator to the beginning of the internal map */
@@ -187,7 +194,7 @@ class DataBase
          parameters:
              queryString - the string holding the criteria
       */
-      void fromString(const std::string& queryString);
+      void fromString(std::string queryString);
 
       /* returns true, if the provided data set fulfills all criteria specified
          for this query
@@ -197,6 +204,22 @@ class DataBase
       */
       bool fulfilledBy(const PicData& pic) const;
     }; //struct
+
+    /* returns the union of two query results
+
+       parameters:
+           query_one - result of first query
+           query_two - result of second query
+    */
+    std::vector<std::string> getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const;
+
+    /* returns the intersection of two query results
+
+       parameters:
+           query_one - result of first query
+           query_two - result of second query
+    */
+    std::vector<std::string> getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const;
 
     //constructor
     DataBase();

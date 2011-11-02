@@ -531,9 +531,10 @@ void DataBase::Query::clear()
   isArtist = "";
 }
 
-void DataBase::Query::fromString(const std::string& queryString)
+void DataBase::Query::fromString(std::string queryString)
 {
   clear();
+  trim(queryString);
   if (queryString=="") return;
   const std::set<std::string> sv = Splitter::splitAtSpace(queryString);
   std::set<std::string>::const_iterator set_i;
@@ -618,6 +619,35 @@ bool DataBase::Query::fulfilledBy(const PicData& pic) const
 
 std::vector<std::string> DataBase::executeQuery(const std::string& query) const
 {
+  const std::string::size_type union_pos = query.find(":UNION:");
+  const std::string::size_type inter_pos = query.find(":INTERSECT:");
+  //make sure the first operation from the lef is considered first
+  if ((union_pos!=std::string::npos) and (inter_pos!=std::string::npos))
+  {
+    //union is first?
+    if (union_pos<inter_pos)
+    {
+      return getQueryResultUnion(executeQuery(query.substr(0, union_pos)),
+             executeQuery(query.substr(union_pos+7)));
+    }
+    //intersection is first
+    return getQueryResultIntersection(executeQuery(query.substr(0, inter_pos)),
+             executeQuery(query.substr(inter_pos+11)));
+  }//if
+  //union present?
+  if (union_pos!=std::string::npos)
+  {
+    return getQueryResultUnion(executeQuery(query.substr(0, union_pos)),
+             executeQuery(query.substr(union_pos+7)));
+  }
+  //intersection present?
+  if (inter_pos!=std::string::npos)
+  {
+    return getQueryResultIntersection(executeQuery(query.substr(0, inter_pos)),
+             executeQuery(query.substr(inter_pos+11)));
+  }
+
+  //else: go on with normal query
   std::vector<std::string> result;
   Query newQuery;
   newQuery.fromString(query);
@@ -630,6 +660,84 @@ std::vector<std::string> DataBase::executeQuery(const std::string& query) const
       result.push_back(iter->first);
     }
     ++iter;
+  }//while
+  return result;
+}
+
+std::vector<std::string> DataBase::getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const
+{
+  std::vector<std::string> result;
+  std::vector<std::string>::const_iterator one_iter, two_iter;
+  one_iter = query_one.begin();
+  two_iter = query_two.begin();
+  while (one_iter!=query_one.end() and two_iter!=query_two.end())
+  {
+    if (*one_iter<*two_iter)
+    {
+      result.push_back(*one_iter);
+      ++one_iter;
+    }
+    else if (*one_iter>*two_iter)
+    {
+      result.push_back(*two_iter);
+      ++two_iter;
+    }
+    else
+    {
+      result.push_back(*one_iter);
+      ++one_iter;
+      ++two_iter;
+    }
+  }//while
+  //check for remainder
+  if (one_iter!=query_one.end())
+  {
+    //set end iter
+    two_iter = query_one.end();
+    //start iter is already known: one_iter
+  }
+  else if (two_iter!=query_two.end())
+  {
+    //set start iterator
+    one_iter = two_iter;
+    //set end iterator
+    two_iter = query_two.end();
+  }
+  else
+  {
+    return result;
+  }
+  //copy remaining stuff
+  while (one_iter!=two_iter)
+  {
+    result.push_back(*one_iter);
+    ++one_iter;
+  }//while
+  return result;
+}
+
+std::vector<std::string> DataBase::getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const
+{
+  std::vector<std::string> result;
+  std::vector<std::string>::const_iterator one_iter, two_iter;
+  one_iter = query_one.begin();
+  two_iter = query_two.begin();
+  while (one_iter!=query_one.end() and two_iter!=query_two.end())
+  {
+    if (*one_iter<*two_iter)
+    {
+      ++one_iter;
+    }
+    else if (*one_iter>*two_iter)
+    {
+      ++two_iter;
+    }
+    else
+    {
+      result.push_back(*one_iter);
+      ++one_iter;
+      ++two_iter;
+    }
   }//while
   return result;
 }
