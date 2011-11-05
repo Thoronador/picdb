@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="bin/Release/picdbv" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="bin\Release\picdbv" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -27,24 +27,26 @@
 			<Add library="png" />
 			<Add library="jpeg" />
 		</Linker>
-		<Unit filename="../common/DirectoryFileList.cpp" />
-		<Unit filename="../common/DirectoryFileList.h" />
-		<Unit filename="../common/IntegerUtils.cpp" />
-		<Unit filename="../common/IntegerUtils.h" />
-		<Unit filename="../common/StringUtils.cpp" />
-		<Unit filename="../common/StringUtils.h" />
-		<Unit filename="../common/graphics/GLImageStructure.cpp" />
-		<Unit filename="../common/graphics/GLImageStructure.h" />
-		<Unit filename="../common/graphics/ImageLoader.cpp" />
-		<Unit filename="../common/graphics/ImageLoader.h" />
-		<Unit filename="../common/graphics/readBMP.cpp" />
-		<Unit filename="../common/graphics/readBMP.h" />
-		<Unit filename="../common/graphics/readJPEG.cpp" />
-		<Unit filename="../common/graphics/readJPEG.h" />
-		<Unit filename="../common/graphics/readPNG.cpp" />
-		<Unit filename="../common/graphics/readPNG.h" />
-		<Unit filename="../common/graphics/readPPM.cpp" />
-		<Unit filename="../common/graphics/readPPM.h" />
+		<Unit filename="..\common\DirectoryFileList.cpp" />
+		<Unit filename="..\common\DirectoryFileList.h" />
+		<Unit filename="..\common\IntegerUtils.cpp" />
+		<Unit filename="..\common\IntegerUtils.h" />
+		<Unit filename="..\common\StringUtils.cpp" />
+		<Unit filename="..\common\StringUtils.h" />
+		<Unit filename="..\common\graphics\GLImageStructure.cpp" />
+		<Unit filename="..\common\graphics\GLImageStructure.h" />
+		<Unit filename="..\common\graphics\ImageLoader.cpp" />
+		<Unit filename="..\common\graphics\ImageLoader.h" />
+		<Unit filename="..\common\graphics\readBMP.cpp" />
+		<Unit filename="..\common\graphics\readBMP.h" />
+		<Unit filename="..\common\graphics\readGIF.cpp" />
+		<Unit filename="..\common\graphics\readGIF.h" />
+		<Unit filename="..\common\graphics\readJPEG.cpp" />
+		<Unit filename="..\common\graphics\readJPEG.h" />
+		<Unit filename="..\common\graphics\readPNG.cpp" />
+		<Unit filename="..\common\graphics\readPNG.h" />
+		<Unit filename="..\common\graphics\readPPM.cpp" />
+		<Unit filename="..\common\graphics\readPPM.h" />
 		<Unit filename="Configuration.cpp" />
 		<Unit filename="Configuration.h" />
 		<Unit filename="GUI.cpp" />
