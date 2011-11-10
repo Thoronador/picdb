@@ -33,6 +33,8 @@
 		<Unit filename="../common/IntegerUtils.h" />
 		<Unit filename="../common/StringUtils.cpp" />
 		<Unit filename="../common/StringUtils.h" />
+		<Unit filename="../common/graphics/Bits.cpp" />
+		<Unit filename="../common/graphics/Bits.h" />
 		<Unit filename="../common/graphics/GIFStructures.cpp" />
 		<Unit filename="../common/graphics/GIFStructures.h" />
 		<Unit filename="../common/graphics/GLImageStructure.cpp" />
