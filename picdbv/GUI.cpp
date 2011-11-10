@@ -685,19 +685,25 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   freeGLTexture();
   glis.freeBuffer();
 
-  if (!ImageLoader::isSupportedImage(FileName))
+  const ImageLoader::ImageType i_type = ImageLoader::getImageType(FileName);
+
+  if (!ImageLoader::isSupportedImage(i_type))
   {
     std::cout << "File \""<<FileName<<"\" seems to be neither BMP, nor JPEG, nor PNG, nor PPM.\n";
     glutSetWindowTitle("picdbv");
+    removeAllPanels();
+    updateCenterTopPanel(shortName);
     return false;
   }
 
-  glis = ImageLoader::readImage(FileName);
+  glis = ImageLoader::readImage(FileName, i_type);
 
   if (!glis.isLoaded())
   {
     std::cout << "File \""<<FileName<<"\" could not be loaded.\n";
     glutSetWindowTitle("picdbv");
+    removeAllPanels();
+    updateCenterTopPanel(shortName);
     return false;
   }
 
@@ -770,7 +776,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
     std::cout << "Image has unknown GL format.\n";
     glBindTexture(GL_TEXTURE_2D, 0);
     glDeleteTextures(1, &image_tex);
-    GUI::image_tex = 0;
+    image_tex = 0;
     return false;
   }
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
