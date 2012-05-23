@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    Copyright (C) 2011, 2012 thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,6 +44,11 @@ void GLUTdrawWrapper(void)
 void GLUTspecialWrapper(int Key, int x, int y)
 {
   the_gui.specialWrapper(Key, x, y);
+}
+
+void GLUTidleWrapper(void)
+{
+  the_gui.performIdleTasks();
 }
 
 void showHelp()
@@ -256,11 +261,6 @@ int main(int argc, char **argv)
       std::cout << "ERROR: Could not create GLUT window.\n";
       return 0;
     }
-    //assign callback functions
-    glutDisplayFunc(GLUTdrawWrapper);
-    //glutReshapeFunc(the_gui.resizeWrapper);
-    glutKeyboardFunc(GLUTkeyWrapper);
-    glutSpecialFunc(GLUTspecialWrapper);
     #ifdef APP_USING_FREEGLUT
     //If we use freeglut API instead of the usual one, we like to return from the
     //main loop instead of exiting without prior notice.
@@ -277,6 +277,13 @@ int main(int argc, char **argv)
       success = the_gui.setCurrentImageByIndex(i);
       ++i;
     }//while
+
+    //assign callback functions
+    glutDisplayFunc(GLUTdrawWrapper);
+    //glutReshapeFunc(the_gui.resizeWrapper);
+    glutKeyboardFunc(GLUTkeyWrapper);
+    glutSpecialFunc(GLUTspecialWrapper);
+    glutIdleFunc(GLUTidleWrapper);
 
     //Starting GLUT
     std::cout << "glutMainLoop\n";

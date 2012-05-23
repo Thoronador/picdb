@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    Copyright (C) 2011, 2012 thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -662,6 +662,41 @@ void GUI::drawWrapper(void)
   glutSwapBuffers();
 }
 
+void GUI::performIdleTasks()
+{
+  //hash checks or updates
+  if (!m_IdleHashUpdateFiles.empty())
+  {
+    const std::string currFile = *(m_IdleHashUpdateFiles.begin());
+    const SHA256::MessageDigest sha_md = SHA256::computeFromFile(currFile);
+    if (!sha_md.isNull())
+    {
+      //hash found
+      if (DataBase::getSingleton().hasFile(currFile))
+      {
+        PicData tempData = DataBase::getSingleton().getData(currFile);
+        if (tempData.hash_sha256!=sha_md)
+        {
+          //hash difference found
+          if (tempData.hash_sha256.isNull())
+          {
+            //no previous hash set, silent update
+            tempData.hash_sha256 = sha_md;
+            DataBase::getSingleton().addFile(currFile, tempData);
+          }
+          else
+          {
+            //file has changed since last DB update - notify user!
+            // TODO
+          }
+        }//if
+      }
+    }
+    //remove file from list of hash updates
+    m_IdleHashUpdateFiles.erase(currFile);
+  }//if not empty
+}//func performing idle task
+
 void GUI::writeText(const std::string& text, const float x, const float y, const float z)
 {
   glRasterPos3f(x, y, z);
@@ -794,6 +829,8 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   }
   glutPostRedisplay();
   std::cout << "Info: Successfully set new image \""<<shortName<<"\" as active image.\n";
+  //mark file for hash update
+  m_IdleHashUpdateFiles.insert(shortName);
   return true;
 }
 

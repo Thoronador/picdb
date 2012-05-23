@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    Copyright (C) 2011, 2012 thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -48,6 +48,10 @@ class GUI
 
     /* draw wrapper that will be called whenever a window needs to be (re-)drawn */
     void drawWrapper(void);
+
+    /* let's the GUI perform tasks that can/should (only) be done during idle
+       time - currently that's just the hash update */
+    void performIdleTasks();
 
     /* tries to set the given image to the image currently displayed. Returns
        true on success, false on failure.
@@ -97,7 +101,11 @@ class GUI
     std::vector<std::string> selectedFiles;
     int32_t currentIndex;
 
+    //holds all GUI panels
     std::vector<GUITextPanel*> m_Panels;
+
+    //contains the files whose hash values should be updated during idle time
+    std::set<std::string> m_IdleHashUpdateFiles;
 
     //input "window"
     bool m_showInput;
