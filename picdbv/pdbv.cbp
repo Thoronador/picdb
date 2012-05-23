@@ -53,6 +53,8 @@
 		<Unit filename="../common/graphics/readPNG.h" />
 		<Unit filename="../common/graphics/readPPM.cpp" />
 		<Unit filename="../common/graphics/readPPM.h" />
+		<Unit filename="../hashfunctions/sha-256.cpp" />
+		<Unit filename="../hashfunctions/sha-256.h" />
 		<Unit filename="Configuration.cpp" />
 		<Unit filename="Configuration.h" />
 		<Unit filename="GUI.cpp" />

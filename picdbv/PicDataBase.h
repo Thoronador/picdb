@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    Copyright (C) 2011, 2012 thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,12 +28,14 @@
 #include <vector>
 #include "Splitter.h"
 #include "../common/DirectoryFileList.h"
+#include "../hashfunctions/sha-256.h"
 
 struct PicData
 {
   std::string name, artist;
   std::set<std::string> who;
   std::set<std::string> tags;
+  SHA256::MessageDigest hash_sha256;
 
   /* writes the structure's data to the standard output */
   void show() const;
@@ -172,6 +174,7 @@ class DataBase
     static const std::string cArtistPrefix;
     static const std::string cWhoPrefix;
     static const std::string cTagPrefix;
+    static const std::string cHashPrefix;
   private:
     //structure to hold criteria for a DB query
     struct Query

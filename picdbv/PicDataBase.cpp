@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    Copyright (C) 2011, 2012 thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -62,10 +62,11 @@ void PicData::show() const
 
 void PicData::clear()
 {
-  name = "";
-  artist = "";
+  name.clear();
+  artist.clear();
   who.clear();
   tags.clear();
+  hash_sha256.setToNull();
 }
 
 bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b)
@@ -78,6 +79,7 @@ const std::string DataBase::cNamePrefix = "name";
 const std::string DataBase::cArtistPrefix = "artist";
 const std::string DataBase::cWhoPrefix = "who";
 const std::string DataBase::cTagPrefix = "tags";
+const std::string DataBase::cHashPrefix = "sha256";
 
 DataBase& DataBase::getSingleton()
 {
@@ -417,6 +419,11 @@ bool DataBase::saveToFile(const std::string& FileName) const
       }//for
       output << "\n";
     }//else branch
+    //SHA-256 hash
+    if (!(iter->second.hash_sha256.isNull()))
+    {
+      output << cHashPrefix << ":"<<iter->second.hash_sha256.toHexString()<<"\n";
+    }
     iter++;
   }//while
   output.close();
@@ -474,16 +481,16 @@ bool DataBase::loadFromFile(const std::string& FileName)
     if (cur_line.size()>cArtistPrefix.size())
     {
       if (cur_line.substr(0,cArtistPrefix.size()+1) == cArtistPrefix+":")
-      { //got name entry
+      { //got artist entry
         temp_data.artist = cur_line.substr(cArtistPrefix.size()+1);
       }
-    }//if name
+    }//if artist
 
     //people entry?
     if (cur_line.size()>cWhoPrefix.size())
     {
       if (cur_line.substr(0,cWhoPrefix.size()+1) == cWhoPrefix+":")
-      { //got name entry
+      { //got people entry
         std::string who_line = cur_line.substr(cWhoPrefix.size()+1);
         if (who_line == PicData::cEmptyVector)
         {
@@ -494,13 +501,13 @@ bool DataBase::loadFromFile(const std::string& FileName)
           temp_data.who = Splitter::splitAtSpace(who_line);
         }
       }
-    }//if name
+    }//if people
 
     //tag entry?
     if (cur_line.size()>cTagPrefix.size())
     {
       if (cur_line.substr(0,cTagPrefix.size()+1) == cTagPrefix+":")
-      { //got name entry
+      { //got tag entry
         std::string tag_line = cur_line.substr(cTagPrefix.size()+1);
         if (tag_line == PicData::cNoTags)
         {
@@ -511,7 +518,22 @@ bool DataBase::loadFromFile(const std::string& FileName)
           temp_data.tags = Splitter::splitAtSpace(tag_line);
         }
       }
+    }//if tag
+
+    //sha256 entry?
+    if (cur_line.size()>cHashPrefix.size())
+    {
+      if (cur_line.substr(0,cHashPrefix.size()+1) == cHashPrefix+":")
+      { //got hash entry
+        if (!temp_data.hash_sha256.fromHexString(cur_line.substr(cHashPrefix.size()+1)))
+        {
+          //reset value in case of failure
+          temp_data.hash_sha256.setToNull();
+        }
+      }
     }//if name
+
+
   }//while
 
   //care for last data set
