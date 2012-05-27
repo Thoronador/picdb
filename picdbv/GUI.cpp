@@ -23,6 +23,7 @@
 #include <GL/gl.h>
 #include "IncludeGLUT.h"
 #include "../common/graphics/ImageLoader.h"
+#include "../common/graphics/GLfunctions.h"
 #include "../common/StringUtils.h"
 #include "PicDataBase.h"
 #include "GUIMultiLinePanel.h"
@@ -34,6 +35,7 @@ GUI::GUI()
   glis.setBuffer(NULL);
   glis.setFormat(0);
   image_tex = 0;
+  m_CurrentTextureTarget = GL_TEXTURE_2D;
   selectedFiles.clear();
   currentIndex = 0;
   m_Panels.clear();
@@ -634,22 +636,37 @@ void GUI::drawWrapper(void)
     if (getCorners(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT), glis.getWidth(), glis.getHeight(), l, r, b, t))
     {
       //draw it, we got the coordinates
-      glEnable(GL_TEXTURE_2D);
+      glEnable(m_CurrentTextureTarget);
       glEnable(GL_ALPHA_TEST);
       glBindTexture(GL_TEXTURE_2D, image_tex);
       glBegin(GL_QUADS);
         glColor3f(1.0, 1.0, 1.0);
-        glTexCoord2f(0.0, 1.0);//upper left
-        glVertex3f(l, t, 0.0);
-        glTexCoord2f(0.0, 0.0);//lower left
-        glVertex3f(l, b, 0.0);
-        glTexCoord2f(1.0, 0.0);//lower right
-        glVertex3f(r, b, 0.0);
-        glTexCoord2f(1.0, 1.0);//upper right
-        glVertex3f(r, t, 0.0);
+        if ( m_CurrentTextureTarget == GL_TEXTURE_2D)
+        {
+          glTexCoord2f(0.0, 1.0);//upper left
+          glVertex3f(l, t, 0.0);
+          glTexCoord2f(0.0, 0.0);//lower left
+          glVertex3f(l, b, 0.0);
+          glTexCoord2f(1.0, 0.0);//lower right
+          glVertex3f(r, b, 0.0);
+          glTexCoord2f(1.0, 1.0);//upper right
+          glVertex3f(r, t, 0.0);
+        }
+        else
+        {
+          //we've got rectangular target here
+          glTexCoord2f(0.0, glis.getHeight());//upper left
+          glVertex3f(l, t, 0.0);
+          glTexCoord2f(0.0, 0.0);//lower left
+          glVertex3f(l, b, 0.0);
+          glTexCoord2f(glis.getWidth(), 0.0);//lower right
+          glVertex3f(r, b, 0.0);
+          glTexCoord2f(glis.getWidth(), glis.getHeight());//upper right
+          glVertex3f(r, t, 0.0);
+        }
       glEnd();
       glDisable(GL_ALPHA_TEST);
-      glDisable(GL_TEXTURE_2D);
+      glDisable(m_CurrentTextureTarget);
     }
     else
     {
@@ -744,19 +761,32 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
 
   //file is ready, I guess
   glGenTextures(1, &image_tex);
-  glBindTexture(GL_TEXTURE_2D, image_tex);
+  GLenum texTarget = GL_TEXTURE_2D;
+  GLenum proxyTarget = GL_PROXY_TEXTURE_2D;
+  if (glis.needsNPOTExtension())
+  {
+    getNPOTTextureTargets(getNPOTSupport(), texTarget, proxyTarget);
+  }
+
+  //make sure our texture target is enabled
+  if (!glIsEnabled(texTarget))
+  {
+    glEnable(texTarget);
+  }
+
+  glBindTexture(texTarget, image_tex);
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   if ((glis.getFormatGL()==GL_RGB) or (glis.getFormatGL()==GL_BGR))
   {
     //proxy stuff
-    glTexImage2D(GL_PROXY_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    glTexImage2D(proxyTarget, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
     GLint test_width = 0;
-    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &test_width);
+    glGetTexLevelParameteriv(proxyTarget, 0, GL_TEXTURE_WIDTH, &test_width);
     if (test_width!=0)
     {
       //the real stuff
-      glTexImage2D(GL_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+      glTexImage2D(texTarget, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
     }
     else
     {
@@ -767,7 +797,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
       if (glis.resizeToHalf())
       {
         //the real stuff
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
+        glTexImage2D(texTarget, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
       }
       else
       {
@@ -779,13 +809,13 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   else if (glis.getFormatGL()==GL_RGBA)
   {
     //proxy stuff
-    glTexImage2D(GL_PROXY_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+    glTexImage2D(proxyTarget, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
     GLint test_width = 0;
-    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &test_width);
+    glGetTexLevelParameteriv(proxyTarget, 0, GL_TEXTURE_WIDTH, &test_width);
     if (test_width!=0)
     {
       //the real stuff
-      glTexImage2D(GL_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+      glTexImage2D(texTarget, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
     }
     else
     {
@@ -796,7 +826,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
       if (glis.resizeToHalf())
       {
         //the real stuff
-        glTexImage2D(GL_TEXTURE_2D, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
+        glTexImage2D(texTarget, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
       }
       else
       {
@@ -809,13 +839,13 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   else
   {
     std::cout << "Image has unknown GL format.\n";
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(texTarget, 0);
     glDeleteTextures(1, &image_tex);
     image_tex = 0;
     return false;
   }
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(texTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(texTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   updateCenterTopPanel(shortName);
   if ((index_first<=0) or (index_total<=0))
   {
@@ -831,6 +861,8 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   std::cout << "Info: Successfully set new image \""<<shortName<<"\" as active image.\n";
   //mark file for hash update
   m_IdleHashUpdateFiles.insert(shortName);
+  //save current texture target
+  m_CurrentTextureTarget = texTarget;
   return true;
 }
 

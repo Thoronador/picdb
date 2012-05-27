@@ -41,6 +41,8 @@
 		<Unit filename="../common/graphics/GIFStructures.h" />
 		<Unit filename="../common/graphics/GLImageStructure.cpp" />
 		<Unit filename="../common/graphics/GLImageStructure.h" />
+		<Unit filename="../common/graphics/GLfunctions.cpp" />
+		<Unit filename="../common/graphics/GLfunctions.h" />
 		<Unit filename="../common/graphics/ImageLoader.cpp" />
 		<Unit filename="../common/graphics/ImageLoader.h" />
 		<Unit filename="../common/graphics/readBMP.cpp" />
@@ -55,6 +57,8 @@
 		<Unit filename="../common/graphics/readPPM.h" />
 		<Unit filename="../hashfunctions/sha-256.cpp" />
 		<Unit filename="../hashfunctions/sha-256.h" />
+		<Unit filename="../hashfunctions/sha-256_aux.cpp" />
+		<Unit filename="../hashfunctions/sha-256_aux.h" />
 		<Unit filename="Configuration.cpp" />
 		<Unit filename="Configuration.h" />
 		<Unit filename="GUI.cpp" />

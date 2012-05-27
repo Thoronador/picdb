@@ -88,6 +88,8 @@ class GUI
     GLImageStructure glis;
     //internal image name
     GLuint image_tex;
+    //internal texture target;
+    GLenum m_CurrentTextureTarget;
 
     void showNext();
     void showPrevious();
