@@ -135,7 +135,22 @@ void DataBase::addFile(const std::string& FileName, const PicData& data)
 {
   if (!FileName.empty())
   {
+    //delete old hash index entry, if present
+    const std::map<std::string, PicData>::const_iterator iter = m_Files.find(FileName);
+    if (iter!=m_Files.end())
+    {
+      if (!data.hash_sha256.isNull() and !iter->second.hash_sha256.isNull())
+      {
+        removeFromHashIndex(iter->second.hash_sha256, FileName);
+      }
+    }
+    //set or update file entry
     m_Files[FileName] = data;
+    //set new hash index entry
+    if (!data.hash_sha256.isNull())
+    {
+      m_HashIndex[data.hash_sha256].insert(FileName);
+    }
   }
 }
 
@@ -153,6 +168,23 @@ const PicData& DataBase::getData(const std::string& FileName) const
     return iter->second;
   }
   throw 12345;
+}
+
+bool DataBase::hasHash(const SHA256::MessageDigest& hash) const
+{
+  return (m_HashIndex.find(hash)!=m_HashIndex.end());
+}
+
+const std::set<std::string>& DataBase::getFilesForHash(const SHA256::MessageDigest& hash) const
+{
+  const std::map<SHA256::MessageDigest, std::set<std::string> >::const_iterator iter
+     = m_HashIndex.find(hash);
+  if (iter!=m_HashIndex.end())
+  {
+    return iter->second;
+  }
+  //no entry present, throw exception
+  throw 42;
 }
 
 void DataBase::AutoTag_Splitter()
@@ -762,6 +794,19 @@ std::vector<std::string> DataBase::getQueryResultIntersection(const std::vector<
     }
   }//while
   return result;
+}
+
+void DataBase::removeFromHashIndex(const SHA256::MessageDigest& hash, const std::string& FileName)
+{
+  std::map<SHA256::MessageDigest, std::set<std::string> >::iterator iter = m_HashIndex.find(hash);
+  if (iter!=m_HashIndex.end())
+  {
+    iter->second.erase(FileName);
+    if (iter->second.empty())
+    {
+      m_HashIndex.erase(iter);
+    }
+  }
 }
 
 DataBase::Iterator DataBase::getFirst() const

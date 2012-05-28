@@ -115,6 +115,22 @@ class DataBase
     */
     const PicData& getData(const std::string& FileName) const;
 
+    /* returns true, if at least one file with the given hash value is present.
+       The "null" hash will never be present.
+
+       parameters:
+           hash - the SHA-256 hash value
+    */
+    bool hasHash(const SHA256::MessageDigest& hash) const;
+
+    /* returns all file names for a given hash, if an entry is present. If no
+       entry for that hash is present, the function will throw an exception.
+
+       parameters:
+           hash - the SHA-256 hash value of the files
+    */
+    const std::set<std::string>& getFilesForHash(const SHA256::MessageDigest& hash) const;
+
     /* writes the data of all files within the DB to the standard output */
     void ListData() const;
 
@@ -230,8 +246,18 @@ class DataBase
     //empty copy constructor
     DataBase(const DataBase& op) {}
 
+    /* removes one file entry from hash index, if present with a given hash value
+
+       parameters:
+           hash     - hash value
+           FileName - associated file name
+    */
+    void removeFromHashIndex(const SHA256::MessageDigest& hash, const std::string& FileName);
+
     //internal file map - key is file name, value is data record
     std::map<std::string, PicData> m_Files;
+    //internal hash map - key is hash value, index is set of file names
+    std::map<SHA256::MessageDigest, std::set<std::string> > m_HashIndex;
 }; //class
 
 #endif // PICDATABASE_H
