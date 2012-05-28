@@ -700,6 +700,7 @@ void GUI::performIdleTasks()
             //no previous hash set, silent update
             tempData.hash_sha256 = sha_md;
             const bool could_use_update = (tempData.tags.empty() or tempData.who.empty() or tempData.artist.empty());
+            bool dataUpdated = false;
             if (could_use_update and DataBase::getSingleton().hasHash(sha_md))
             {
               const std::set<std::string>& md_files = DataBase::getSingleton().getFilesForHash(sha_md);
@@ -708,13 +709,30 @@ void GUI::performIdleTasks()
                 const std::string otherFile = *(md_files.begin());
                 const PicData& otherData = DataBase::getSingleton().getData(otherFile);
                 //update tags, who and artist
-                if (tempData.tags.empty()) tempData.tags = otherData.tags;
-                if (tempData.who.empty()) tempData.who = otherData.who;
-                if (tempData.artist.empty()) tempData.artist = otherData.artist;
+                if (tempData.tags.empty())
+                {
+                  tempData.tags = otherData.tags;
+                  dataUpdated = true;
+                }
+                if (tempData.who.empty())
+                {
+                  tempData.who = otherData.who;
+                  dataUpdated = true;
+                }
+                if (tempData.artist.empty())
+                {
+                  tempData.artist = otherData.artist;
+                  dataUpdated = true;
+                }
               }//if exactly one file
             }//if update needed and file with same hash present
             //set new data
             DataBase::getSingleton().addFile(currFile, tempData);
+            //do we need to update the panels?
+            if (dataUpdated and (currFile==selectedFiles[currentIndex]))
+            {
+              updateInfoPanels(tempData.who, tempData.tags, tempData.artist);
+            }
           }
           else
           {
