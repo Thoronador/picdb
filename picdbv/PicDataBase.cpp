@@ -27,6 +27,37 @@
 const std::string PicData::cEmptyVector = "(empty)";
 const std::string PicData::cNoTags = "(none)";
 
+void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
+{
+  std::set<std::string>::const_iterator dest_iter, other_iter;
+  dest_iter = dest.begin();
+  other_iter = other.begin();
+  while (dest_iter!=dest.end() and other_iter!=other.end())
+  {
+    if (*dest_iter<*other_iter)
+    {
+      ++dest_iter;
+    }
+    else if (*dest_iter>*other_iter)
+    {
+      dest_iter = dest.insert(*other_iter).first;
+      ++other_iter;
+    }
+    else
+    {
+      ++dest_iter;
+      ++other_iter;
+    }
+  }//while
+  //check for remainder
+  while (other_iter!=other.end())
+  {
+    dest.insert(*other_iter);
+    ++other_iter;
+  }
+}
+
+
 void PicData::show() const
 {
   std::cout << "  name: "<<name<<"\n  artist: "<<artist <<"\n  who: ";
@@ -67,6 +98,26 @@ void PicData::clear()
   who.clear();
   tags.clear();
   hash_sha256.setToNull();
+}
+
+void PicData::mergeWith(const PicData& other)
+{
+  mergeSets(who, other.who);
+  mergeSets(tags, other.tags);
+  //only get the other name, if this one is empty
+  if (name.empty() and not other.name.empty())
+  {
+    name = other.name;
+  }
+  //only get the other artist, if this one is empty
+  if ((artist.empty() or (artist==Splitter::cUnknownArtist))
+    and (!other.artist.empty() and (other.artist!=Splitter::cUnknownArtist)))
+  {
+    artist = other.artist;
+  }
+
+  //hrmpf;
+  #warning Incomplete!
 }
 
 bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b)

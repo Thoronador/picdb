@@ -39,7 +39,16 @@ struct PicData
 
   /* writes the structure's data to the standard output */
   void show() const;
+
+  /* clears all data members */
   void clear();
+
+  /* "merges" data from other PicData structure into this one, but the SHA-256
+     hash is not touched
+  */
+  void mergeWith(const PicData& other);
+
+  //constants
   static const std::string cEmptyVector;
   static const std::string cNoTags;
 }; //struct
