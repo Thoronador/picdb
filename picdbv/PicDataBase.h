@@ -124,21 +124,22 @@ class DataBase
     */
     const PicData& getData(const std::string& FileName) const;
 
-    /* returns true, if at least one file with the given hash value is present.
-       The "null" hash will never be present.
+    /* returns true, if there is a database entry for the file with the given
+       hash value. The "null" hash will never have a DB entry.
 
        parameters:
            hash - the SHA-256 hash value
     */
-    bool hasHash(const SHA256::MessageDigest& hash) const;
+    bool hasDataForHash(const SHA256::MessageDigest& hash) const;
 
     /* returns all file names for a given hash, if an entry is present. If no
-       entry for that hash is present, the function will throw an exception.
+       entry for that hash is present, the function will return an empty list.
+       If the hash is the null hash, it will return an empty list, too.
 
        parameters:
            hash - the SHA-256 hash value of the files
     */
-    const std::set<std::string>& getFilesForHash(const SHA256::MessageDigest& hash) const;
+    std::set<std::string> getAllFilesForHash(const SHA256::MessageDigest& hash) const;
 
     /* writes the data of all files within the DB to the standard output */
     void ListData() const;
@@ -255,18 +256,23 @@ class DataBase
     //empty copy constructor
     DataBase(const DataBase& op) {}
 
-    /* removes one file entry from hash index, if present with a given hash value
+    /* removes one file entry from filename-to-hash index, if present.
 
        parameters:
-           hash     - hash value
            FileName - associated file name
     */
-    void removeFromHashIndex(const SHA256::MessageDigest& hash, const std::string& FileName);
+    void removeFromFileToHashIndex(const std::string& FileName);
 
-    //internal file map - key is file name, value is data record
+    //aux. function to save one single db entry to file
+    void saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data) const;
+
+    //internal file map - key is file name, value is data record - deprecated
     std::map<std::string, PicData> m_Files;
-    //internal hash map - key is hash value, index is set of file names
-    std::map<SHA256::MessageDigest, std::set<std::string> > m_HashIndex;
+
+    //internal "database" - key is a file's digest, value is associated record
+    std::map<SHA256::MessageDigest, PicData> m_Data;
+    //maps known file names to their last known hash
+    std::map<std::string, SHA256::MessageDigest> m_FileToHash;
 }; //class
 
 #endif // PICDATABASE_H

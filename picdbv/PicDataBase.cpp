@@ -140,7 +140,7 @@ DataBase& DataBase::getSingleton()
 
 DataBase::~DataBase()
 {
-  m_Files.clear();
+  clearAllData();
 }
 
 DataBase::DataBase()
@@ -151,6 +151,8 @@ DataBase::DataBase()
 void DataBase::clearAllData()
 {
   m_Files.clear();
+  m_FileToHash.clear();
+  m_Data.clear();
 }
 
 bool DataBase::getFilesFromDirectory(const std::string& directory)
@@ -186,56 +188,83 @@ void DataBase::addFile(const std::string& FileName, const PicData& data)
 {
   if (!FileName.empty())
   {
-    //delete old hash index entry, if present
-    const std::map<std::string, PicData>::const_iterator iter = m_Files.find(FileName);
-    if (iter!=m_Files.end())
+    //if no valid hash, use old index
+    if (data.hash_sha256.isNull())
     {
-      if (!data.hash_sha256.isNull() and !iter->second.hash_sha256.isNull())
+      //set or update file entry
+      m_Files[FileName] = data;
+    }
+    else
+    {
+      //valid hash
+      // --> add to filename-to-hash map
+      m_FileToHash[FileName] = data.hash_sha256;
+      //add data or merge with known data
+      const std::map<SHA256::MessageDigest, PicData>::iterator iter = m_Data.find(data.hash_sha256);
+      if (iter!=m_Data.end())
       {
-        removeFromHashIndex(iter->second.hash_sha256, FileName);
+        //merge
+        iter->second.mergeWith(data);
       }
-    }
-    //set or update file entry
-    m_Files[FileName] = data;
-    //set new hash index entry
-    if (!data.hash_sha256.isNull())
-    {
-      m_HashIndex[data.hash_sha256].insert(FileName);
-    }
-  }
+      else
+      {
+        //simply add it
+        m_Data[data.hash_sha256] = data;
+      }
+      //remove it from old index, if present
+      std::map<std::string, PicData>::iterator files_iter = m_Files.find(FileName);
+      if (files_iter!=m_Files.end())
+      {
+        m_Files.erase(files_iter);
+      }
+    }//else (outer)
+  }//if file name not empty
 }
 
 bool DataBase::hasFile(const std::string& FileName) const
 {
-  return (m_Files.find(FileName) != m_Files.end());
+  return ((m_Files.find(FileName)!= m_Files.end())
+    or (m_FileToHash.find(FileName)!=m_FileToHash.end()));
 }
 
 const PicData& DataBase::getData(const std::string& FileName) const
 {
-  std::map<std::string, PicData>::const_iterator iter;
-  iter = m_Files.find(FileName);
+  //check old-style index
+  const std::map<std::string, PicData>::const_iterator iter = m_Files.find(FileName);;
   if (iter != m_Files.end())
   {
     return iter->second;
   }
+  //check new index
+  const std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter
+    = m_FileToHash.find(FileName);
+  if (fth_iter!=m_FileToHash.end())
+  {
+    const std::map<SHA256::MessageDigest, PicData>::const_iterator data_iter
+      = m_Data.find(fth_iter->second);
+    if (m_Data.end()!=data_iter)
+      return data_iter->second;
+  }
   throw 12345;
 }
 
-bool DataBase::hasHash(const SHA256::MessageDigest& hash) const
+bool DataBase::hasDataForHash(const SHA256::MessageDigest& hash) const
 {
-  return (m_HashIndex.find(hash)!=m_HashIndex.end());
+  return (m_Data.find(hash)!=m_Data.end());
 }
 
-const std::set<std::string>& DataBase::getFilesForHash(const SHA256::MessageDigest& hash) const
+std::set<std::string> DataBase::getAllFilesForHash(const SHA256::MessageDigest& hash) const
 {
-  const std::map<SHA256::MessageDigest, std::set<std::string> >::const_iterator iter
-     = m_HashIndex.find(hash);
-  if (iter!=m_HashIndex.end())
+  std::set<std::string> result;
+  if (hash.isNull()) return result;
+  std::map<std::string, SHA256::MessageDigest>::const_iterator iter
+     = m_FileToHash.begin();
+  if (iter!=m_FileToHash.end())
   {
-    return iter->second;
+    if (iter->second==hash) result.insert(result.end(), iter->first);
+    ++iter;
   }
-  //no entry present, throw exception
-  throw 42;
+  return result;
 }
 
 void DataBase::AutoTag_Splitter()
@@ -286,13 +315,14 @@ void DataBase::ListData() const
 
 unsigned int DataBase::getNumEntries() const
 {
-  return m_Files.size();
+  return m_Files.size() + m_FileToHash.size();
 }
 
 std::vector<std::string> DataBase::getUntaggedFiles() const
 {
   std::vector<std::string> result;
   result.clear();
+  //search old index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
@@ -302,11 +332,23 @@ std::vector<std::string> DataBase::getUntaggedFiles() const
     }
     ++iter;
   }
-  return result;
+  //search new index
+  std::vector<std::string> newResult;
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter != m_FileToHash.end())
+  {
+    if (m_Data.find(fth_iter->second)->second.tags.size() == 0)
+    {
+      newResult.push_back(fth_iter->first);
+    }
+    ++fth_iter;
+  }
+  return getQueryResultUnion(result, newResult);
 }
 
 std::vector<std::string> DataBase::getUnknownArtistFiles() const
 {
+  //search old index
   std::vector<std::string> result;
   result.clear();
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
@@ -318,11 +360,23 @@ std::vector<std::string> DataBase::getUnknownArtistFiles() const
     }
     ++iter;
   }
-  return result;
+  //search new index
+  std::vector<std::string> newResult;
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter != m_FileToHash.end())
+  {
+    if (m_Data.find(fth_iter->second)->second.artist == Splitter::cUnknownArtist)
+    {
+      newResult.push_back(fth_iter->first);
+    }
+    ++fth_iter;
+  }
+  return getQueryResultUnion(result, newResult);
 }
 
 std::vector<std::string> DataBase::getUnknownWhoFiles() const
 {
+  //search old index
   std::vector<std::string> result;
   result.clear();
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
@@ -334,13 +388,25 @@ std::vector<std::string> DataBase::getUnknownWhoFiles() const
     }
     ++iter;
   }
-  return result;
+  //search new index
+  std::vector<std::string> newResult;
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter != m_FileToHash.end())
+  {
+    if (m_Data.find(fth_iter->second)->second.who.size() == 0)
+    {
+      newResult.push_back(fth_iter->first);
+    }
+    ++fth_iter;
+  }
+  return getQueryResultUnion(result, newResult);
 }
 
 std::vector<std::string> DataBase::getNonexistingFiles(const std::string& BaseDir) const
 {
   std::vector<std::string> result;
   result.clear();
+  //search old index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
@@ -350,12 +416,22 @@ std::vector<std::string> DataBase::getNonexistingFiles(const std::string& BaseDi
     }
     ++iter;
   }
+  //search new index
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter != m_FileToHash.end())
+  {
+    if (!FileExists(BaseDir+fth_iter->first))
+    {
+      result.push_back(fth_iter->first);
+    }
+    ++fth_iter;
+  }
   return result;
 }
 
 bool DataBase::deleteFile(const std::string& FileName)
 {
-  return (m_Files.erase(FileName)>0);
+  return ((m_Files.erase(FileName)>0) or (m_FileToHash.erase(FileName)>0));
 }
 
 void DataBase::purgeNonexistingFiles(const std::string& BaseDir)
@@ -364,7 +440,7 @@ void DataBase::purgeNonexistingFiles(const std::string& BaseDir)
   unsigned int i;
   for (i=0; i<deletionList.size(); i=i+1)
   {
-    m_Files.erase(deletionList[i]);
+    deleteFile(deletionList[i]);
   }//for
 }
 
@@ -374,6 +450,7 @@ void DataBase::showTagStatistics() const
   tagList.clear();
   unsigned int total_tags=0;
   std::set<std::string>::const_iterator setIter;
+  //search first index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
@@ -383,6 +460,18 @@ void DataBase::showTagStatistics() const
       ++total_tags;
     }//for
     ++iter;
+  }
+  //search second index
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter != m_FileToHash.end())
+  {
+    const std::map<SHA256::MessageDigest, PicData>::const_iterator aux_iter = m_Data.find(fth_iter->second);
+    for (setIter=aux_iter->second.tags.begin(); setIter!=aux_iter->second.tags.end(); ++setIter)
+    {
+      tagList[*setIter]++;
+      ++total_tags;
+    }//for
+    ++fth_iter;
   }
   //print it
   std::cout<<"Present tags in database:\n";
@@ -410,6 +499,7 @@ void DataBase::showWhoStatistics() const
   std::map<std::string, unsigned int> whoList;
   whoList.clear();
   std::set<std::string>::const_iterator it;
+  //search old index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
@@ -418,6 +508,18 @@ void DataBase::showWhoStatistics() const
       whoList[*it]++;
     }//for
     ++iter;
+  }
+  //search new index
+  //search second index
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter != m_FileToHash.end())
+  {
+    const std::map<SHA256::MessageDigest, PicData>::const_iterator aux_iter = m_Data.find(fth_iter->second);
+    for (it=aux_iter->second.who.begin(); it!=aux_iter->second.who.end(); ++it)
+    {
+      whoList[*it]++;
+    }//for
+    ++fth_iter;
   }
   //print it
   std::cout<<"Present person names in database:\n";
@@ -465,52 +567,66 @@ bool DataBase::saveToFile(const std::string& FileName) const
     std::cout << "Error: Unable to open file \""<<FileName<<"\".\n";
     return false;
   }
+  //save old-style index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
-    //filename
-    output<<cFilePrefix<<":"<<iter->first<<"\n";
-    //pic name
-    output<<cNamePrefix<<":"<<iter->second.name<<"\n";
-    //artist's/photographer's name
-    output<<cArtistPrefix<<":"<<iter->second.artist<<"\n";
-    //people on pic
-    output<<cWhoPrefix<<":";
-    if (iter->second.who.empty())
-    {
-      output << PicData::cEmptyVector<<"\n";
-    }
-    else
-    {
-      for (set_i=iter->second.who.begin(); set_i!=iter->second.who.end(); ++set_i)
-      {
-        output << *set_i+" ";
-      }//for
-      output << "\n";
-    }//else branch
-    //tags
-    output<<cTagPrefix<<":";
-    if (iter->second.tags.size()==0)
-    {
-      output << PicData::cNoTags<<"\n";
-    }
-    else
-    {
-      for (set_i=iter->second.tags.begin(); set_i!=iter->second.tags.end(); ++set_i)
-      {
-        output << *set_i +" ";
-      }//for
-      output << "\n";
-    }//else branch
-    //SHA-256 hash
-    if (!(iter->second.hash_sha256.isNull()))
-    {
-      output << cHashPrefix << ":"<<iter->second.hash_sha256.toHexString()<<"\n";
-    }
-    iter++;
+    saveFileEntry(output, iter->first, iter->second);
+    ++iter;
+  }//while
+  //save new index
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter!=m_FileToHash.end())
+  {
+    saveFileEntry(output, fth_iter->first, m_Data.find(fth_iter->second)->second);
+    ++fth_iter;
   }//while
   output.close();
   return output.good();
+}
+
+void DataBase::saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data) const
+{
+  std::set<std::string>::const_iterator set_i;
+  //filename
+  output<<cFilePrefix<<":"<<fileName<<"\n";
+  //pic name
+  output<<cNamePrefix<<":"<<data.name<<"\n";
+  //artist's/photographer's name
+  output<<cArtistPrefix<<":"<<data.artist<<"\n";
+  //people on pic
+  output<<cWhoPrefix<<":";
+  if (data.who.empty())
+  {
+    output << PicData::cEmptyVector<<"\n";
+  }
+  else
+  {
+    for (set_i=data.who.begin(); set_i!=data.who.end(); ++set_i)
+    {
+      output << *set_i+" ";
+    }//for
+    output << "\n";
+  }//else branch
+  //tags
+  output<<cTagPrefix<<":";
+  if (data.tags.size()==0)
+  {
+    output << PicData::cNoTags<<"\n";
+  }
+  else
+  {
+    for (set_i=data.tags.begin(); set_i!=data.tags.end(); ++set_i)
+    {
+      output << *set_i +" ";
+    }//for
+    output << "\n";
+  }//else branch
+  //SHA-256 hash
+  if (!(data.hash_sha256.isNull()))
+  {
+    output << cHashPrefix << ":"<<data.hash_sha256.toHexString()<<"\n";
+  }
 }
 
 bool DataBase::loadFromFile(const std::string& FileName)
@@ -544,7 +660,7 @@ bool DataBase::loadFromFile(const std::string& FileName)
         //... so save old data first
         if (db_file != "")
         {
-          m_Files[db_file] = temp_data;
+          addFile(db_file, temp_data);
         }
         temp_data.clear();
         db_file = cur_line.substr(cFilePrefix.size()+1);
@@ -622,7 +738,7 @@ bool DataBase::loadFromFile(const std::string& FileName)
   //care for last data set
   if (db_file != "")
   {
-    m_Files[db_file] = temp_data;
+    addFile(db_file, temp_data);
   }
   input.close();
   return true;
@@ -757,6 +873,7 @@ std::vector<std::string> DataBase::executeQuery(const std::string& query) const
   Query newQuery;
   newQuery.fromString(query);
   result.clear();
+  //search old index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter!=m_Files.end())
   {
@@ -766,7 +883,19 @@ std::vector<std::string> DataBase::executeQuery(const std::string& query) const
     }
     ++iter;
   }//while
-  return result;
+  //search new index
+  std::vector<std::string> newResult;
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter!=m_FileToHash.end())
+  {
+    const std::map<SHA256::MessageDigest, PicData>::const_iterator aux_iter = m_Data.find(fth_iter->second);
+    if (newQuery.fulfilledBy(aux_iter->second))
+    {
+      newResult.push_back(fth_iter->first);
+    }
+    ++fth_iter;
+  }//while
+  return getQueryResultUnion(result, newResult);
 }
 
 std::vector<std::string> DataBase::getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const
@@ -847,25 +976,23 @@ std::vector<std::string> DataBase::getQueryResultIntersection(const std::vector<
   return result;
 }
 
-void DataBase::removeFromHashIndex(const SHA256::MessageDigest& hash, const std::string& FileName)
+void DataBase::removeFromFileToHashIndex(const std::string& FileName)
 {
-  std::map<SHA256::MessageDigest, std::set<std::string> >::iterator iter = m_HashIndex.find(hash);
-  if (iter!=m_HashIndex.end())
+  std::map<std::string, SHA256::MessageDigest>::iterator iter = m_FileToHash.find(FileName);
+  if (iter!=m_FileToHash.end())
   {
-    iter->second.erase(FileName);
-    if (iter->second.empty())
-    {
-      m_HashIndex.erase(iter);
-    }
+    m_FileToHash.erase(iter);
   }
 }
 
 DataBase::Iterator DataBase::getFirst() const
 {
+  #warning TODO: update for use with new index
   return m_Files.begin();
 }
 
 DataBase::Iterator DataBase::getEnd() const
 {
+  #warning TODO: update for use with new index
   return m_Files.end();
 }
