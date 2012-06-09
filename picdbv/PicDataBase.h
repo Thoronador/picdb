@@ -124,6 +124,16 @@ class DataBase
     */
     const PicData& getData(const std::string& FileName) const;
 
+    /* tries to get the data entry for a given hash and returns it, if such a
+       hash is present in the database. If no such hash can be found, the
+       function will throw an exception. Thus make sure the requested hash is
+       present by calling hasDataForHash() before.
+
+       parameters:
+           hash - the SHA-256 hash of the file whose entry shall be returned
+    */
+    const PicData& getData(const SHA256::MessageDigest& hash) const;
+
     /* returns true, if there is a database entry for the file with the given
        hash value. The "null" hash will never have a DB entry.
 

@@ -701,13 +701,10 @@ void GUI::performIdleTasks()
             tempData.hash_sha256 = sha_md;
             const bool could_use_update = (tempData.tags.empty() or tempData.who.empty() or tempData.artist.empty());
             bool dataUpdated = false;
-            if (could_use_update and DataBase::getSingleton().hasHash(sha_md))
+            if (could_use_update and DataBase::getSingleton().hasDataForHash(sha_md))
             {
-              const std::set<std::string>& md_files = DataBase::getSingleton().getFilesForHash(sha_md);
-              if (md_files.size()==1)
-              {
-                const std::string otherFile = *(md_files.begin());
-                const PicData& otherData = DataBase::getSingleton().getData(otherFile);
+
+                const PicData& otherData = DataBase::getSingleton().getData(sha_md);
                 //update tags, who and artist
                 if (tempData.tags.empty())
                 {
@@ -724,7 +721,7 @@ void GUI::performIdleTasks()
                   tempData.artist = otherData.artist;
                   dataUpdated = true;
                 }
-              }//if exactly one file
+
             }//if update needed and file with same hash present
             //set new data
             DataBase::getSingleton().addFile(currFile, tempData);

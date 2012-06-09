@@ -248,6 +248,17 @@ const PicData& DataBase::getData(const std::string& FileName) const
   throw 12345;
 }
 
+const PicData& DataBase::getData(const SHA256::MessageDigest& hash) const
+{
+  const std::map<SHA256::MessageDigest, PicData>::const_iterator data_iter
+      = m_Data.find(hash);
+  if (m_Data.end()!=data_iter)
+  {
+    return data_iter->second;
+  }
+  throw 12345;
+}
+
 bool DataBase::hasDataForHash(const SHA256::MessageDigest& hash) const
 {
   return (m_Data.find(hash)!=m_Data.end());
