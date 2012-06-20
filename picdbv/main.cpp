@@ -108,10 +108,9 @@ int main(int argc, char **argv)
   }
 
   int arg_i = 1; //zeroth parameter is file of executable, so skip it
-  std::string arg_string = "";
   while (arg_i<argc)
   {
-    arg_string = std::string(argv[arg_i]);
+    const std::string arg_string = std::string(argv[arg_i]);
     //check for valid parameters
     if (arg_string == "--help" || arg_string == "-?")
     {

@@ -154,6 +154,21 @@ class DataBase
     /* writes the data of all files within the DB to the standard output */
     void ListData() const;
 
+    /* tries to calculate the hashes for all files in the DB that do not have
+       a valid hash yet
+
+       parameters:
+           baseDir - the base directory for the file names in the DB
+           limit   - the maximum number of files to be hashed - zero means all
+    */
+    void hashUnhashedFiles(const std::string& baseDir, unsigned int limit);
+
+    /* returns the number of files without hash in database */
+    unsigned int getNumUnhashed() const;
+
+    /* returns the number of files with hash in database */
+    unsigned int getNumHashed() const;
+
     /* returns the number of entries in the database */
     unsigned int getNumEntries() const;
 

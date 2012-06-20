@@ -742,6 +742,16 @@ void GUI::performIdleTasks()
     //remove file from list of hash updates
     m_IdleHashUpdateFiles.erase(currFile);
   }//if not empty
+  else
+  {
+    //update some unhashed files instead
+    const unsigned int uh = DataBase::getSingleton().getNumUnhashed();
+    if (uh>0)
+    {
+      std::cout << "Info: unhashed files: "<<uh<<"\n";
+      DataBase::getSingleton().hashUnhashedFiles(config.Directory, 2);
+    }
+  }
 }//func performing idle task
 
 void GUI::writeText(const std::string& text, const float x, const float y, const float z)
@@ -890,7 +900,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   glutPostRedisplay();
   std::cout << "Info: Successfully set new image \""<<shortName<<"\" as active image.\n";
   //mark file for hash update
-  m_IdleHashUpdateFiles.insert(shortName);
+  m_IdleHashUpdateFiles.insert(FileName);
   //save current texture target
   m_CurrentTextureTarget = texTarget;
   return true;

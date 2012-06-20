@@ -324,6 +324,47 @@ void DataBase::ListData() const
   }//while
 }
 
+void DataBase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
+{
+  //max set to zero? zero means hash all!
+  if (limit==0)
+  {
+    limit = m_Files.size();
+  }
+  else
+  {
+    if (limit>m_Files.size()) limit = m_Files.size();
+  }
+  //now do it
+  std::map<std::string, PicData>::iterator iter = m_Files.begin();
+  while ((limit>0) and (iter!=m_Files.end()))
+  {
+    SHA256::MessageDigest md256 = SHA256::computeFromFileSource(baseDir+iter->first);
+    if (!md256.isNull())
+    {
+      PicData data = iter->second;
+      data.hash_sha256 = md256;
+      addFile(iter->first, data);
+      iter = m_Files.begin();
+    }
+    else
+    {
+      ++iter;
+    }
+    --limit;
+  }//while
+}
+
+unsigned int DataBase::getNumUnhashed() const
+{
+  return m_Files.size();
+}
+
+unsigned int DataBase::getNumHashed() const
+{
+  return m_FileToHash.size();
+}
+
 unsigned int DataBase::getNumEntries() const
 {
   return m_Files.size() + m_FileToHash.size();
