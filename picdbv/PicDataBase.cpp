@@ -227,6 +227,24 @@ bool DataBase::hasFile(const std::string& FileName) const
     or (m_FileToHash.find(FileName)!=m_FileToHash.end()));
 }
 
+std::set<std::string> DataBase::getListedFiles() const
+{
+  std::set<std::string> result;
+  std::map<std::string, PicData>::const_iterator f_iter = m_Files.begin();
+  while (f_iter!= m_Files.end())
+  {
+    result.insert(f_iter->first);
+    ++f_iter;
+  }
+  std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
+  while (fth_iter!=m_FileToHash.end())
+  {
+    result.insert(fth_iter->first);
+    ++fth_iter;
+  }
+  return result;
+}
+
 const PicData& DataBase::getData(const std::string& FileName) const
 {
   //check old-style index
@@ -339,17 +357,26 @@ void DataBase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
   std::map<std::string, PicData>::iterator iter = m_Files.begin();
   while ((limit>0) and (iter!=m_Files.end()))
   {
-    SHA256::MessageDigest md256 = SHA256::computeFromFileSource(baseDir+iter->first);
-    if (!md256.isNull())
+    if (FileExists(baseDir+iter->first))
     {
-      PicData data = iter->second;
-      data.hash_sha256 = md256;
-      addFile(iter->first, data);
-      iter = m_Files.begin();
+      SHA256::MessageDigest md256 = SHA256::computeFromFileSource(baseDir+iter->first);
+      if (!md256.isNull())
+      {
+        PicData data = iter->second;
+        data.hash_sha256 = md256;
+        addFile(iter->first, data);
+        iter = m_Files.begin();
+      }
+      else
+      {
+        ++iter;
+      }
     }
     else
     {
-      ++iter;
+      //file does not exist, delete it
+      m_Files.erase(iter);
+      iter = m_Files.begin();
     }
     --limit;
   }//while
@@ -1035,16 +1062,4 @@ void DataBase::removeFromFileToHashIndex(const std::string& FileName)
   {
     m_FileToHash.erase(iter);
   }
-}
-
-DataBase::Iterator DataBase::getFirst() const
-{
-  #warning TODO: update for use with new index
-  return m_Files.begin();
-}
-
-DataBase::Iterator DataBase::getEnd() const
-{
-  #warning TODO: update for use with new index
-  return m_Files.end();
 }

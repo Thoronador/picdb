@@ -64,9 +64,6 @@ bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b);
 class DataBase
 {
   public:
-    //iterator type
-    typedef std::map<std::string, PicData>::const_iterator Iterator;
-
     /* singleton access */
     static DataBase& getSingleton();
 
@@ -105,6 +102,9 @@ class DataBase
            FileName - name of the file that shall be searched
     */
     bool hasFile(const std::string& FileName) const;
+
+    /* returns a set containing all files in the database */
+    std::set<std::string> getListedFiles() const;
 
     /* deletes an entry from the database and returns true, if such an entry
        was deleted
@@ -213,12 +213,6 @@ class DataBase
            query - the query string
     */
     std::vector<std::string> executeQuery(const std::string& query) const;
-
-    /* returns iterator to the beginning of the internal map */
-    Iterator getFirst() const;
-
-    /* returns iterator to the end of the internal map */
-    Iterator getEnd() const;
 
     static const std::string cFilePrefix;
     static const std::string cNamePrefix;

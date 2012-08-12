@@ -21,7 +21,7 @@
 #include "GUI.h"
 #include <iostream>
 #include <GL/gl.h>
-#include "IncludeGLUT.h"
+#include "../common/gui/IncludeGLUT.h"
 #include "../common/graphics/ImageLoader.h"
 #include "../common/graphics/GLfunctions.h"
 #include "../common/StringUtils.h"
@@ -479,11 +479,11 @@ void GUI::getAllFiles()
 {
   selectedFiles.clear();
   currentIndex = -1;
-  DataBase::Iterator iter = DataBase::getSingleton().getFirst();
-  const DataBase::Iterator end_iter = DataBase::getSingleton().getEnd();
-  while (iter!=end_iter)
+  const std::set<std::string> fileset = DataBase::getSingleton().getListedFiles();
+  std::set<std::string>::const_iterator iter = fileset.begin();
+  while (iter!=fileset.end())
   {
-    selectedFiles.push_back(iter->first);
+    selectedFiles.push_back(*iter);
     ++iter;
   }//while
   freeGLTexture();
@@ -748,7 +748,13 @@ void GUI::performIdleTasks()
     const unsigned int uh = DataBase::getSingleton().getNumUnhashed();
     if (uh>0)
     {
-      std::cout << "Info: unhashed files: "<<uh<<"\n";
+      const unsigned int info_step = 100;
+      static unsigned int next_info_at = uh - (uh%info_step);
+      if (uh<next_info_at)
+      {
+        std::cout << "Info: unhashed files: "<<uh<<"\n";
+        next_info_at = next_info_at > info_step ? next_info_at-info_step : 1;
+      }
       DataBase::getSingleton().hashUnhashedFiles(config.Directory, 2);
     }
   }
