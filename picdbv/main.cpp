@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <string>
-#include "IncludeGLUT.h"
+#include "../common/gui/IncludeGLUT.h"
 #include "Configuration.h"
 #include "Splitter.h"
 #include "PicDataBase.h"

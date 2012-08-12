@@ -61,6 +61,10 @@
 		<Unit filename="../common/graphics/readPNG.h" />
 		<Unit filename="../common/graphics/readPPM.cpp" />
 		<Unit filename="../common/graphics/readPPM.h" />
+		<Unit filename="../common/gui/BasicGUI.h" />
+		<Unit filename="../common/gui/IncludeGLUT.h" />
+		<Unit filename="../common/gui/glutGUI.cpp" />
+		<Unit filename="../common/gui/glutGUI.h" />
 		<Unit filename="../hashfunctions/sha-256.cpp" />
 		<Unit filename="../hashfunctions/sha-256.h" />
 		<Unit filename="../hashfunctions/sha-256_aux.cpp" />
@@ -73,7 +77,6 @@
 		<Unit filename="GUIMultiLinePanel.h" />
 		<Unit filename="GUITextPanel.cpp" />
 		<Unit filename="GUITextPanel.h" />
-		<Unit filename="IncludeGLUT.h" />
 		<Unit filename="PicDataBase.cpp" />
 		<Unit filename="PicDataBase.h" />
 		<Unit filename="Splitter.cpp" />
