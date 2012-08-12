@@ -40,7 +40,7 @@ void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
     }
     else if (*dest_iter>*other_iter)
     {
-      dest_iter = dest.insert(*other_iter).first;
+      dest.insert(*other_iter);
       ++other_iter;
     }
     else
