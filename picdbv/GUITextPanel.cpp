@@ -19,7 +19,7 @@
 */
 
 #include "GUITextPanel.h"
-#include "IncludeGLUT.h"
+#include "../common/gui/IncludeGLUT.h"
 #include "GUI.h"
 
 GUITextPanel::GUITextPanel(const std::string& msg)

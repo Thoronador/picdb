@@ -20,7 +20,6 @@
 
 #include <iostream>
 #include <string>
-#include "../common/gui/IncludeGLUT.h"
 #include "Configuration.h"
 #include "Splitter.h"
 #include "PicDataBase.h"
@@ -30,26 +29,6 @@
 GUI the_gui;
 //the configuration
 Configuration& config = the_gui.config;
-
-void GLUTkeyWrapper(unsigned char Key, int x, int y)
-{
-  the_gui.keyWrapper(Key, x, y);
-}
-
-void GLUTdrawWrapper(void)
-{
-  the_gui.drawWrapper();
-}
-
-void GLUTspecialWrapper(int Key, int x, int y)
-{
-  the_gui.specialWrapper(Key, x, y);
-}
-
-void GLUTidleWrapper(void)
-{
-  the_gui.performIdleTasks();
-}
 
 void showHelp()
 {
@@ -251,13 +230,10 @@ int main(int argc, char **argv)
   if (!onlyStats)
   {
     //setup GLUT library
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowPosition(0,0);
-    glutInitWindowSize(640, 400);
-    if (glutCreateWindow("picdbv window")<=0)
+    the_gui.init();
+    if (!the_gui.createWindow(640, 400, 0, 0, "picdbv window"))
     {
-      std::cout << "ERROR: Could not create GLUT window.\n";
+      std::cout << "ERROR: Could not create GUI window.\n";
       return 0;
     }
     #ifdef APP_USING_FREEGLUT
@@ -277,16 +253,9 @@ int main(int argc, char **argv)
       ++i;
     }//while
 
-    //assign callback functions
-    glutDisplayFunc(GLUTdrawWrapper);
-    //glutReshapeFunc(the_gui.resizeWrapper);
-    glutKeyboardFunc(GLUTkeyWrapper);
-    glutSpecialFunc(GLUTspecialWrapper);
-    glutIdleFunc(GLUTidleWrapper);
-
     //Starting GLUT
-    std::cout << "glutMainLoop\n";
-    glutMainLoop();
+    std::cout << "start GUI main loop\n";
+    the_gui.start();
   }//if not only stats
 
   db.showTagStatistics();

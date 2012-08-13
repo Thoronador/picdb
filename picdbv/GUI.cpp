@@ -21,7 +21,6 @@
 #include "GUI.h"
 #include <iostream>
 #include <GL/gl.h>
-#include "../common/gui/IncludeGLUT.h"
 #include "../common/graphics/ImageLoader.h"
 #include "../common/graphics/GLfunctions.h"
 #include "../common/StringUtils.h"
@@ -62,7 +61,7 @@ void GUI::initGL()
   //glEnable(GL_DEPTH_TEST);
 }
 
-void GUI::keyWrapper(unsigned char Key, int x, int y)
+void GUI::keyPressed(unsigned char Key)
 {
   if (Key==13)
   {
@@ -73,7 +72,7 @@ void GUI::keyWrapper(unsigned char Key, int x, int y)
       // of stuff to do
       processInput();
     }
-    glutPostRedisplay();
+    requestRedisplay();
     return;
   }
 
@@ -97,30 +96,21 @@ void GUI::keyWrapper(unsigned char Key, int x, int y)
       m_InputLine.append(1, Key);
     }
 
-    glutPostRedisplay();
+    requestRedisplay();
     return;
   }//if input box is shown
 
   if ((Key==27) or (Key=='Q') or (Key=='q'))
   {
-    //Ende gelände
+    //Ende Gelände
     std::cout << "Quit ";
     glis.freeBuffer();
-    /* glutLeaveMainLoop() would be a nicer, cleaner way, but this function is
-       only part of freeglut(?) and not part of the original GLUT implementation.
-       So we do an ordinary exit(0) instead. */
-    #ifdef APP_USING_FREEGLUT
-    std::cout << "by leaving main loop.\n";
-    glutLeaveMainLoop();
-    #else
-    std::cout << "via exit(0).\n";
-    exit(0);
-    #endif
+    terminate();
   }
   else if ((Key=='R') or (Key=='r'))
   {
     //force redisplay
-    glutPostRedisplay();
+    requestRedisplay();
   }
 
 }
@@ -158,8 +148,8 @@ void GUI::drawPanels()
 void GUI::drawInput()
 {
   const std::string::size_type len = m_InputLine.length()+2;
-  const float dx = 2.0f/static_cast<float>(glutGet(GLUT_WINDOW_WIDTH));
-  const float dy = 2.0f/static_cast<float>(glutGet(GLUT_WINDOW_HEIGHT));
+  const float dx = 2.0f/static_cast<float>(getWindowWidth());
+  const float dy = 2.0f/static_cast<float>(getWindowHeight());
   glLineWidth(2.0f);
   const float left_bg = -dx*(len*4+3+2+3);
   const float right_bg = dx*(len*4+3+2+3);
@@ -283,12 +273,12 @@ void GUI::processInput()
       }
       else
       {
-        nonFullscreenData.pos_x = glutGet(GLUT_WINDOW_X);
-        nonFullscreenData.pos_y = glutGet(GLUT_WINDOW_Y);
-        nonFullscreenData.window_width = glutGet(GLUT_WINDOW_WIDTH);
-        nonFullscreenData.window_height = glutGet(GLUT_WINDOW_HEIGHT);
+        nonFullscreenData.pos_x = getWindowPosX();
+        nonFullscreenData.pos_y = getWindowPosY();
+        nonFullscreenData.window_width = getWindowWidth();
+        nonFullscreenData.window_height = getWindowHeight();
         nonFullscreenData.isFullscreen = true;
-        glutFullScreen();
+        makeFullScreen();
         std::cout << "done.\n";
       }
     }//if fullscreen
@@ -301,8 +291,8 @@ void GUI::processInput()
       }
       else
       {
-        glutReshapeWindow(nonFullscreenData.window_width, nonFullscreenData.window_height);
-        glutPositionWindow(nonFullscreenData.pos_x, nonFullscreenData.pos_y);
+        setWindowDimensions(nonFullscreenData.window_width, nonFullscreenData.window_height);
+        setWindowPosition(nonFullscreenData.pos_x, nonFullscreenData.pos_y);
         nonFullscreenData.isFullscreen = false;
         std::cout << "done.\n";
       }
@@ -362,7 +352,7 @@ void GUI::processInput()
           }//for
           DataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
-          glutPostRedisplay();
+          requestRedisplay();
           std::cout << "Tags \""<< m_InputLine.substr(3) << "\" added successfully.\n";
         }//if file present
       }//if +t
@@ -383,7 +373,7 @@ void GUI::processInput()
           }//for
           DataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
-          glutPostRedisplay();
+          requestRedisplay();
           std::cout << "Who: \""<< m_InputLine.substr(3) << "\" added successfully.\n";
         }//if file present
       }//if +w
@@ -418,7 +408,7 @@ void GUI::processInput()
           }//for
           DataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
-          glutPostRedisplay();
+          requestRedisplay();
           std::cout << "Tags \""<< m_InputLine.substr(3) << "\" removed.\n";
         }//if file present
       }//if -t
@@ -439,7 +429,7 @@ void GUI::processInput()
           }//for
           DataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
-          glutPostRedisplay();
+          requestRedisplay();
           std::cout << "Who: \""<< m_InputLine.substr(3) << "\" removed successfully.\n";
         }//if file present
       }//if +w
@@ -608,23 +598,23 @@ void GUI::showPrevious()
   }//if not empty
 }
 
-void GUI::specialWrapper(int Key, int x, int y)
+void GUI::specialKeyPressed(int Key)
 {
-  if ((Key==GLUT_KEY_RIGHT) and (!selectedFiles.empty()))
+  if ((Key==/*GLUT_KEY_RIGHT*/0x0066) and (!selectedFiles.empty()))
   {
     std::cout << "right pressed\n";
     showNext();
-    glutPostRedisplay();
+    requestRedisplay();
   }
-  else if ((Key==GLUT_KEY_LEFT) and (!selectedFiles.empty()))
+  else if ((Key==/*GLUT_KEY_LEFT*/0x0064) and (!selectedFiles.empty()))
   {
     std::cout << "left pressed\n";
     showPrevious();
-    glutPostRedisplay();
+    requestRedisplay();
   }
 }
 
-void GUI::drawWrapper(void)
+void GUI::draw(void)
 {
   glClear(GL_COLOR_BUFFER_BIT);
   glClear(GL_DEPTH_BUFFER_BIT);
@@ -633,7 +623,7 @@ void GUI::drawWrapper(void)
   {
     //we have an image, draw it
     GLfloat l, r, b, t;
-    if (getCorners(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT), glis.getWidth(), glis.getHeight(), l, r, b, t))
+    if (getCorners(getWindowWidth(), getWindowHeight(), glis.getWidth(), glis.getHeight(), l, r, b, t))
     {
       //draw it, we got the coordinates
       glEnable(m_CurrentTextureTarget);
@@ -676,7 +666,7 @@ void GUI::drawWrapper(void)
   drawPanels();
   if (m_showInput) drawInput();
   glFlush();
-  glutSwapBuffers();
+  swapBuffers();
 }
 
 void GUI::performIdleTasks()
@@ -762,19 +752,12 @@ void GUI::performIdleTasks()
 
 void GUI::writeText(const std::string& text, const float x, const float y, const float z)
 {
-  glRasterPos3f(x, y, z);
-  const std::string::size_type len = text.length();
-  unsigned int i;
-  for (i=0; i<len; ++i)
-  {
-    if (text[i]>=32) /* and (text[i] <=127)*/
-      glutBitmapCharacter(GLUT_BITMAP_8_BY_13, text[i]);
-  }
+  protectedWriteText(text, x, y, z);
 }
 
 void GUI::centerText(const std::string& text, const float y, const float z)
 {
-  float dx = 2.0f/static_cast<float>(glutGet(GLUT_WINDOW_WIDTH));
+  float dx = 2.0f/static_cast<float>(getWindowWidth());
   writeText(text, -dx*text.length()*4, y, z);
 }
 
@@ -788,7 +771,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   if (!ImageLoader::isSupportedImage(i_type))
   {
     std::cout << "File \""<<FileName<<"\" seems to be neither BMP, nor JPEG, nor PNG, nor PPM.\n";
-    glutSetWindowTitle("picdbv");
+    setWindowTitle("picdbv");
     removeAllPanels();
     updateCenterTopPanel(shortName);
     return false;
@@ -799,7 +782,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   if (!glis.isLoaded())
   {
     std::cout << "File \""<<FileName<<"\" could not be loaded.\n";
-    glutSetWindowTitle("picdbv");
+    setWindowTitle("picdbv");
     removeAllPanels();
     updateCenterTopPanel(shortName);
     return false;
@@ -895,15 +878,15 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   updateCenterTopPanel(shortName);
   if ((index_first<=0) or (index_total<=0))
   {
-    glutSetWindowTitle(("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px)").c_str());
+    setWindowTitle("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px)");
   }
   else
   {
     //show title with index
-    glutSetWindowTitle(("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px) "
-                      +intToString(index_first)+" of "+intToString(index_total)).c_str());
+    setWindowTitle("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px) "
+                      +intToString(index_first)+" of "+intToString(index_total));
   }
-  glutPostRedisplay();
+  requestRedisplay();
   std::cout << "Info: Successfully set new image \""<<shortName<<"\" as active image.\n";
   //mark file for hash update
   m_IdleHashUpdateFiles.insert(FileName);
@@ -938,14 +921,14 @@ void GUI::updateCenterTopPanel(const std::string& new_msg)
       {
         //it's the one we are looking for!
         atp->setString(new_msg);
-        glutPostRedisplay();
+        requestRedisplay();
         return;
       }
     }//if
   }//for
   //if we get to this place, then there is no such panel yet
   addPanel(new GUIAdjustedTextPanel(new_msg, GUIAdjustedTextPanel::paCenterTop, 0.2, 1.0, 0.2));
-  glutPostRedisplay();
+  requestRedisplay();
   return;
 }
 
@@ -962,7 +945,7 @@ void GUI::updateMultiLinePanel(const GUIAdjustedTextPanel::PanelAdjustment adj, 
         //it's the one we are looking for!
         mlap->setString(head);
         mlap->addLines(items);
-        glutPostRedisplay();
+        requestRedisplay();
         return;
       }
     }//if
@@ -974,7 +957,7 @@ void GUI::updateMultiLinePanel(const GUIAdjustedTextPanel::PanelAdjustment adj, 
   mlap->setAdjustment(adj);
   mlap->setColour(0.2, 1.0, 0.2);
   addPanel(mlap);
-  glutPostRedisplay();
+  requestRedisplay();
   return;
 }
 

@@ -25,10 +25,11 @@
 #include <vector>
 #include <set>
 #include "../common/graphics/GLImageStructure.h"
+#include "../common/gui/glutGUI.h"
 #include "Configuration.h"
 #include "GUITextPanel.h"
 
-class GUI
+class GUI: public glutGUI
 {
   public:
     /* constructor */
@@ -40,18 +41,31 @@ class GUI
     /* sets some initial stuff for the GL */
     void initGL();
 
-    /* key wrapper that will be called by GLUT whenever a key is pressed */
-    void keyWrapper(unsigned char Key, int x, int y);
+    /* function that will be called whenever a key is pressed
 
-    /* key wrapper that will be called by GLUT whenever a special key is pressed */
-    void specialWrapper(int Key, int x, int y);
+       parameters:
+           key - the pressed key or generated character
+    */
+    virtual void keyPressed(unsigned char key);
+
+    /* function that will be called whenever a special key (e.g. system key) is pressed
+
+       parameters:
+           key - the pressed key
+    */
+    virtual void specialKeyPressed(int key);
 
     /* draw wrapper that will be called whenever a window needs to be (re-)drawn */
-    void drawWrapper(void);
+    virtual void draw(void);
 
     /* let's the GUI perform tasks that can/should (only) be done during idle
        time - currently that's just the hash update */
     void performIdleTasks();
+
+    virtual void idle(void)
+    {
+      performIdleTasks();
+    }
 
     /* tries to set the given image to the image currently displayed. Returns
        true on success, false on failure.
