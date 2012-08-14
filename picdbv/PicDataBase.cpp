@@ -568,8 +568,9 @@ void DataBase::showTagStatistics() const
   {
     std::cout << "Total: "<<tagList.size()<<" distinct tags.\n";
   }
-  std::cout << "A total of "<<total_tags<<" tags on "<<m_Files.size()
-            <<" files, that means "<<static_cast<float>(total_tags)/m_Files.size()
+  const unsigned int file_count = m_Files.size() + m_FileToHash.size();
+  std::cout << "A total of "<<total_tags<<" tags on "<<file_count
+            <<" files, that means "<<static_cast<float>(total_tags)/(file_count==0 ? 1 : file_count)
             <<" tags per file.\n";
 }
 
