@@ -19,7 +19,7 @@
 */
 
 #include "GUIMultiLinePanel.h"
-#include "IncludeGLUT.h"
+#include "../common/gui/IncludeGLUT.h"
 #include "GUI.h"
 
 GUIMultiLinePanel::GUIMultiLinePanel(const std::string& msg)
