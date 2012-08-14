@@ -253,6 +253,8 @@ int main(int argc, char **argv)
       ++i;
     }//while
 
+    the_gui.setCallbacks();
+
     //Starting GLUT
     std::cout << "start GUI main loop\n";
     the_gui.start();
