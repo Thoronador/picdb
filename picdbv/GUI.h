@@ -25,11 +25,11 @@
 #include <vector>
 #include <set>
 #include "../common/graphics/GLImageStructure.h"
-#include "../common/gui/glutGUI.h"
+#include "../common/gui/glfwGUI.h"
 #include "Configuration.h"
 #include "GUITextPanel.h"
 
-class GUI: public glutGUI
+class GUI: public glfwGUI
 {
   public:
     /* constructor */
