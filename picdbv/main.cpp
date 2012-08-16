@@ -25,10 +25,8 @@
 #include "PicDataBase.h"
 #include "GUI.h"
 
-//the GUI
-GUI the_gui;
 //the configuration
-Configuration& config = the_gui.config;
+Configuration& config = GUI::getSingleton().config;
 
 void showHelp()
 {
@@ -230,8 +228,8 @@ int main(int argc, char **argv)
   if (!onlyStats)
   {
     //setup GLUT library
-    the_gui.init();
-    if (!the_gui.createWindow(640, 400, 0, 0, "picdbv window"))
+    GUI::getSingleton().init();
+    if (!GUI::getSingleton().createWindow(640, 400, 0, 0, "picdbv window"))
     {
       std::cout << "ERROR: Could not create GUI window.\n";
       return 0;
@@ -241,23 +239,23 @@ int main(int argc, char **argv)
     //main loop instead of exiting without prior notice.
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     #endif
-    the_gui.initGL();
-    the_gui.getAllFiles();
+    GUI::getSingleton().initGL();
+    GUI::getSingleton().getAllFiles();
 
-    bool success = the_gui.setCurrentImageByIndex(0);
+    bool success = GUI::getSingleton().setCurrentImageByIndex(0);
     unsigned int i = 1;
-    while (!success and (i<the_gui.getNumberOfFilesInList()))
+    while (!success and (i<GUI::getSingleton().getNumberOfFilesInList()))
     {
       //set another image
-      success = the_gui.setCurrentImageByIndex(i);
+      success = GUI::getSingleton().setCurrentImageByIndex(i);
       ++i;
     }//while
 
-    the_gui.setCallbacks();
+    GUI::getSingleton().setCallbacks();
 
     //Starting GLUT
     std::cout << "start GUI main loop\n";
-    the_gui.start();
+    GUI::getSingleton().start();
   }//if not only stats
 
   db.showTagStatistics();

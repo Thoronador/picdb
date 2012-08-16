@@ -32,8 +32,7 @@
 class GUI: public glfwGUI
 {
   public:
-    /* constructor */
-    GUI();
+    static GUI& getSingleton();
 
     /* destructor */
     ~GUI();
@@ -46,14 +45,14 @@ class GUI: public glfwGUI
        parameters:
            key - the pressed key or generated character
     */
-    virtual void keyPressed(unsigned char key);
+    virtual void keyPressed(int key);
 
     /* function that will be called whenever a special key (e.g. system key) is pressed
 
        parameters:
            key - the pressed key
     */
-    virtual void specialKeyPressed(int key);
+    //virtual void specialKeyPressed(int key);
 
     /* draw wrapper that will be called whenever a window needs to be (re-)drawn */
     virtual void draw(void);
@@ -98,6 +97,12 @@ class GUI: public glfwGUI
 
     Configuration config;
   private:
+    /* constructor */
+    GUI();
+
+    /* copy constructor */
+    GUI(const GUI& op) {}
+
     //internal image structure
     GLImageStructure glis;
     //internal image name

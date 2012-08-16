@@ -43,6 +43,12 @@ GUI::GUI()
   nonFullscreenData.isFullscreen = false;
 }
 
+GUI& GUI::getSingleton()
+{
+  static GUI Instance;
+  return Instance;
+}
+
 GUI::~GUI()
 {
   glis.freeBuffer();
@@ -61,9 +67,9 @@ void GUI::initGL()
   //glEnable(GL_DEPTH_TEST);
 }
 
-void GUI::keyPressed(unsigned char Key)
+void GUI::keyPressed(int Key)
 {
-  if (Key==13)
+  if (isEnterKeyCode(Key))
   {
     m_showInput = !m_showInput;
     if (!m_showInput)
@@ -78,15 +84,15 @@ void GUI::keyPressed(unsigned char Key)
 
   if (m_showInput)
   {
-    //change displayed text according to pressed kex
+    //change displayed text according to pressed key
     //backspace or del
-    if ((Key==8) or (Key==127))
+    if (isBackspaceKeyCode(Key) or isDeleteKeyCode(Key))
     {
       if (!m_InputLine.empty())
         m_InputLine.erase(m_InputLine.length()-1);
     }
     //escape
-    else if (Key==27)
+    else if (isESCKeyCode(Key))
     {
       m_showInput = false;
     }
@@ -100,19 +106,31 @@ void GUI::keyPressed(unsigned char Key)
     return;
   }//if input box is shown
 
-  if ((Key==27) or (Key=='Q') or (Key=='q'))
+  if (isESCKeyCode(Key) or (Key=='Q') or (Key=='q'))
   {
     //Ende Gelände
     std::cout << "Quit ";
     glis.freeBuffer();
     terminate();
+    return;
   }
   else if ((Key=='R') or (Key=='r'))
   {
     //force redisplay
     requestRedisplay();
   }
-
+  else if (isRightKeyCode(Key) and (!selectedFiles.empty()))
+  {
+    std::cout << "right pressed\n";
+    showNext();
+    requestRedisplay();
+  }
+  else if (isLeftKeyCode(Key) and (!selectedFiles.empty()))
+  {
+    std::cout << "left pressed\n";
+    showPrevious();
+    requestRedisplay();
+  }
 }
 
 void GUI::addPanel(GUITextPanel* panel)
@@ -598,21 +616,23 @@ void GUI::showPrevious()
   }//if not empty
 }
 
+/*
 void GUI::specialKeyPressed(int Key)
 {
-  if ((Key==/*GLUT_KEY_RIGHT*/0x0066) and (!selectedFiles.empty()))
+  if (isRightKeyCode(Key) and (!selectedFiles.empty()))
   {
     std::cout << "right pressed\n";
     showNext();
     requestRedisplay();
   }
-  else if ((Key==/*GLUT_KEY_LEFT*/0x0064) and (!selectedFiles.empty()))
+  else if (isLeftKeyCode(Key) and (!selectedFiles.empty()))
   {
     std::cout << "left pressed\n";
     showPrevious();
     requestRedisplay();
   }
 }
+*/
 
 void GUI::draw(void)
 {

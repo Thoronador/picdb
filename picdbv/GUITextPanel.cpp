@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    Copyright (C) 2011, 2012  thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 */
 
 #include "GUITextPanel.h"
-#include "../common/gui/IncludeGLUT.h"
 #include "GUI.h"
 
 GUITextPanel::GUITextPanel(const std::string& msg)
@@ -106,8 +105,8 @@ GUIAdjustedTextPanel::PanelAdjustment GUIAdjustedTextPanel::getAdjustment() cons
 
 void GUIAdjustedTextPanel::draw()
 {
-  const float dx = 2.0f/static_cast<float>(glutGet(GLUT_WINDOW_WIDTH));
-  const float dy = 2.0f/ static_cast<float>(glutGet(GLUT_WINDOW_HEIGHT));
+  const float dx = 2.0f/static_cast<float>(GUI::getSingleton().getWindowWidth());
+  const float dy = 2.0f/ static_cast<float>(GUI::getSingleton().getWindowHeight());
   glColor3f(r, g, b);
 
   switch (m_adjust)
