@@ -25,11 +25,19 @@
 #include <vector>
 #include <set>
 #include "../common/graphics/GLImageStructure.h"
-#include "../common/gui/glfwGUI.h"
+#ifdef USE_GLFW_GUI
+  #include "../common/gui/glfwGUI.h"
+#else
+  #include "../common/gui/glutGUI.h"
+#endif
 #include "Configuration.h"
 #include "GUITextPanel.h"
 
+#ifdef USE_GLFW_GUI
 class GUI: public glfwGUI
+#else
+class GUI: public glutGUI
+#endif
 {
   public:
     static GUI& getSingleton();

@@ -227,7 +227,8 @@ int main(int argc, char **argv)
 
   if (!onlyStats)
   {
-    //setup GLUT library
+    //setup GLUT/GLFW library
+    std::cout << "Initializing GUI. Used library is "<<GUI::getSingleton().getType()<<".\n";
     GUI::getSingleton().init();
     if (!GUI::getSingleton().createWindow(640, 400, 0, 0, "picdbv window"))
     {
