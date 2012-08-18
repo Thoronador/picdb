@@ -14,6 +14,13 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add library="glfw" />
+					<Add library="glut" />
+					<Add library="GL" />
+					<Add library="png" />
+					<Add library="jpeg" />
+				</Linker>
 			</Target>
 			<Target title="Release-GLUT">
 				<Option output="bin/Release/picdbv" prefix_auto="1" extension_auto="1" />
@@ -24,6 +31,12 @@
 					<Add option="-O2" />
 					<Add option="-DUSE_GLUT_GUI" />
 				</Compiler>
+				<Linker>
+					<Add library="GL" />
+					<Add library="glut" />
+					<Add library="png" />
+					<Add library="jpeg" />
+				</Linker>
 			</Target>
 			<Target title="Release-GLFW">
 				<Option output="bin/Release/picdbv" prefix_auto="1" extension_auto="1" />
@@ -34,19 +47,18 @@
 					<Add option="-O2" />
 					<Add option="-DUSE_GLFW_GUI" />
 				</Compiler>
+				<Linker>
+					<Add library="glfw" />
+					<Add library="GL" />
+					<Add library="png" />
+					<Add library="jpeg" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Linker>
-			<Add library="GL" />
-			<Add library="glut" />
-			<Add library="png" />
-			<Add library="jpeg" />
-			<Add library="glfw" />
-		</Linker>
 		<Unit filename="../common/DirectoryFileList.cpp" />
 		<Unit filename="../common/DirectoryFileList.h" />
 		<Unit filename="../common/IntegerUtils.cpp" />
@@ -85,8 +97,14 @@
 		<Unit filename="../common/gui/IncludeGLUT.h" />
 		<Unit filename="../common/gui/glfwGUI.cpp" />
 		<Unit filename="../common/gui/glfwGUI.h" />
-		<Unit filename="../common/gui/glutGUI.cpp" />
-		<Unit filename="../common/gui/glutGUI.h" />
+		<Unit filename="../common/gui/glutGUI.cpp">
+			<Option target="Debug" />
+			<Option target="Release-GLUT" />
+		</Unit>
+		<Unit filename="../common/gui/glutGUI.h">
+			<Option target="Debug" />
+			<Option target="Release-GLUT" />
+		</Unit>
 		<Unit filename="../hashfunctions/sha-256.cpp" />
 		<Unit filename="../hashfunctions/sha-256.h" />
 		<Unit filename="../hashfunctions/sha-256_aux.cpp" />
