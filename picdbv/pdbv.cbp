@@ -130,18 +130,22 @@
 		<Unit filename="../common/gui/glfwGUI.cpp">
 			<Option target="Debug" />
 			<Option target="Release-GLFW" />
+			<Option target="Release-GLFW Win32" />
 		</Unit>
 		<Unit filename="../common/gui/glfwGUI.h">
 			<Option target="Debug" />
 			<Option target="Release-GLFW" />
+			<Option target="Release-GLFW Win32" />
 		</Unit>
 		<Unit filename="../common/gui/glutGUI.cpp">
 			<Option target="Debug" />
 			<Option target="Release-GLUT" />
+			<Option target="Release-GLUT Win32" />
 		</Unit>
 		<Unit filename="../common/gui/glutGUI.h">
 			<Option target="Debug" />
 			<Option target="Release-GLUT" />
+			<Option target="Release-GLUT Win32" />
 		</Unit>
 		<Unit filename="../hashfunctions/sha-256.cpp" />
 		<Unit filename="../hashfunctions/sha-256.h" />
