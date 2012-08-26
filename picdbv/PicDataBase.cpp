@@ -359,7 +359,7 @@ void DataBase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
   {
     if (FileExists(baseDir+iter->first))
     {
-      SHA256::MessageDigest md256 = SHA256::computeFromFileSource(baseDir+iter->first);
+      SHA256::MessageDigest md256 = SHA256::computeFromFile(baseDir+iter->first);
       if (!md256.isNull())
       {
         PicData data = iter->second;

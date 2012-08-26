@@ -695,7 +695,7 @@ void GUI::performIdleTasks()
   if (!m_IdleHashUpdateFiles.empty())
   {
     const std::string currFile = *(m_IdleHashUpdateFiles.begin());
-    const SHA256::MessageDigest sha_md = SHA256::computeFromFileSource(currFile);
+    const SHA256::MessageDigest sha_md = SHA256::computeFromFile(currFile);
     if (!sha_md.isNull())
     {
       //hash found
