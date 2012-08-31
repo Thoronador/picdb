@@ -22,7 +22,7 @@
 
 #include <iostream>
 #include <algorithm>
-#include "../common/StringUtils.h"
+#include "../libthoro/common/StringUtils.h"
 
 const std::string PicData::cEmptyVector = "(empty)";
 const std::string PicData::cNoTags = "(none)";

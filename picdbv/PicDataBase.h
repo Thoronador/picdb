@@ -27,8 +27,8 @@
 #include <string>
 #include <vector>
 #include "Splitter.h"
-#include "../common/DirectoryFileList.h"
-#include "../hashfunctions/sha-256.h"
+#include "../libthoro/common/DirectoryFileList.h"
+#include "../libthoro/hashfunctions/sha-256.h"
 
 struct PicData
 {

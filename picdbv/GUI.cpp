@@ -21,9 +21,9 @@
 #include "GUI.h"
 #include <iostream>
 #include <GL/gl.h>
-#include "../common/graphics/ImageLoader.h"
-#include "../common/graphics/GLfunctions.h"
-#include "../common/StringUtils.h"
+#include "../libthoro/common/graphics/ImageLoader.h"
+#include "../libthoro/common/graphics/GLfunctions.h"
+#include "../libthoro/common/StringUtils.h"
 #include "PicDataBase.h"
 #include "GUIMultiLinePanel.h"
 

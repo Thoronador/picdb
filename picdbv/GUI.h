@@ -24,11 +24,11 @@
 #include <string>
 #include <vector>
 #include <set>
-#include "../common/graphics/GLImageStructure.h"
+#include "../libthoro/common/graphics/GLImageStructure.h"
 #ifdef USE_GLFW_GUI
-  #include "../common/gui/glfwGUI.h"
+  #include "../libthoro/common/gui/glfwGUI.h"
 #else
-  #include "../common/gui/glutGUI.h"
+  #include "../libthoro/common/gui/glutGUI.h"
 #endif
 #include "Configuration.h"
 #include "GUITextPanel.h"
