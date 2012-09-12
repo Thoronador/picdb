@@ -28,7 +28,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-DUSE_GLUT_GUI" />
 				</Compiler>
 				<Linker>
@@ -44,7 +44,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-DUSE_GLUT_GUI" />
 				</Compiler>
 				<Linker>
@@ -60,7 +60,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-DUSE_GLFW_GUI" />
 				</Compiler>
 				<Linker>
@@ -76,7 +76,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-DUSE_GLFW_GUI" />
 				</Compiler>
 				<Linker>
@@ -147,10 +147,12 @@
 			<Option target="Release-GLUT" />
 			<Option target="Release-GLUT Win32" />
 		</Unit>
+		<Unit filename="../libthoro/hashfunctions/sha-1-256_functions.h" />
 		<Unit filename="../libthoro/hashfunctions/sha-256.cpp" />
 		<Unit filename="../libthoro/hashfunctions/sha-256.h" />
-		<Unit filename="../libthoro/hashfunctions/sha-256_aux.cpp" />
-		<Unit filename="../libthoro/hashfunctions/sha-256_aux.h" />
+		<Unit filename="../libthoro/hashfunctions/sha-256_functions.h" />
+		<Unit filename="../libthoro/hashfunctions/sha-256_sources.cpp" />
+		<Unit filename="../libthoro/hashfunctions/sha-256_sources.h" />
 		<Unit filename="Configuration.cpp" />
 		<Unit filename="Configuration.h" />
 		<Unit filename="GUI.cpp" />
