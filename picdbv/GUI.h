@@ -27,8 +27,10 @@
 #include "../libthoro/common/graphics/GLImageStructure.h"
 #ifdef USE_GLFW_GUI
   #include "../libthoro/common/gui/glfwGUI.h"
-#else
+#elif defined(USE_GLUT_GUI)
   #include "../libthoro/common/gui/glutGUI.h"
+#else
+  #error No GUI defined!
 #endif
 #include "Configuration.h"
 #include "GUITextPanel.h"
