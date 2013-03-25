@@ -144,6 +144,9 @@ DataBase::~DataBase()
 }
 
 DataBase::DataBase()
+: m_Files(std::map<std::string, PicData>()),
+  m_Data(std::map<SHA256::MessageDigest, PicData>()),
+  m_FileToHash(std::map<std::string, SHA256::MessageDigest>())
 {
   //empty
 }

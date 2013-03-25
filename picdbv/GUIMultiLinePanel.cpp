@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012  thoronador
+    Copyright (C) 2011, 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,18 +22,16 @@
 #include "GUI.h"
 
 GUIMultiLinePanel::GUIMultiLinePanel(const std::string& msg)
-: GUITextPanel(msg)
+: GUITextPanel(msg),
+  m_Lines(std::vector<std::string>())
 {
-  m_string = msg;
-  setColour(1.0, 1.0, 1.0);
   explodeStringToLines(msg);
 }
 
 GUIMultiLinePanel::GUIMultiLinePanel(const std::string& msg, const float red, const float green, const float blue)
-: GUITextPanel(msg, red, green, blue)
+: GUITextPanel(msg, red, green, blue),
+  m_Lines(std::vector<std::string>())
 {
-  m_string = msg;
-  setColour(red, green, blue);
   explodeStringToLines(msg);
 }
 
@@ -131,19 +129,13 @@ void GUIMultiLinePanel::clearLines()
 GUIMultiLineAdjustedPanel::GUIMultiLineAdjustedPanel(const std::string& msg, const PanelAdjustment adj)
 : GUITextPanel(msg), GUIMultiLinePanel(msg), GUIAdjustedTextPanel(msg, adj)
 {
-  m_string = msg;
   explodeStringToLines(msg);
-  setColour(1.0, 1.0, 1.0);
-  m_adjust = adj;
 }
 
 GUIMultiLineAdjustedPanel::GUIMultiLineAdjustedPanel(const std::string& msg, const PanelAdjustment adj, const float red, const float green, const float blue)
 : GUITextPanel(msg, red, green, blue), GUIMultiLinePanel(msg, red, green, blue), GUIAdjustedTextPanel(msg, adj, red, green, blue)
 {
-  m_string = msg;
   explodeStringToLines(msg);
-  setColour(red, green, blue);
-  m_adjust = adj;
 }
 
 void GUIMultiLineAdjustedPanel::draw()

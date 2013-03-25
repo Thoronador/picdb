@@ -28,18 +28,18 @@
 #include "GUIMultiLinePanel.h"
 
 GUI::GUI()
+: image_tex(0),
+  m_CurrentTextureTarget(GL_TEXTURE_2D),
+  selectedFiles(std::vector<std::string>()),
+  currentIndex(0),
+  m_Panels(std::vector<GUITextPanel*>()),
+  m_showInput(false),
+  m_InputLine("")
 {
   glis.setHeight(0);
   glis.setWidth(0);
   glis.setBuffer(NULL);
   glis.setFormat(0);
-  image_tex = 0;
-  m_CurrentTextureTarget = GL_TEXTURE_2D;
-  selectedFiles.clear();
-  currentIndex = 0;
-  m_Panels.clear();
-  m_showInput = false;
-  m_InputLine = "";
   nonFullscreenData.isFullscreen = false;
 }
 

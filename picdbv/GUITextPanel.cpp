@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012  thoronador
+    Copyright (C) 2011, 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,15 +22,21 @@
 #include "GUI.h"
 
 GUITextPanel::GUITextPanel(const std::string& msg)
+: m_string(msg),
+  r(1.0f),
+  g(1.0f),
+  b(1.0f)
 {
-  m_string = msg;
-  setColour(1.0, 1.0, 1.0);
+
 }
 
 GUITextPanel::GUITextPanel(const std::string& msg, const float red, const float green, const float blue)
+: m_string(msg),
+  r(red),
+  g(green),
+  b(blue)
 {
-  m_string = msg;
-  setColour(red, green, blue);
+
 }
 
 GUITextPanel::~GUITextPanel()
@@ -73,19 +79,17 @@ float GUITextPanel::getBlue() const
 // adjustment panel's stuff
 
 GUIAdjustedTextPanel::GUIAdjustedTextPanel(const std::string& msg, const PanelAdjustment adj)
-: GUITextPanel(msg)
+: GUITextPanel(msg),
+  m_adjust(adj)
 {
-  m_string = msg;
-  setColour(1.0, 1.0, 1.0);
-  m_adjust = adj;
+
 }
 
 GUIAdjustedTextPanel::GUIAdjustedTextPanel(const std::string& msg, const PanelAdjustment adj, const float red, const float green, const float blue)
-: GUITextPanel(msg, red, green, blue)
+: GUITextPanel(msg, red, green, blue),
+  m_adjust(adj)
 {
-  m_string = msg;
-  setColour(red, green, blue);
-  m_adjust = adj;
+
 }
 
 GUIAdjustedTextPanel::~GUIAdjustedTextPanel()
