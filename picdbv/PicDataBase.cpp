@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012 thoronador
+    Copyright (C) 2011, 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -202,18 +202,8 @@ void DataBase::addFile(const std::string& FileName, const PicData& data)
       //valid hash
       // --> add to filename-to-hash map
       m_FileToHash[FileName] = data.hash_sha256;
-      //add data or merge with known data
-      const std::map<SHA256::MessageDigest, PicData>::iterator iter = m_Data.find(data.hash_sha256);
-      if (iter!=m_Data.end())
-      {
-        //merge
-        iter->second.mergeWith(data);
-      }
-      else
-      {
-        //simply add it
-        m_Data[data.hash_sha256] = data;
-      }
+      //add/replace data
+      m_Data[data.hash_sha256] = data;
       //remove it from old index, if present
       std::map<std::string, PicData>::iterator files_iter = m_Files.find(FileName);
       if (files_iter!=m_Files.end())
