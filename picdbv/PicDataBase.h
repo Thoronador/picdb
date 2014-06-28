@@ -26,40 +26,10 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "PicData.hpp"
 #include "Splitter.h"
 #include "../libthoro/common/DirectoryFileList.h"
 #include "../libthoro/hashfunctions/sha-256.h"
-
-struct PicData
-{
-  std::string name, artist;
-  std::set<std::string> who;
-  std::set<std::string> tags;
-  SHA256::MessageDigest hash_sha256;
-
-  /* writes the structure's data to the standard output */
-  void show() const;
-
-  /* clears all data members */
-  void clear();
-
-  /* "merges" data from other PicData structure into this one, but the SHA-256
-     hash is not touched
-  */
-  void mergeWith(const PicData& other);
-
-  //constants
-  static const std::string cEmptyVector;
-  static const std::string cNoTags;
-}; //struct
-
-struct WhoStatRec
-{
-  std::string who;
-  unsigned int count;
-};//struct
-
-bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b);
 
 class DataBase
 {
@@ -221,38 +191,6 @@ class DataBase
     static const std::string cTagPrefix;
     static const std::string cHashPrefix;
   private:
-    //structure to hold criteria for a DB query
-    struct Query
-    {
-      std::vector<std::string> plusWho;
-      std::vector<std::string> plusTags;
-      std::vector<std::string> nameSubstrings;
-      std::string isArtist;
-
-      /*resets/clears all data members of the query structure
-
-        remarks:
-            Be aware that a cleared query's criteria (i.e. none at all) will be
-            fulfilled by any possible data set. (See fulfilledBy().)
-      */
-      void clear();
-
-      /* sets query criteria as specified by the given string
-
-         parameters:
-             queryString - the string holding the criteria
-      */
-      void fromString(std::string queryString);
-
-      /* returns true, if the provided data set fulfills all criteria specified
-         for this query
-
-         parameters:
-             pic - the data set to be checked
-      */
-      bool fulfilledBy(const PicData& pic) const;
-    }; //struct
-
     /* returns the union of two query results
 
        parameters:
