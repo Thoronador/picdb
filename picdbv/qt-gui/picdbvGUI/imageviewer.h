@@ -59,7 +59,6 @@
 
  private slots:
      void open();
-     void print();
      void zoomIn();
      void zoomOut();
      void normalSize();
@@ -82,14 +81,12 @@
  #endif
 
      QAction *openAct;
-     QAction *printAct;
      QAction *exitAct;
      QAction *zoomInAct;
      QAction *zoomOutAct;
      QAction *normalSizeAct;
      QAction *fitToWindowAct;
      QAction *aboutAct;
-     QAction *aboutQtAct;
 
      QMenu *fileMenu;
      QMenu *viewMenu;
