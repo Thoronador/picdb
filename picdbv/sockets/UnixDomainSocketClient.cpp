@@ -95,12 +95,7 @@ UnixDomainSocketClient::UnixDomainSocketClient()
 
 UnixDomainSocketClient::~UnixDomainSocketClient()
 {
-  if (m_Connected)
-  {
-    close(m_sockfd);
-    m_Connected = false;
-    m_sockfd = -1;
-  }
+  closeConnection();
 }
 
 bool UnixDomainSocketClient::connectToServer(const std::string& file)
@@ -145,4 +140,64 @@ int UnixDomainSocketClient::readConnection(void * buffer, const size_t bytes)
 int UnixDomainSocketClient::writeConnection(const void * buffer, const size_t bytes)
 {
   return write(m_sockfd, buffer, bytes);
+}
+
+bool UnixDomainSocketClient::sendString(const std::string& message)
+{
+  std::string::size_type len = message.size()+1;
+  int written = 0;
+  while (written<len)
+  {
+    int new_written = writeConnection(message.c_str()+written, len);
+    if (new_written>0)
+    {
+      written += new_written;
+    }
+    else
+    {
+      //some kind of error occurred or the connection was closed
+      break;
+    }
+  }//while
+  return (written>=len);
+}
+
+bool UnixDomainSocketClient::receiveString(std::string& message)
+{
+  std::string result;
+  const unsigned int cBufferSize = 4096;
+  char buffer[cBufferSize];
+  int read = 0;
+  int current_read = 0;
+  do
+  {
+    memset(buffer, '\0', cBufferSize);
+    current_read = recv(m_sockfd, buffer, cBufferSize-1, 0);
+    if (current_read>0)
+    {
+      read += current_read;
+      result += std::string(buffer);
+    }
+    else
+    {
+      //error or connection closed
+      break;
+    }
+  } while (current_read>=cBufferSize-1);
+  if (current_read>0)
+  {
+    message = result;
+    return true;
+  }
+  return false;
+}
+
+void UnixDomainSocketClient::closeConnection()
+{
+  if (m_Connected)
+  {
+    close(m_sockfd);
+    m_Connected = false;
+    m_sockfd = -1;
+  }
 }

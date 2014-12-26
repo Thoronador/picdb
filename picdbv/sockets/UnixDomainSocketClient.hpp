@@ -66,6 +66,28 @@ class UnixDomainSocketClient
      * \return Returns the number of bytes actually written. If an error occurred, -1 is returned.
      */
     int writeConnection(const void * buffer, const size_t bytes);
+
+
+    /** \brief tries to send a C++ string over the connection
+     *
+     * \param message the std::string that shall be sent
+     * \return Returns true, if the complete string was sent.
+     *         Returns false, if an error occurred.
+     */
+    bool sendString(const std::string& message);
+
+
+    /** \brief tries to receive a C++ string over the connection
+     *
+     * \param message reference to the C++ string that is used to store the message
+     * \return Returns true, if the operation was successful. Returns false otherwise.
+     * \remarks If the function fails, the contents of message will not be changed.
+     */
+    bool receiveString(std::string& message);
+
+
+    /** \brief closes an existing connection */
+    void closeConnection();
   protected:
     bool m_Connected; /**< holds the connection state */
     int m_sockfd; /**< socket file descriptor */
