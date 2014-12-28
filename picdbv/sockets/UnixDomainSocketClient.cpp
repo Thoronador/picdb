@@ -165,7 +165,7 @@ bool UnixDomainSocketClient::sendString(const std::string& message)
 bool UnixDomainSocketClient::receiveString(std::string& message)
 {
   std::string result;
-  const unsigned int cBufferSize = 4096;
+  const int cBufferSize = 4096;
   char buffer[cBufferSize];
   int read = 0;
   int current_read = 0;

@@ -239,3 +239,53 @@ bool UnixDomainSocketServer::startListening(const unsigned int milliseconds)
   }//while
   return true;
 }
+
+bool UnixDomainSocketServer::sendString(const int clientSocketFD, const std::string& message)
+{
+  const std::string::size_type len = message.size()+1;
+  std::string::size_type written = 0;
+  while (written<len)
+  {
+    int new_written = send(clientSocketFD, message.c_str()+written, len-written, 0);
+    if (new_written>0)
+    {
+      written += new_written;
+    }
+    else
+    {
+      //some kind of error occurred or the connection was closed
+      break;
+    }
+  }//while
+  return (written>=len);
+}
+
+bool UnixDomainSocketServer::receiveString(const int clientSocketFD, std::string& message)
+{
+  std::string result;
+  const int cBufferSize = 4096;
+  char buffer[cBufferSize];
+  int read = 0;
+  int current_read = 0;
+  do
+  {
+    memset(buffer, '\0', cBufferSize);
+    current_read = recv(clientSocketFD, buffer, cBufferSize-1, 0);
+    if (current_read>0)
+    {
+      read += current_read;
+      result += std::string(buffer);
+    }
+    else
+    {
+      //error or connection closed
+      break;
+    }
+  } while (current_read>=cBufferSize-1);
+  if (current_read>0)
+  {
+    message = result;
+    return true;
+  }
+  return false;
+}

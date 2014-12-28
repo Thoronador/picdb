@@ -83,7 +83,28 @@ class UnixDomainSocketServer
      * \param milliseconds the amount of milliseconds the function waits for connections
      */
     bool startListening(const unsigned int milliseconds);
+
   protected:
+    /** \brief tries to send a C++ string to a client
+     *
+     * \param clientSocketFD file descriptor of the client socket
+     * \param message the std::string that shall be sent
+     * \return Returns true, if the complete string was sent.
+     *         Returns false, if an error occurred.
+     */
+    bool sendString(const int clientSocketFD, const std::string& message);
+
+
+    /** \brief tries to receive a C++ string over a socket connection
+     *
+     * \param clientSocketFD file descriptor of the client socket
+     * \param message reference to the C++ string that is used to store the message
+     * \return Returns true, if the operation was successful. Returns false otherwise.
+     * \remarks If the function fails, the contents of message will not be changed.
+     */
+    bool receiveString(const int clientSocketFD, std::string& message);
+
+
     /** \brief virtual function that handles the client/server transactions. Has to be
      * implemented in a derived class.
      *
