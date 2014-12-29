@@ -20,8 +20,8 @@
 
 #include "PicData.hpp"
 #include <iostream>
-#include "PicDataBase.h"
-#include "Splitter.h"
+#include "../PicDataBase.h"
+#include "Splitter.hpp"
 
 void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
 {

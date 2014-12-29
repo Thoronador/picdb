@@ -26,8 +26,8 @@
 #include <set>
 #include <string>
 #include <vector>
-#include "PicData.hpp"
-#include "Splitter.h"
+#include "common/PicData.hpp"
+#include "common/Splitter.hpp"
 #include "../libthoro/common/DirectoryFileList.h"
 #include "../libthoro/hashfunctions/sha-256.h"
 

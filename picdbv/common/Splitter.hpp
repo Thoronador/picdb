@@ -24,7 +24,7 @@
 #include <string>
 #include <set>
 #include <vector>
-#include "../libthoro/common/DirectoryFileList.h"
+#include "../../libthoro/common/DirectoryFileList.h"
 
 struct TwoStrings
 {

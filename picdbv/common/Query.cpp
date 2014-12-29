@@ -19,8 +19,8 @@
 */
 
 #include "Query.hpp"
-#include "Splitter.h"
-#include "../libthoro/common/StringUtils.h"
+#include "Splitter.hpp"
+#include "../../libthoro/common/StringUtils.h"
 
 void Query::clear()
 {

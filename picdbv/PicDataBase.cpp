@@ -22,7 +22,7 @@
 #include <iostream>
 #include <algorithm>
 #include "../libthoro/common/StringUtils.h"
-#include "Query.hpp"
+#include "common/Query.hpp"
 #include "WhoStatRecord.hpp"
 
 const std::string DataBase::cFilePrefix = "file";

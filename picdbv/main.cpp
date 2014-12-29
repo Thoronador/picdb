@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 #include "Configuration.h"
-#include "Splitter.h"
+#include "common/Splitter.hpp"
 #include "PicDataBase.h"
 #include "GUI.h"
 

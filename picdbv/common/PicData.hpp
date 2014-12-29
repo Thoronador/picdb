@@ -23,7 +23,7 @@
 
 #include <set>
 #include <string>
-#include "../libthoro/hashfunctions/sha-256.h"
+#include "../../libthoro/hashfunctions/sha-256.h"
 
 struct PicData
 {
