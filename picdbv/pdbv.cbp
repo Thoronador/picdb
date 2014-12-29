@@ -154,23 +154,23 @@
 		<Unit filename="../libthoro/hashfunctions/sha-256_sources.cpp" />
 		<Unit filename="../libthoro/hashfunctions/sha-256_sources.h" />
 		<Unit filename="Configuration.cpp" />
-		<Unit filename="Configuration.h" />
+		<Unit filename="Configuration.hpp" />
 		<Unit filename="GUI.cpp" />
 		<Unit filename="GUI.h" />
 		<Unit filename="GUIMultiLinePanel.cpp" />
 		<Unit filename="GUIMultiLinePanel.h" />
 		<Unit filename="GUITextPanel.cpp" />
 		<Unit filename="GUITextPanel.h" />
-		<Unit filename="PicData.cpp" />
-		<Unit filename="PicData.hpp" />
 		<Unit filename="PicDataBase.cpp" />
 		<Unit filename="PicDataBase.h" />
-		<Unit filename="Query.cpp" />
-		<Unit filename="Query.hpp" />
-		<Unit filename="Splitter.cpp" />
-		<Unit filename="Splitter.h" />
-		<Unit filename="WhoStatRecord.cpp" />
-		<Unit filename="WhoStatRecord.hpp" />
+		<Unit filename="common/PicData.cpp" />
+		<Unit filename="common/PicData.hpp" />
+		<Unit filename="common/Query.cpp" />
+		<Unit filename="common/Query.hpp" />
+		<Unit filename="common/Splitter.cpp" />
+		<Unit filename="common/Splitter.hpp" />
+		<Unit filename="common/WhoStatRecord.cpp" />
+		<Unit filename="common/WhoStatRecord.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

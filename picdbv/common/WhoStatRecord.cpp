@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012 thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,17 +18,15 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef WHOSTATRECORD_H
-#define WHOSTATRECORD_H
+#include "WhoStatRecord.hpp"
 
-#include <string>
-
-struct WhoStatRec
+WhoStatRec::WhoStatRec()
+: who(""),
+  count(0)
 {
-  std::string who;
-  unsigned int count;
-};//struct
+}
 
-bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b);
-
-#endif // WHOSTATRECORD_H
+bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b)
+{
+  return (a.count> b.count) or ((a.count==b.count) and (a.who<b.who));
+}
