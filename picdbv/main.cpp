@@ -158,7 +158,7 @@ int main(int argc, char **argv)
   std::cout << "Processed command line parameters: "<<argc-1<<"\n";
 
   std::cout << "DataBase starts now.\n";
-  DataBase& db = DataBase::getSingleton();
+  PicDataBase& db = PicDataBase::getSingleton();
   db.clearAllData();
   if (doSearchNewFiles)
   {

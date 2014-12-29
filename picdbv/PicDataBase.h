@@ -21,215 +21,22 @@
 #ifndef PICDATABASE_H
 #define PICDATABASE_H
 
-#include <fstream>
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
-#include "common/PicData.hpp"
-#include "common/Splitter.hpp"
-#include "../libthoro/common/DirectoryFileList.h"
-#include "../libthoro/hashfunctions/sha-256.h"
+#include "common/DataBase.hpp"
 
-class DataBase
+class PicDataBase: public DataBase
 {
   public:
     /* singleton access */
-    static DataBase& getSingleton();
+    static PicDataBase& getSingleton();
 
     /* destructor */
-    virtual ~DataBase();
-
-    /* clears all entries within the database */
-    void clearAllData();
-
-    /* adds all files from the given directory to the database and returns true,
-       if at least one file was added
-
-       parameters:
-           directory - the directory that will be searched for files
-    */
-    bool getFilesFromDirectory(const std::string& directory);
-
-    /* tries to guess names of pictures and their artists from the file names
-       of the pictures by searching for certain dividers.
-    */
-    void AutoTag_Splitter();
-
-    /* adds a new file entry to the database. Any existing entry with the same
-       file name will be overwritten. Trying to add an empty file name will be
-       ignored.
-
-       parameters:
-           FileName - name of the file that will be added
-           data     - the data of that file
-    */
-    void addFile(const std::string& FileName, const PicData& data);
-
-    /* returns true, if a file with the given file name is in the database
-
-       parameters:
-           FileName - name of the file that shall be searched
-    */
-    bool hasFile(const std::string& FileName) const;
-
-    /* returns a set containing all files in the database */
-    std::set<std::string> getListedFiles() const;
-
-    /* deletes an entry from the database and returns true, if such an entry
-       was deleted
-
-       parameters:
-           FileName - name of the file whose DB entry shall be deleted
-    */
-    bool deleteFile(const std::string& FileName);
-
-    /* tries to get the data entry for a given file and returns it, if such a
-       file is present in the database. If no such file can be found, the
-       function will throw an exception. Thus make sure the requested file is
-       present by calling hasFile() before.
-
-       parameters:
-           FileName - name of the file whose entry shall be returned
-    */
-    const PicData& getData(const std::string& FileName) const;
-
-    /* tries to get the data entry for a given hash and returns it, if such a
-       hash is present in the database. If no such hash can be found, the
-       function will throw an exception. Thus make sure the requested hash is
-       present by calling hasDataForHash() before.
-
-       parameters:
-           hash - the SHA-256 hash of the file whose entry shall be returned
-    */
-    const PicData& getData(const SHA256::MessageDigest& hash) const;
-
-    /* returns true, if there is a database entry for the file with the given
-       hash value. The "null" hash will never have a DB entry.
-
-       parameters:
-           hash - the SHA-256 hash value
-    */
-    bool hasDataForHash(const SHA256::MessageDigest& hash) const;
-
-    /* returns all file names for a given hash, if an entry is present. If no
-       entry for that hash is present, the function will return an empty list.
-       If the hash is the null hash, it will return an empty list, too.
-
-       parameters:
-           hash - the SHA-256 hash value of the files
-    */
-    std::set<std::string> getAllFilesForHash(const SHA256::MessageDigest& hash) const;
-
-    /* writes the data of all files within the DB to the standard output */
-    void ListData() const;
-
-    /* tries to calculate the hashes for all files in the DB that do not have
-       a valid hash yet
-
-       parameters:
-           baseDir - the base directory for the file names in the DB
-           limit   - the maximum number of files to be hashed - zero means all
-    */
-    void hashUnhashedFiles(const std::string& baseDir, unsigned int limit);
-
-    /* returns the number of files without hash in database */
-    unsigned int getNumUnhashed() const;
-
-    /* returns the number of files with hash in database */
-    unsigned int getNumHashed() const;
-
-    /* returns the number of entries in the database */
-    unsigned int getNumEntries() const;
-
-    /* returns a vector containing all files in the db that have not been tagged
-       yet
-    */
-    std::vector<std::string> getUntaggedFiles() const;
-
-    /* returns a vector containing all files in the db that have an unknown
-       artist entry
-    */
-    std::vector<std::string> getUnknownArtistFiles() const;
-
-    /* returns a vector containing all file that do not show any persons (or
-       unknown persons for that matter)
-    */
-    std::vector<std::string> getUnknownWhoFiles() const;
-
-    /* returns a list of files that are in the database but do not exist on the
-       physical medium. BaseDir is the directory the files are assumed to be in
-
-       parameters:
-           BaseDir - directory containing the files
-    */
-    std::vector<std::string> getNonexistingFiles(const std::string& BaseDir) const;
-
-    /* removes entries about all non-existing files from the database
-
-       parameters:
-           BaseDir - directory that should contain the files (but doesn't)
-    */
-    void purgeNonexistingFiles(const std::string& BaseDir);
-    void showTagStatistics() const;
-    void showWhoStatistics() const;
-    bool saveToFile(const std::string& FileName) const;
-    bool loadFromFile(const std::string& FileName);
-
-    /* translates the given string into query conditions and returns a list of
-       all files that match the given query conditions
-
-       parameters:
-           query - the query string
-    */
-    std::vector<std::string> executeQuery(const std::string& query) const;
-
-    static const std::string cFilePrefix;
-    static const std::string cNamePrefix;
-    static const std::string cArtistPrefix;
-    static const std::string cWhoPrefix;
-    static const std::string cTagPrefix;
-    static const std::string cHashPrefix;
+    virtual ~PicDataBase();
   private:
-    /* returns the union of two query results
-
-       parameters:
-           query_one - result of first query
-           query_two - result of second query
-    */
-    std::vector<std::string> getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const;
-
-    /* returns the intersection of two query results
-
-       parameters:
-           query_one - result of first query
-           query_two - result of second query
-    */
-    std::vector<std::string> getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const;
-
     //constructor
-    DataBase();
+    PicDataBase();
 
     //empty copy constructor
-    DataBase(const DataBase& op) {}
-
-    /* removes one file entry from filename-to-hash index, if present.
-
-       parameters:
-           FileName - associated file name
-    */
-    void removeFromFileToHashIndex(const std::string& FileName);
-
-    //aux. function to save one single db entry to file
-    void saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data) const;
-
-    //internal file map - key is file name, value is data record - deprecated
-    std::map<std::string, PicData> m_Files;
-
-    //internal "database" - key is a file's digest, value is associated record
-    std::map<SHA256::MessageDigest, PicData> m_Data;
-    //maps known file names to their last known hash
-    std::map<std::string, SHA256::MessageDigest> m_FileToHash;
+    PicDataBase(const PicDataBase& op) {}
 }; //class
 
 #endif // PICDATABASE_H

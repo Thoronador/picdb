@@ -23,6 +23,7 @@
 #include <syslog.h>
 #include <sys/socket.h>
 #include "../daemon/constants.hpp"
+#include "../daemon/DatabaseManager.hpp"
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
 {
@@ -44,11 +45,65 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     }
     else if (message == "list_dbs")
     {
-      answer = codeNoContent + " none";
-    }
+      const std::set<std::string> dbs = DatabaseManager::get().listAllDatabaseNames();
+      if (dbs.empty())
+      {
+        answer = codeNoContent + " none";
+      }
+      else
+      {
+        answer = codeOK;
+        std::set<std::string>::const_iterator iter = dbs.begin();
+        while (iter!=dbs.end())
+        {
+          answer += " "+*iter;
+          ++iter;
+        } //while
+      } //else
+    } //if list_dbs
+    else if (message.size() > 10 && (message.substr(0, 10) == "create_db "))
+    {
+      std::string db_name = message.substr(10);
+      //check for spaces in name
+      if (db_name.find(' ')==std::string::npos)
+      {
+        const bool created = DatabaseManager::get().createDatabase(db_name);
+        if (created)
+          answer = codeOK + " created database "+db_name;
+        else
+        {
+          answer = codeBadRequest + " could not create database";
+        }
+      }
+      else
+      {
+        //name contains spaces
+        answer = codeBadRequest + " database names shall not contain whitespace characters";
+      }
+    } //if create_db
+    else if (message.size() > 10 && (message.substr(0, 10) == "delete_db "))
+    {
+      std::string db_name = message.substr(10);
+      //check for spaces in name
+      if (db_name.find(' ')==std::string::npos)
+      {
+        const bool created = DatabaseManager::get().deleteDatabase(db_name);
+        if (created)
+          answer = codeOK + " deleted database "+db_name;
+        else
+        {
+          answer = codeBadRequest + " could not delete database";
+        }
+      }
+      else
+      {
+        //name contains spaces
+        answer = codeBadRequest + " database names shall not contain whitespace characters";
+      }
+    } //if delete_db
     else if (message == "supported_commands")
     {
-      answer = codeOK +" version stop list_dbs supported_commands";
+      answer = codeOK +" version stop list_dbs create_db delete_db supported_commands";
     }
     else
     {

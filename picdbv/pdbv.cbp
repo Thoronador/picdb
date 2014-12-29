@@ -163,6 +163,8 @@
 		<Unit filename="GUITextPanel.h" />
 		<Unit filename="PicDataBase.cpp" />
 		<Unit filename="PicDataBase.h" />
+		<Unit filename="common/DataBase.cpp" />
+		<Unit filename="common/DataBase.hpp" />
 		<Unit filename="common/PicData.cpp" />
 		<Unit filename="common/PicData.hpp" />
 		<Unit filename="common/Query.cpp" />

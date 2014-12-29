@@ -32,12 +32,32 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../../libthoro/common/DirectoryFileList.cpp" />
+		<Unit filename="../../libthoro/common/DirectoryFileList.h" />
+		<Unit filename="../../libthoro/common/StringUtils.cpp" />
+		<Unit filename="../../libthoro/common/StringUtils.h" />
+		<Unit filename="../../libthoro/hashfunctions/sha-256.cpp" />
+		<Unit filename="../../libthoro/hashfunctions/sha-256.h" />
+		<Unit filename="../../libthoro/hashfunctions/sha-256_sources.cpp" />
+		<Unit filename="../../libthoro/hashfunctions/sha-256_sources.h" />
+		<Unit filename="../common/DataBase.cpp" />
+		<Unit filename="../common/DataBase.hpp" />
+		<Unit filename="../common/PicData.cpp" />
+		<Unit filename="../common/PicData.hpp" />
+		<Unit filename="../common/Query.cpp" />
+		<Unit filename="../common/Query.hpp" />
+		<Unit filename="../common/Splitter.cpp" />
+		<Unit filename="../common/Splitter.hpp" />
+		<Unit filename="../common/WhoStatRecord.cpp" />
+		<Unit filename="../common/WhoStatRecord.hpp" />
 		<Unit filename="../sockets/UnixDomainSocketServer.cpp" />
 		<Unit filename="../sockets/UnixDomainSocketServer.hpp" />
 		<Unit filename="../sockets/picdbvUDSServer.cpp" />
 		<Unit filename="../sockets/picdbvUDSServer.hpp" />
 		<Unit filename="Daemonic.cpp" />
 		<Unit filename="Daemonic.hpp" />
+		<Unit filename="DatabaseManager.cpp" />
+		<Unit filename="DatabaseManager.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
