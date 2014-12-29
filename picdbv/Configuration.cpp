@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,13 +18,19 @@
  -----------------------------------------------------------------------------
 */
 
-#include "Configuration.h"
+#include "Configuration.hpp"
 #include <fstream>
 #include <iostream>
 #include "../libthoro/common/DirectoryFileList.h"
 #include "../libthoro/common/StringUtils.h"
 
 const char Configuration::cCommentCharacter = '#';
+
+Configuration::Configuration()
+: Directory("."+DirectorySeparator),
+  DB_File("file_db.dat")
+{
+}
 
 void Configuration::initialiseValues()
 {
@@ -39,7 +45,7 @@ bool Configuration::loadFromFile(const std::string& FileName)
   if (!input)
   {
     std::cout << "Configuration::loadFromFile: ERROR: Could not open file \""
-              << FileName <<"\".\nLoading from file cancelled.\n Using "
+              << FileName <<"\".\nLoading from file canceled.\n Using "
               << "predefined configuration instead.\n";
     initialiseValues();
     return false;
@@ -71,7 +77,7 @@ bool Configuration::loadFromFile(const std::string& FileName)
         if (sep_pos == std::string::npos || sep_pos == 0)
         {
           std::cout << "Configuration::loadFromFile: ERROR: Invalid line found: \""
-                    << line <<"\".\nLoading from file cancelled. Using "
+                    << line <<"\".\nLoading from file canceled. Using "
                     << "predefined configuration instead.\n";
           input.close();
           return false;
@@ -96,7 +102,7 @@ bool Configuration::loadFromFile(const std::string& FileName)
             std::cout << "Configuration::loadFromFile: ERROR: Invalid name found: \""
                     << name <<"\".\nCurrently the only allowed names are "
                     << "\"database\" and \"directory\".\nLoading from file "
-                    << "cancelled. Using predefined configuration instead.\n";
+                    << "canceled. Using predefined configuration instead.\n";
             initialiseValues();
             return false;
           }
@@ -116,7 +122,7 @@ bool Configuration::saveToFile(const std::string& FileName) const
   if (!output)
   {
     std::cout << "Configuration::saveToFile: ERROR: Could not open file \""
-              << FileName <<"\".\nSaving to file cancelled.\n";
+              << FileName <<"\".\nSaving to file canceled.\n";
     return false;
   }
   const char cc = cCommentCharacter;

@@ -20,6 +20,12 @@
 
 #include "Splitter.hpp"
 
+TwoStrings::TwoStrings()
+: Name(""),
+  Artist("")
+  {
+  }
+
 const std::string Splitter::cSplitString = "_by_";
 const std::string Splitter::cUnknownArtist = "(unknown)";
 

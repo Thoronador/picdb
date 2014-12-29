@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012  Thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,35 +25,41 @@
 #include <vector>
 #include "PicData.hpp"
 
-//structure to hold criteria for a DB query
+/** \brief structure to hold criteria for a DB query
+ * \remarks The different criteria are AND-ed together, i.e. a picture has to
+ *          fulfill every criterion to match the query.
+ */
 struct Query
 {
-  std::vector<std::string> plusWho;
-  std::vector<std::string> plusTags;
-  std::vector<std::string> nameSubstrings;
-  std::string isArtist;
+  std::vector<std::string> plusWho; /**< list of people or objects on the picture */
+  std::vector<std::string> plusTags; /**< list of tags that a picture should have to meet the query criteria */
+  std::vector<std::string> nameSubstrings; /**< list of substrings that have to occur in a picture's name */
+  std::string isArtist; /**< name of the artist (ignored, if empty) */
 
-  /*resets/clears all data members of the query structure
 
-    remarks:
-        Be aware that a cleared query's criteria (i.e. none at all) will be
-        fulfilled by any possible data set. (See fulfilledBy().)
-  */
+  /** \brief default constructor */
+  Query();
+
+  /** \brief resets/clears all data members of the query structure
+   *
+   * \remarks
+   *    Be aware that a cleared query's criteria (i.e. none at all) will be
+   *    fulfilled by any possible data set. (See fulfilledBy().)
+   */
   void clear();
 
-  /* sets query criteria as specified by the given string
 
-     parameters:
-         queryString - the string holding the criteria
-  */
+  /** \brief sets query criteria as specified by the given string
+   *
+   * \param queryString the string holding the criteria
+   */
   void fromString(std::string queryString);
 
-  /* returns true, if the provided data set fulfills all criteria specified
-     for this query
 
-     parameters:
-         pic - the data set to be checked
-  */
+  /** \brief returns true, if the provided data set fulfills all criteria specified for this query
+   *
+   * \param pic the data set to be checked
+   */
   bool fulfilledBy(const PicData& pic) const;
 }; //struct
 

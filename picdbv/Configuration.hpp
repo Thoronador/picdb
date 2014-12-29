@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,37 +23,41 @@
 
 #include <string>
 
+/** \brief structure that holds the two basic configuration values
+ */
 struct Configuration
 {
-  //path to the directory that contains the files
+  /** \brief path to the directory that contains the files */
   std::string Directory;
 
-  //string containing the path to the database file
+  ///string containing the path to the database file
   std::string DB_File;
 
+  /** default constructor */
+  Configuration();
 
-  /* sets predefined values for all data members. The application should call
-     this once before accessing the data members of this structure. */
+  /** \brief sets predefined values for all data members.
+   * The application should call this once before accessing the data members
+   * of this structure.
+   */
   void initialiseValues();
 
-  /* Tries to load configuration from the file FileName. Returns true on success,
-     false otherwise. If it fails, the configuration will be reset to some
-     predefined values.
-
-     parameters:
-         FileName - the file that will be used to load the configuration
-  */
+  /** \brief Tries to load configuration from the file FileName.
+   *  \return Returns true on success, returns false otherwise.
+   *  \remarks If it fails, the configuration will be reset to some
+   *           predefined values.
+   *  \param FileName the file that will be used to load the configuration
+   */
   bool loadFromFile(const std::string& FileName);
 
-  /* Tries to save the configuration to the file FileName. Returns true on
-     success, false otherwise.
-
-     parameters:
-         FileName - name of the file that will be used to save the configuration
-  */
+  /** \brief Tries to save the configuration to the file FileName.
+   *
+   * \param FileName name of the file that will be used to save the configuration
+   *  \return Returns true on success, returns false otherwise.
+   */
   bool saveToFile(const std::string& FileName) const;
 
-  /* character that indicates comment lines*/
+  /** \brief character that indicates comment lines*/
   static const char cCommentCharacter;
 };//struct
 

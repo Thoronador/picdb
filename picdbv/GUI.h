@@ -32,7 +32,7 @@
 #else
   #error No GUI defined!
 #endif
-#include "Configuration.h"
+#include "Configuration.hpp"
 #include "GUITextPanel.h"
 
 #ifdef USE_GLFW_GUI

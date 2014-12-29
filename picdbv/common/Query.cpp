@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012, 2013  Thoronador
+    This file is part of picdb.
+    Copyright (C) 2011, 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +22,14 @@
 #include "Splitter.hpp"
 #include "../../libthoro/common/StringUtils.h"
 
+Query::Query()
+: plusWho(std::vector<std::string>()),
+  plusTags(std::vector<std::string>()),
+  nameSubstrings(std::vector<std::string>()),
+  isArtist("")
+{
+}
+
 void Query::clear()
 {
   plusWho.clear();
@@ -34,7 +42,7 @@ void Query::fromString(std::string queryString)
 {
   clear();
   trim(queryString);
-  if (queryString=="") return;
+  if (queryString.empty()) return;
   const std::set<std::string> sv = Splitter::splitAtSpace(queryString);
   std::set<std::string>::const_iterator set_i;
   bool lineProcessed = false;
@@ -78,10 +86,10 @@ void Query::fromString(std::string queryString)
 bool Query::fulfilledBy(const PicData& pic) const
 {
   //check artist
-  if (isArtist!="" and isArtist!=pic.artist) return false;
+  if (!isArtist.empty() and isArtist!=pic.artist) return false;
   //check name substrings
   unsigned int i;
-  for (i=0; i<nameSubstrings.size(); i=i+1)
+  for (i=0; i<nameSubstrings.size(); ++i)
   {
     if (pic.name.find(nameSubstrings[i])==std::string::npos)
     {
@@ -91,7 +99,7 @@ bool Query::fulfilledBy(const PicData& pic) const
   //check tags
   std::set<std::string>::const_iterator j;
   bool found;
-  for (i=0; i<plusTags.size(); i=i+1)
+  for (i=0; i<plusTags.size(); ++i)
   {
     found = false;
     for (j=pic.tags.begin(); (j!=pic.tags.end()) and !found; ++j)
@@ -102,7 +110,7 @@ bool Query::fulfilledBy(const PicData& pic) const
   }//for i
 
   //check who
-  for (i=0; i<plusWho.size(); i=i+1)
+  for (i=0; i<plusWho.size(); ++i)
   {
     found = false;
     for (j=pic.who.begin(); (j!=pic.who.end()) and !found; ++j)

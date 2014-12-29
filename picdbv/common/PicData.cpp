@@ -1,6 +1,6 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
+    This file is part of picdbv.
     Copyright (C) 2011, 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
@@ -57,6 +57,15 @@ void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
 const std::string PicData::cEmptyVector = "(empty)";
 const std::string PicData::cNoTags = "(none)";
 
+
+PicData::PicData()
+: name(""),
+  artist(""),
+  who(std::set<std::string>()),
+  tags(std::set<std::string>()),
+  hash_sha256(SHA256::MessageDigest())
+{
+}
 
 void PicData::show() const
 {

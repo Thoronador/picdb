@@ -30,6 +30,9 @@ struct TwoStrings
 {
   std::string Name;
   std::string Artist;
+
+  /** \brief constructor */
+  TwoStrings();
 };
 
 class Splitter

@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <string>
-#include "Configuration.h"
+#include "Configuration.hpp"
 #include "common/Splitter.hpp"
 #include "PicDataBase.h"
 #include "GUI.h"
