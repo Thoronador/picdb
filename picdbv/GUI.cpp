@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012 thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,10 @@ GUI::GUI()
   glis.setBuffer(NULL);
   glis.setFormat(0);
   nonFullscreenData.isFullscreen = false;
+  nonFullscreenData.window_width = 50;
+  nonFullscreenData.window_height = 50;
+  nonFullscreenData.pos_x = 0;
+  nonFullscreenData.pos_y = 0;
 }
 
 GUI& GUI::getSingleton()

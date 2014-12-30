@@ -1,6 +1,6 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
+    This file is part of picdbv.
     Copyright (C) 2011, 2012 thoronador
 
     This program is free software: you can redistribute it and/or modify
