@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include "../daemon/constants.hpp"
 #include "../daemon/DatabaseManager.hpp"
+#include "../common/filesystem/functions.hpp"
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
 {
@@ -31,11 +32,11 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
   std::string message;
   if (receiveString(client_socket_fd, message))
   {
-    syslog(LOG_INFO, "server received message \": %s", message.c_str());
+    //syslog(LOG_INFO, "server received message \": %s", message.c_str());
     std::string answer;
     if (message == "version")
     {
-      answer = codeOK + " 20141228.1";
+      answer = codeOK + " 20141230.1";
     }
     else if (message == "stop")
     {
@@ -101,9 +102,40 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         answer = codeBadRequest + " database names shall not contain whitespace characters";
       }
     } //if delete_db
+    else if (message.size() > 8 && (message.substr(0, 8) == "load_db "))
+    {
+      const std::vector<std::string> args = Splitter::splitAtSpaceVector(message.substr(8));
+      if (args.size()!=2)
+      {
+        answer = codeBadRequest + " load_db needs exactly two arguments: DB name and file name without spaces";
+      }
+      else
+      {
+        const std::string db_name = args[0];
+        if (!DatabaseManager::get().hasDatabase(db_name))
+        {
+          answer = codeBadRequest + " unknown database "+db_name;
+        }
+        else if (!isReadable(args[1]))
+        {
+          answer = codeBadRequest + " file is not readable";
+        }
+        else
+        {
+          DataBase & db = DatabaseManager::get().getDatabase(db_name);
+          const bool loadSuccess = db.loadFromFile(args[1]);
+          if (loadSuccess)
+            answer = codeOK + " loaded database "+db_name + " from file";
+          else
+          {
+            answer = codeBadRequest + " could not load database "+db_name + " from file";
+          }
+        } //else
+      } //else
+    } //if load_db
     else if (message == "supported_commands")
     {
-      answer = codeOK +" version stop list_dbs create_db delete_db supported_commands";
+      answer = codeOK +" version stop list_dbs create_db delete_db load_db supported_commands";
     }
     else
     {

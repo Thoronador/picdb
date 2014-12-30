@@ -44,7 +44,7 @@ int main()
       syslog(LOG_INFO | LOG_DAEMON, "Server is now active.");
       while (server.startListening(5000))
       {
-        syslog(LOG_INFO | LOG_DAEMON, "next loop iteration of server");
+        //syslog(LOG_INFO | LOG_DAEMON, "next loop iteration of server");
         if (server.shutdownRequested())
           break;
       }
