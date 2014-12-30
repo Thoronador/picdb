@@ -36,7 +36,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     std::string answer;
     if (message == "version")
     {
-      answer = codeOK + " 20141230.1";
+      answer = codeOK + " " + serverVersion;
     }
     else if (message == "stop")
     {
@@ -137,6 +137,10 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     {
       answer = codeOK +" version stop list_dbs create_db delete_db load_db supported_commands";
     }
+    else if (message == "help")
+    {
+      help(answer);
+    }
     else
     {
       answer = codeBadRequest + " Bad request";
@@ -147,4 +151,17 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     else
       sendString(client_socket_fd, codeInternalServerError+" Server did not generate a response");
   }
+}
+
+void picdbvUDSServer::help(std::string& answer)
+{
+  answer = std::string("List of commonly used commands:\n")
+         + "   create_db          - create a new database\n"
+         + "   delete_db          - delete a database\n"
+         + "   help               - show this help\n"
+         + "   list_dbs           - lists all current databases\n"
+         + "   load_db            - load database content from a file\n"
+         + "   supported_commands - prints a list of supported commands\n"
+         + "   stop               - stops the server\n"
+         + "   version            - return version of server";
 }

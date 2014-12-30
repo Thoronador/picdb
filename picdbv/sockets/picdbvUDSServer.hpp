@@ -33,6 +33,12 @@ class picdbvUDSServer: public UnixDomainSocketServer
                                that is connected with the server
      */
     virtual void serveClient(const int client_socket_fd, bool& closeWhenDone);
+  private:
+    /** \brief fills a given string with the server's help message
+     *
+     * \param answer string that will be used to store the help message
+     */
+    void help(std::string& answer);
 }; //class
 
 #endif // PICDBVUDSSERVER_HPP
