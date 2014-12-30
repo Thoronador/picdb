@@ -1,0 +1,17 @@
+language: cpp
+compiler:
+  - clang
+  - gcc
+branches:
+  only:
+    - client-server
+    - travis-ci
+before_install:
+  - sudo apt-get install cmake freeglut3-dev libjpeg8-dev libpng12-dev libxmu-dev libxmu-headers -y
+script:
+  - mkdir ./build
+  - cd ./build
+  - cmake ../
+  - make -j2
+notifications:
+  email: false
