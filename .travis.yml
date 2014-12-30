@@ -6,14 +6,27 @@ branches:
   only:
     - client-server
     - server-commands
+    - coverity_scan
     - travis-ci
 before_install:
   - sudo apt-get install cmake freeglut3-dev libjpeg8-dev libpng12-dev libxmu-dev libxmu-headers -y
 script:
-  - mkdir ./build
-  - cd ./build
-  - cmake ../
-  - make -j2
-  - make test
+  - echo "coverity stuff should be done by now."
 notifications:
   email: false
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "d9ibxH7sq6s82V5d38LjmoGwnSO6ttV2rziOueAc/rLVxrautg3IK9ewNIaC1P7mWt46ShgkWaZwOoYq+80Ewya4SbH7tjjtR5/0qTltbflqY4Pq42+vF28+LACDelPwMVFLnl52JKsikmQReDtc9vVCtP5usEUNsuG9z8G1aNo="
+
+addons:
+  coverity_scan:
+    project:
+      name: "Thoronador/picdb"
+      description: "picdb"
+    notification_email: thoronador@users.sourceforge.net
+    build_command_prepend: "cmake ./"
+    build_command:   "make -j2"
+    branch_pattern: coverity_scan
