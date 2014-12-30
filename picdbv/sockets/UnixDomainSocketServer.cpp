@@ -119,6 +119,7 @@ bool UnixDomainSocketServer::activate(const std::string& file)
   {
     std::cout << "SocketServer: Error on binding! Error code is "<<errno
               <<".\nThat means: "<<bindErrorCodeToString(errno) <<"\n";
+    close(sockfd);
     return false;
   }
   m_Active = true;
@@ -182,6 +183,7 @@ bool UnixDomainSocketServer::startListening(const unsigned int milliseconds)
   if (!m_Active) return false;
 
   fd_set read_flags;
+  FD_ZERO(&read_flags);
   struct timeval curr_time;
   struct timeval end_time;
   struct timeval wait_intervall;
@@ -202,23 +204,22 @@ bool UnixDomainSocketServer::startListening(const unsigned int milliseconds)
       return false;
     }
 
+    FD_ZERO(&read_flags);
     if (nonBlocking)
     {
-      FD_ZERO(&read_flags);
       FD_SET(m_sockfd, &read_flags);
       if (select(m_sockfd+1, &read_flags, NULL, NULL, &wait_intervall)<0)
       {
         std::cout << "SocketServer: Error on select!\n";
         return false;
       }
-
     }
 
     if ((!nonBlocking) or (FD_ISSET(m_sockfd, &read_flags)))
     {
       struct sockaddr_un cli_addr;
       socklen_t clilen = sizeof(cli_addr);
-      int newsockfd = accept(m_sockfd, (struct sockaddr *) &cli_addr, &clilen);
+      const int newsockfd = accept(m_sockfd, (struct sockaddr *) &cli_addr, &clilen);
       if (newsockfd < 0)
       {
         std::cout << "SocketServer: Error on accept!\n";
@@ -226,8 +227,9 @@ bool UnixDomainSocketServer::startListening(const unsigned int milliseconds)
       }
       bool closeFDWhenDone = true;
       serveClient(newsockfd, closeFDWhenDone);
-      if (closeFDWhenDone)
-        close(newsockfd);
+      /*if (closeFDWhenDone)
+        close(newsockfd); */
+      close(newsockfd); //close socket connection unconditionally to avoid leaking FD
       done = true;
     }//if ready
     if (!done)
