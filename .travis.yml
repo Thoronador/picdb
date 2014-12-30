@@ -13,5 +13,6 @@ script:
   - cd ./build
   - cmake ../
   - make -j2
+  - make test
 notifications:
   email: false
