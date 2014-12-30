@@ -60,6 +60,7 @@
 		<Unit filename="Daemonic.hpp" />
 		<Unit filename="DatabaseManager.cpp" />
 		<Unit filename="DatabaseManager.hpp" />
+		<Unit filename="constants.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
