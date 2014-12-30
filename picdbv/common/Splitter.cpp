@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -86,16 +86,39 @@ std::set<std::string> Splitter::splitAtSpace(std::string line)
     result.insert("");
     return result;
   }
-  size_t pos =line.find(" ");
+  size_t pos =line.find(' ');
   while (pos != std::string::npos)
   {
     result.insert(line.substr(0, pos));
     line = line.substr(pos+1);
-    pos = line.find(" ");
+    pos = line.find(' ');
   }//while
-  if (line != "")
+  if (!line.empty())
   {
     result.insert(line);
+  }
+  return result;
+}
+
+std::vector<std::string> Splitter::splitAtSpaceVector(std::string line)
+{
+  std::vector<std::string> result;
+  result.clear();
+  if (line.empty())
+  {
+    result.push_back("");
+    return result;
+  }
+  size_t pos =line.find(' ');
+  while (pos != std::string::npos)
+  {
+    result.push_back(line.substr(0, pos));
+    line = line.substr(pos+1);
+    pos = line.find(' ');
+  }//while
+  if (!line.empty())
+  {
+    result.push_back(line);
   }
   return result;
 }

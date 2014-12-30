@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011 thoronador
+    This file is part of picdb.
+    Copyright (C) 2011, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,10 +38,10 @@ struct TwoStrings
 class Splitter
 {
   public:
-    /* constructor */
+    /** \brief constructor */
     Splitter();
 
-    /* empty copy constructor */
+    /** \brief empty copy constructor */
     Splitter(const Splitter& op) {}
 
     /* destructor */
@@ -49,13 +49,20 @@ class Splitter
 
     static std::vector<TwoStrings> splitFileNames(const std::vector<FileEntry>& files);
 
-    /* splits the given string into pieces, treating space characters as the
-       separator for values, and returns the pieces as a set
-
-       parameters:
-           line - string containing the space-separated values
-    */
+    /** \brief splits the given string into pieces, treating space characters as the
+     * separator for values, and returns the pieces as a set
+     *
+     * \param line  string containing the space-separated values
+     */
     static std::set<std::string> splitAtSpace(std::string line);
+
+
+    /** \brief splits the given string into pieces, treating space characters as the
+     * separator for values, and returns the pieces as a vector
+     *
+     * \param line  string containing the space-separated values
+     */
+    static std::vector<std::string> splitAtSpaceVector(std::string line);
 
     static const std::string cSplitString;
     static const std::string cUnknownArtist;
