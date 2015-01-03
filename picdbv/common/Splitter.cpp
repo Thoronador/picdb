@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2014  Thoronador
+    Copyright (C) 2011, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -115,6 +115,28 @@ std::vector<std::string> Splitter::splitAtSpaceVector(std::string line)
     result.push_back(line.substr(0, pos));
     line = line.substr(pos+1);
     pos = line.find(' ');
+  }//while
+  if (!line.empty())
+  {
+    result.push_back(line);
+  }
+  return result;
+}
+
+static std::vector<std::string> splitAtSeparator(std::string line, const char separator)
+{
+  std::vector<std::string> result;
+  if (line.empty())
+  {
+    result.push_back("");
+    return result;
+  }
+  size_t pos =line.find(separator);
+  while (pos != std::string::npos)
+  {
+    result.push_back(line.substr(0, pos));
+    line = line.substr(pos+1);
+    pos = line.find(separator);
   }//while
   if (!line.empty())
   {

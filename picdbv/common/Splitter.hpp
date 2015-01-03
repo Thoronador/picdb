@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2011, 2014  Thoronador
+    Copyright (C) 2011, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -63,6 +63,15 @@ class Splitter
      * \param line  string containing the space-separated values
      */
     static std::vector<std::string> splitAtSpaceVector(std::string line);
+
+
+    /** \brief splits the given string into pieces, treating a given character
+     * as the separator for values, and returns the pieces as a vector
+     *
+     * \param line  string containing the separated values
+     * \param separator  character that serves as separator between elements
+     */
+    static std::vector<std::string> splitAtSeparator(std::string line, const char separator);
 
     static const std::string cSplitString;
     static const std::string cUnknownArtist;
