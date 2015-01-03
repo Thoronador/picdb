@@ -11,6 +11,7 @@ set(picdbd_sources
     ../../libthoro/hashfunctions/sha-256.cpp
     ../../libthoro/hashfunctions/sha-256_sources.cpp
     ../common/DataBase.cpp
+    ../common/escaping.cpp
     ../common/PicData.cpp
     ../common/Query.cpp
     ../common/Splitter.cpp

@@ -50,6 +50,8 @@
 		<Unit filename="../common/Splitter.hpp" />
 		<Unit filename="../common/WhoStatRecord.cpp" />
 		<Unit filename="../common/WhoStatRecord.hpp" />
+		<Unit filename="../common/escaping.cpp" />
+		<Unit filename="../common/escaping.hpp" />
 		<Unit filename="../common/filesystem/functions.cpp" />
 		<Unit filename="../common/filesystem/functions.hpp" />
 		<Unit filename="../sockets/UnixDomainSocketServer.cpp" />
