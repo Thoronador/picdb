@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 const std::string serverSocketFile = "/tmp/picdb_server.sock";
 
 //server version
-const std::string serverVersion    = "20141230.2";
+const std::string serverVersion    = "20150103.1";
 
 //server response codes
 const std::string codeContinue              = "100";

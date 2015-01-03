@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include "../daemon/constants.hpp"
 #include "../daemon/DatabaseManager.hpp"
+#include "../common/escaping.hpp"
 #include "../common/filesystem/functions.hpp"
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
@@ -133,9 +134,41 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         } //else
       } //else
     } //if load_db
+    else if (message.size() > 9 && (message.substr(0, 9) == "untagged "))
+    {
+      std::string db_name = message.substr(9);
+      //check for spaces in name
+      if (db_name.find(' ')==std::string::npos)
+      {
+        if (!DatabaseManager::get().hasDatabase(db_name))
+          answer = codeBadRequest + " database does not exist";
+        else
+        {
+          const std::vector<std::string> result = DatabaseManager::get().getDatabase(db_name).getUntaggedFiles();
+          if (result.empty())
+          {
+            answer = codeNoContent + " none";
+          }
+          else
+          {
+            answer = codeOK;
+            unsigned int i;
+            for (i=0; i<result.size(); ++i)
+            {
+              answer += std::string(1, '\0') + result[i];
+            } //for
+          } //else
+        } //else
+      } //if
+      else
+      {
+        //name contains spaces
+        answer = codeBadRequest + " database names shall not contain whitespace characters";
+      }
+    } //if untagged
     else if (message == "supported_commands")
     {
-      answer = codeOK +" version stop list_dbs create_db delete_db load_db supported_commands";
+      answer = codeOK +" version stop list_dbs create_db delete_db load_db untagged supported_commands";
     }
     else if (message == "help")
     {
@@ -147,7 +180,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     }
     //send answer to client
     if (!answer.empty())
-      sendString(client_socket_fd, answer);
+      sendString(client_socket_fd, escape(answer));
     else
       sendString(client_socket_fd, codeInternalServerError+" Server did not generate a response");
   }
@@ -163,5 +196,6 @@ void picdbvUDSServer::help(std::string& answer)
          + "   load_db            - load database content from a file\n"
          + "   supported_commands - prints a list of supported commands\n"
          + "   stop               - stops the server\n"
+         + "   untagged           - list untagged files in a database\n"
          + "   version            - return version of server";
 }
