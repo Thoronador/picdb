@@ -23,13 +23,14 @@
 
 #include <map>
 #include <string>
-#include "DataBase.hpp"
+#include "DirectDatabase.hpp"
 
 class DatabaseManager
 {
   public:
     /** destructor */
     ~DatabaseManager();
+
 
     /** \brief singleton access method
      * \return Returns a reference to the singleton instance.
@@ -45,6 +46,7 @@ class DatabaseManager
      *         the function will return false.
      */
     bool createDatabase(const std::string& db_name);
+
 
     /** \brief deletes an existing database
      *
@@ -75,7 +77,7 @@ class DatabaseManager
      * \return Returns a reference to the requested database, if it exists.
      *         If the database does not exist, the function will throw an exception.
      */
-    DataBase& getDatabase(const std::string& db_name);
+    Database& getDatabase(const std::string& db_name);
   private:
     /** constructor - private due to singleton pattern */
     DatabaseManager();
@@ -83,7 +85,7 @@ class DatabaseManager
     /** copy constructor - private and empty due to singleton pattern */
     DatabaseManager(const DatabaseManager& op) {}
 
-    std::map<std::string, DataBase> m_Databases; /**< holds the loaded databases */
+    std::map<std::string, DirectDatabase> m_Databases; /**< holds the loaded databases */
 }; //class
 
 #endif // DATABASEMANAGER_HPP

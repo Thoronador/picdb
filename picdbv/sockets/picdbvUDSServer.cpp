@@ -143,7 +143,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         }
         else
         {
-          DataBase & db = DatabaseManager::get().getDatabase(db_name);
+          Database & db = DatabaseManager::get().getDatabase(db_name);
           const bool loadSuccess = db.loadFromFile(args[1]);
           if (loadSuccess)
             answer = codeOK + " loaded database "+db_name + " from file";

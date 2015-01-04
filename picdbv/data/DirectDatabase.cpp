@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2011, 2012, 2013, 2014  Thoronador
+    Copyright (C) 2011, 2012, 2013, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,27 +18,19 @@
  -----------------------------------------------------------------------------
 */
 
-#include "DataBase.hpp"
+#include "DirectDatabase.hpp"
 #include <iostream>
 #include <algorithm>
 #include "../../libthoro/common/StringUtils.h"
 #include "../common/Query.hpp"
 #include "../common/WhoStatRecord.hpp"
 
-const std::string DataBase::cFilePrefix = "file";
-const std::string DataBase::cNamePrefix = "name";
-const std::string DataBase::cArtistPrefix = "artist";
-const std::string DataBase::cWhoPrefix = "who";
-const std::string DataBase::cTagPrefix = "tags";
-const std::string DataBase::cHashPrefix = "sha256";
-
-
-DataBase::~DataBase()
+DirectDatabase::~DirectDatabase()
 {
   clearAllData();
 }
 
-DataBase::DataBase()
+DirectDatabase::DirectDatabase()
 : m_Files(std::map<std::string, PicData>()),
   m_Data(std::map<SHA256::MessageDigest, PicData>()),
   m_FileToHash(std::map<std::string, SHA256::MessageDigest>())
@@ -46,14 +38,14 @@ DataBase::DataBase()
   //empty
 }
 
-void DataBase::clearAllData()
+void DirectDatabase::clearAllData()
 {
   m_Files.clear();
   m_FileToHash.clear();
   m_Data.clear();
 }
 
-bool DataBase::getFilesFromDirectory(const std::string& directory)
+bool DirectDatabase::getFilesFromDirectory(const std::string& directory)
 {
   std::vector<FileEntry> temp;
   if (!getDirectoryFileList(directory, temp, "", false))
@@ -82,7 +74,7 @@ bool DataBase::getFilesFromDirectory(const std::string& directory)
   return result;
 }
 
-void DataBase::addFile(const std::string& FileName, const PicData& data)
+void DirectDatabase::addFile(const std::string& FileName, const PicData& data)
 {
   if (!FileName.empty())
   {
@@ -109,13 +101,13 @@ void DataBase::addFile(const std::string& FileName, const PicData& data)
   }//if file name not empty
 }
 
-bool DataBase::hasFile(const std::string& FileName) const
+bool DirectDatabase::hasFile(const std::string& FileName) const
 {
   return ((m_Files.find(FileName)!= m_Files.end())
     or (m_FileToHash.find(FileName)!=m_FileToHash.end()));
 }
 
-std::set<std::string> DataBase::getListedFiles() const
+std::set<std::string> DirectDatabase::getListedFiles() const
 {
   std::set<std::string> result;
   std::map<std::string, PicData>::const_iterator f_iter = m_Files.begin();
@@ -133,7 +125,7 @@ std::set<std::string> DataBase::getListedFiles() const
   return result;
 }
 
-const PicData& DataBase::getData(const std::string& FileName) const
+const PicData& DirectDatabase::getData(const std::string& FileName) const
 {
   //check old-style index
   const std::map<std::string, PicData>::const_iterator iter = m_Files.find(FileName);;
@@ -154,7 +146,7 @@ const PicData& DataBase::getData(const std::string& FileName) const
   throw 12345;
 }
 
-const PicData& DataBase::getData(const SHA256::MessageDigest& hash) const
+const PicData& DirectDatabase::getData(const SHA256::MessageDigest& hash) const
 {
   const std::map<SHA256::MessageDigest, PicData>::const_iterator data_iter
       = m_Data.find(hash);
@@ -165,12 +157,12 @@ const PicData& DataBase::getData(const SHA256::MessageDigest& hash) const
   throw 12345;
 }
 
-bool DataBase::hasDataForHash(const SHA256::MessageDigest& hash) const
+bool DirectDatabase::hasDataForHash(const SHA256::MessageDigest& hash) const
 {
   return (m_Data.find(hash)!=m_Data.end());
 }
 
-std::set<std::string> DataBase::getAllFilesForHash(const SHA256::MessageDigest& hash) const
+std::set<std::string> DirectDatabase::getAllFilesForHash(const SHA256::MessageDigest& hash) const
 {
   std::set<std::string> result;
   if (hash.isNull()) return result;
@@ -184,7 +176,7 @@ std::set<std::string> DataBase::getAllFilesForHash(const SHA256::MessageDigest& 
   return result;
 }
 
-void DataBase::AutoTag_Splitter()
+void DirectDatabase::AutoTag_Splitter()
 {
   std::vector<TwoStrings> ts;
   PicData temp_data;
@@ -218,7 +210,7 @@ void DataBase::AutoTag_Splitter()
   return;
 }
 
-void DataBase::ListData() const
+void DirectDatabase::ListData() const
 {
   std::map<std::string, PicData>::const_iterator iter;
   iter = m_Files.begin();
@@ -230,7 +222,7 @@ void DataBase::ListData() const
   }//while
 }
 
-void DataBase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
+void DirectDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
 {
   //max set to zero? zero means hash all!
   if (limit==0)
@@ -270,22 +262,22 @@ void DataBase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
   }//while
 }
 
-unsigned int DataBase::getNumUnhashed() const
+unsigned int DirectDatabase::getNumUnhashed() const
 {
   return m_Files.size();
 }
 
-unsigned int DataBase::getNumHashed() const
+unsigned int DirectDatabase::getNumHashed() const
 {
   return m_FileToHash.size();
 }
 
-unsigned int DataBase::getNumEntries() const
+unsigned int DirectDatabase::getNumEntries() const
 {
   return m_Files.size() + m_FileToHash.size();
 }
 
-std::vector<std::string> DataBase::getUntaggedFiles() const
+std::vector<std::string> DirectDatabase::getUntaggedFiles() const
 {
   std::vector<std::string> result;
   result.clear();
@@ -313,7 +305,7 @@ std::vector<std::string> DataBase::getUntaggedFiles() const
   return getQueryResultUnion(result, newResult);
 }
 
-std::vector<std::string> DataBase::getUnknownArtistFiles() const
+std::vector<std::string> DirectDatabase::getUnknownArtistFiles() const
 {
   //search old index
   std::vector<std::string> result;
@@ -341,7 +333,7 @@ std::vector<std::string> DataBase::getUnknownArtistFiles() const
   return getQueryResultUnion(result, newResult);
 }
 
-std::vector<std::string> DataBase::getUnknownWhoFiles() const
+std::vector<std::string> DirectDatabase::getUnknownWhoFiles() const
 {
   //search old index
   std::vector<std::string> result;
@@ -369,7 +361,7 @@ std::vector<std::string> DataBase::getUnknownWhoFiles() const
   return getQueryResultUnion(result, newResult);
 }
 
-std::vector<std::string> DataBase::getNonexistingFiles(const std::string& BaseDir) const
+std::vector<std::string> DirectDatabase::getNonexistingFiles(const std::string& BaseDir) const
 {
   std::vector<std::string> result;
   result.clear();
@@ -396,12 +388,12 @@ std::vector<std::string> DataBase::getNonexistingFiles(const std::string& BaseDi
   return result;
 }
 
-bool DataBase::deleteFile(const std::string& FileName)
+bool DirectDatabase::deleteFile(const std::string& FileName)
 {
   return ((m_Files.erase(FileName)>0) or (m_FileToHash.erase(FileName)>0));
 }
 
-void DataBase::purgeNonexistingFiles(const std::string& BaseDir)
+void DirectDatabase::purgeNonexistingFiles(const std::string& BaseDir)
 {
   std::vector<std::string> deletionList = getNonexistingFiles(BaseDir);
   unsigned int i;
@@ -411,7 +403,7 @@ void DataBase::purgeNonexistingFiles(const std::string& BaseDir)
   }//for
 }
 
-void DataBase::showTagStatistics() const
+void DirectDatabase::showTagStatistics() const
 {
   std::map<std::string, unsigned int> tagList;
   tagList.clear();
@@ -462,7 +454,7 @@ void DataBase::showTagStatistics() const
             <<" tags per file.\n";
 }
 
-void DataBase::showWhoStatistics() const
+void DirectDatabase::showWhoStatistics() const
 {
   std::map<std::string, unsigned int> whoList;
   whoList.clear();
@@ -525,7 +517,7 @@ void DataBase::showWhoStatistics() const
   }//else
 }
 
-bool DataBase::saveToFile(const std::string& FileName) const
+bool DirectDatabase::saveToFile(const std::string& FileName) const
 {
   std::ofstream output;
   std::set<std::string>::const_iterator set_i;
@@ -553,51 +545,7 @@ bool DataBase::saveToFile(const std::string& FileName) const
   return output.good();
 }
 
-void DataBase::saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data) const
-{
-  std::set<std::string>::const_iterator set_i;
-  //filename
-  output<<cFilePrefix<<":"<<fileName<<"\n";
-  //pic name
-  output<<cNamePrefix<<":"<<data.name<<"\n";
-  //artist's/photographer's name
-  output<<cArtistPrefix<<":"<<data.artist<<"\n";
-  //people on pic
-  output<<cWhoPrefix<<":";
-  if (data.who.empty())
-  {
-    output << PicData::cEmptyVector<<"\n";
-  }
-  else
-  {
-    for (set_i=data.who.begin(); set_i!=data.who.end(); ++set_i)
-    {
-      output << *set_i+" ";
-    }//for
-    output << "\n";
-  }//else branch
-  //tags
-  output<<cTagPrefix<<":";
-  if (data.tags.size()==0)
-  {
-    output << PicData::cNoTags<<"\n";
-  }
-  else
-  {
-    for (set_i=data.tags.begin(); set_i!=data.tags.end(); ++set_i)
-    {
-      output << *set_i +" ";
-    }//for
-    output << "\n";
-  }//else branch
-  //SHA-256 hash
-  if (!(data.hash_sha256.isNull()))
-  {
-    output << cHashPrefix << ":"<<data.hash_sha256.toHexString()<<"\n";
-  }
-}
-
-bool DataBase::loadFromFile(const std::string& FileName)
+bool DirectDatabase::loadFromFile(const std::string& FileName)
 {
   std::ifstream input;
   input.open(FileName.c_str(), std::ios::in | std::ios::binary);
@@ -712,7 +660,7 @@ bool DataBase::loadFromFile(const std::string& FileName)
   return true;
 }
 
-std::vector<std::string> DataBase::executeQuery(const std::string& query) const
+std::vector<std::string> DirectDatabase::executeQuery(const std::string& query) const
 {
   const std::string::size_type union_pos = query.find(":UNION:");
   const std::string::size_type inter_pos = query.find(":INTERSECT:");
@@ -772,85 +720,7 @@ std::vector<std::string> DataBase::executeQuery(const std::string& query) const
   return getQueryResultUnion(result, newResult);
 }
 
-std::vector<std::string> DataBase::getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const
-{
-  std::vector<std::string> result;
-  std::vector<std::string>::const_iterator one_iter, two_iter;
-  one_iter = query_one.begin();
-  two_iter = query_two.begin();
-  while (one_iter!=query_one.end() and two_iter!=query_two.end())
-  {
-    if (*one_iter<*two_iter)
-    {
-      result.push_back(*one_iter);
-      ++one_iter;
-    }
-    else if (*one_iter>*two_iter)
-    {
-      result.push_back(*two_iter);
-      ++two_iter;
-    }
-    else
-    {
-      result.push_back(*one_iter);
-      ++one_iter;
-      ++two_iter;
-    }
-  }//while
-  //check for remainder
-  if (one_iter!=query_one.end())
-  {
-    //set end iter
-    two_iter = query_one.end();
-    //start iter is already known: one_iter
-  }
-  else if (two_iter!=query_two.end())
-  {
-    //set start iterator
-    one_iter = two_iter;
-    //set end iterator
-    two_iter = query_two.end();
-  }
-  else
-  {
-    return result;
-  }
-  //copy remaining stuff
-  while (one_iter!=two_iter)
-  {
-    result.push_back(*one_iter);
-    ++one_iter;
-  }//while
-  return result;
-}
-
-std::vector<std::string> DataBase::getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const
-{
-  std::vector<std::string> result;
-  std::vector<std::string>::const_iterator one_iter, two_iter;
-  one_iter = query_one.begin();
-  two_iter = query_two.begin();
-  while (one_iter!=query_one.end() and two_iter!=query_two.end())
-  {
-    if (*one_iter<*two_iter)
-    {
-      ++one_iter;
-    }
-    else if (*one_iter>*two_iter)
-    {
-      ++two_iter;
-    }
-    else
-    {
-      result.push_back(*one_iter);
-      ++one_iter;
-      ++two_iter;
-    }
-  }//while
-  return result;
-}
-
-void DataBase::removeFromFileToHashIndex(const std::string& FileName)
+void DirectDatabase::removeFromFileToHashIndex(const std::string& FileName)
 {
   std::map<std::string, SHA256::MessageDigest>::iterator iter = m_FileToHash.find(FileName);
   if (iter!=m_FileToHash.end())

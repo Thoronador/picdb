@@ -20,7 +20,7 @@
 
 #include "PicData.hpp"
 #include <iostream>
-#include "../PicDataBase.h"
+#include "../PicDatabase.hpp"
 #include "../common/Splitter.hpp"
 
 void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
@@ -84,7 +84,7 @@ void PicData::show() const
   } //else-branch
   std::cout <<"\n";
   //tags
-  std::cout << "  " << DataBase::cTagPrefix<<": ";
+  std::cout << "  " << Database::cTagPrefix<<": ";
   if (tags.size()==0)
   {
     std::cout <<cNoTags;

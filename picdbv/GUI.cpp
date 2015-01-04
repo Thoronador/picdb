@@ -24,7 +24,7 @@
 #include "../libthoro/common/graphics/ImageLoader.h"
 #include "../libthoro/common/graphics/GLfunctions.h"
 #include "../libthoro/common/StringUtils.h"
-#include "PicDataBase.h"
+#include "PicDatabase.hpp"
 #include "GUIMultiLinePanel.h"
 
 GUI::GUI()
@@ -212,7 +212,7 @@ void GUI::processInput()
     if ("?save"==m_InputLine)
     {
       std::cout << "Saving DB requested...\n";
-      if (PicDataBase::getSingleton().saveToFile(config.DB_File))
+      if (PicDatabase::getSingleton().saveToFile(config.DB_File))
       {
         std::cout << "DB saved successfully to \""<<config.DB_File<<"\".\n";
       }
@@ -226,7 +226,7 @@ void GUI::processInput()
       std::cout << "Loading DB requested...\n";
       if (FileExists(config.DB_File))
       {
-        if (PicDataBase::getSingleton().loadFromFile(config.DB_File))
+        if (PicDatabase::getSingleton().loadFromFile(config.DB_File))
         {
           std::cout << "success.\n";
         }
@@ -240,10 +240,10 @@ void GUI::processInput()
     else if ("?purge"==m_InputLine)
     {
       std::cout << "Purging files (this may take a while)...\n";
-      std::vector<std::string> sv = PicDataBase::getSingleton().getNonexistingFiles(config.Directory);
+      std::vector<std::string> sv = PicDatabase::getSingleton().getNonexistingFiles(config.Directory);
       std::cout <<"Number of purgable files: "<<sv.size()<<"\n";
       std::cout << "Purging...";
-      PicDataBase::getSingleton().purgeNonexistingFiles(config.Directory);
+      PicDatabase::getSingleton().purgeNonexistingFiles(config.Directory);
       std::cout << "done.\n";
     }//if purge
     else if ("?all"==m_InputLine)
@@ -256,7 +256,7 @@ void GUI::processInput()
     else if ("?untagged"==m_InputLine)
     {
       std::cout << "Requesting untagged files...\n"  ;
-      std::vector<std::string> sv = PicDataBase::getSingleton().getUntaggedFiles();
+      std::vector<std::string> sv = PicDatabase::getSingleton().getUntaggedFiles();
       std::cout << "Number of untagged files: "<<sv.size()<<"\n";
       if (!sv.empty())
       {
@@ -267,7 +267,7 @@ void GUI::processInput()
     else if ("?unknown"==m_InputLine)
     {
       std::cout << "Requesting files with unknown persons...\n"  ;
-      std::vector<std::string> sv = PicDataBase::getSingleton().getUnknownWhoFiles();
+      std::vector<std::string> sv = PicDatabase::getSingleton().getUnknownWhoFiles();
       std::cout << "Number of files: "<<sv.size()<<"\n";
       if (!sv.empty())
       {
@@ -278,7 +278,7 @@ void GUI::processInput()
     else if (("?unknown_artist"==m_InputLine) or ("?unknownartist"==m_InputLine))
     {
       std::cout << "Requesting files with unknown artist...\n"  ;
-      std::vector<std::string> sv = PicDataBase::getSingleton().getUnknownArtistFiles();
+      std::vector<std::string> sv = PicDatabase::getSingleton().getUnknownArtistFiles();
       std::cout << "Number of files: "<<sv.size()<<"\n";
       if (!sv.empty())
       {
@@ -360,10 +360,10 @@ void GUI::processInput()
       if (m_InputLine.substr(0, 3) == "+t ")
       {
         std::cout<< "Adding tags requested...\n";
-        if (PicDataBase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
+        if (PicDatabase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
         {
           //get copy of current data
-          PicData data = PicDataBase::getSingleton().getData(selectedFiles[currentIndex]);
+          PicData data = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
           //split line into separate tags
           std::set<std::string> new_tags = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
@@ -372,7 +372,7 @@ void GUI::processInput()
             if (!(i->empty()))
               data.tags.insert(*i);
           }//for
-          PicDataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
+          PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
           std::cout << "Tags \""<< m_InputLine.substr(3) << "\" added successfully.\n";
@@ -381,10 +381,10 @@ void GUI::processInput()
       else if (m_InputLine.substr(0, 3) == "+w ")
       {
         std::cout<< "Adding who/what requested...\n";
-        if (PicDataBase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
+        if (PicDatabase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
         {
           //get copy of current data
-          PicData data = PicDataBase::getSingleton().getData(selectedFiles[currentIndex]);
+          PicData data = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
           //split line into separate tags
           std::set<std::string> new_whos = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
@@ -393,7 +393,7 @@ void GUI::processInput()
             if (!(i->empty()))
               data.who.insert(*i);
           }//for
-          PicDataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
+          PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
           std::cout << "Who: \""<< m_InputLine.substr(3) << "\" added successfully.\n";
@@ -416,10 +416,10 @@ void GUI::processInput()
       if (m_InputLine.substr(0, 3) == "-t ")
       {
         std::cout<< "Removing tags requested...\n";
-        if (PicDataBase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
+        if (PicDatabase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
         {
           //get copy of current data
-          PicData data = PicDataBase::getSingleton().getData(selectedFiles[currentIndex]);
+          PicData data = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
           //split line into separate tags
           std::set<std::string> del_tags = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
@@ -428,7 +428,7 @@ void GUI::processInput()
             if (!(i->empty()))
               data.tags.erase(*i);
           }//for
-          PicDataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
+          PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
           std::cout << "Tags \""<< m_InputLine.substr(3) << "\" removed.\n";
@@ -437,10 +437,10 @@ void GUI::processInput()
       else if (m_InputLine.substr(0, 3) == "-w ")
       {
         std::cout<< "Removing who/what requested...\n";
-        if (PicDataBase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
+        if (PicDatabase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
         {
           //get copy of current data
-          PicData data = PicDataBase::getSingleton().getData(selectedFiles[currentIndex]);
+          PicData data = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
           //split line into separate tags
           std::set<std::string> del_whos = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
@@ -449,7 +449,7 @@ void GUI::processInput()
             if (!(i->empty()))
               data.who.erase(*i);
           }//for
-          PicDataBase::getSingleton().addFile(selectedFiles[currentIndex], data);
+          PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
           std::cout << "Who: \""<< m_InputLine.substr(3) << "\" removed successfully.\n";
@@ -467,7 +467,7 @@ void GUI::processInput()
   //must be a query instead
   std::cout << "You have entered the query \""<<m_InputLine<<"\".\n";
   std::cout << "Performing query...";
-  std::vector<std::string> query_result = PicDataBase::getSingleton().executeQuery(m_InputLine);
+  std::vector<std::string> query_result = PicDatabase::getSingleton().executeQuery(m_InputLine);
   std::cout << "done.\nResults: "<<query_result.size()<<"\n";
   if (!query_result.empty())
   {
@@ -476,9 +476,9 @@ void GUI::processInput()
     //set new first image
     if (setCurrentImageByIndex(0))
     {
-      if (PicDataBase::getSingleton().hasFile(selectedFiles.at(0)))
+      if (PicDatabase::getSingleton().hasFile(selectedFiles.at(0)))
       {
-        const PicData& data = PicDataBase::getSingleton().getData(selectedFiles.at(0));
+        const PicData& data = PicDatabase::getSingleton().getData(selectedFiles.at(0));
         updateInfoPanels(data.who, data.tags, data.artist);
       }//if file in DB
     }//if new image was set
@@ -491,7 +491,7 @@ void GUI::getAllFiles()
 {
   selectedFiles.clear();
   currentIndex = -1;
-  const std::set<std::string> fileset = PicDataBase::getSingleton().getListedFiles();
+  const std::set<std::string> fileset = PicDatabase::getSingleton().getListedFiles();
   std::set<std::string>::const_iterator iter = fileset.begin();
   while (iter!=fileset.end())
   {
@@ -522,7 +522,7 @@ void GUI::showNext()
       if (!FileExists(config.Directory+selectedFiles[currentIndex]))
       {
         //delete file from the DB, it does not exist any more
-        PicDataBase::getSingleton().deleteFile(selectedFiles[currentIndex]);
+        PicDatabase::getSingleton().deleteFile(selectedFiles[currentIndex]);
         //delete file from the selected files vector, too
         selectedFiles.erase(selectedFiles.begin()+currentIndex);
       }//if
@@ -542,9 +542,9 @@ void GUI::showNext()
       return;
     }
     //try to display image
-    if (PicDataBase::getSingleton().hasFile(selectedFiles[currentIndex]))
+    if (PicDatabase::getSingleton().hasFile(selectedFiles[currentIndex]))
     {
-      const PicData& info = PicDataBase::getSingleton().getData(selectedFiles[currentIndex]);
+      const PicData& info = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
       if (setCurrentImageByIndex(currentIndex))
       {
         //update info stuff
@@ -578,7 +578,7 @@ void GUI::showPrevious()
       if (!FileExists(config.Directory+selectedFiles[currentIndex]))
       {
         //delete file from the DB, it does not exist any more
-        PicDataBase::getSingleton().deleteFile(selectedFiles[currentIndex]);
+        PicDatabase::getSingleton().deleteFile(selectedFiles[currentIndex]);
         //delete file from the selected files vector, too
         selectedFiles.erase(selectedFiles.begin()+currentIndex);
       }//if
@@ -598,10 +598,10 @@ void GUI::showPrevious()
       return;
     }
     //try to display image
-    if (PicDataBase::getSingleton().hasFile(selectedFiles[currentIndex]))
+    if (PicDatabase::getSingleton().hasFile(selectedFiles[currentIndex]))
     {
       std::cout << "DBG: Accessing database...\n";
-      const PicData& info = PicDataBase::getSingleton().getData(selectedFiles[currentIndex]);
+      const PicData& info = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
       std::cout << "DBG: Setting image...\n";
       if (setCurrentImageByIndex(currentIndex))
       {
@@ -703,9 +703,9 @@ void GUI::performIdleTasks()
     if (!sha_md.isNull())
     {
       //hash found
-      if (PicDataBase::getSingleton().hasFile(currFile))
+      if (PicDatabase::getSingleton().hasFile(currFile))
       {
-        PicData tempData = PicDataBase::getSingleton().getData(currFile);
+        PicData tempData = PicDatabase::getSingleton().getData(currFile);
         if (tempData.hash_sha256!=sha_md)
         {
           //hash difference found
@@ -715,10 +715,10 @@ void GUI::performIdleTasks()
             tempData.hash_sha256 = sha_md;
             const bool could_use_update = (tempData.tags.empty() or tempData.who.empty() or tempData.artist.empty());
             bool dataUpdated = false;
-            if (could_use_update and PicDataBase::getSingleton().hasDataForHash(sha_md))
+            if (could_use_update and PicDatabase::getSingleton().hasDataForHash(sha_md))
             {
 
-                const PicData& otherData = PicDataBase::getSingleton().getData(sha_md);
+                const PicData& otherData = PicDatabase::getSingleton().getData(sha_md);
                 //update tags, who and artist
                 if (tempData.tags.empty())
                 {
@@ -738,7 +738,7 @@ void GUI::performIdleTasks()
 
             }//if update needed and file with same hash present
             //set new data
-            PicDataBase::getSingleton().addFile(currFile, tempData);
+            PicDatabase::getSingleton().addFile(currFile, tempData);
             //do we need to update the panels?
             if (dataUpdated and (currFile==selectedFiles[currentIndex]))
             {
@@ -759,7 +759,7 @@ void GUI::performIdleTasks()
   else
   {
     //update some unhashed files instead
-    const unsigned int uh = PicDataBase::getSingleton().getNumUnhashed();
+    const unsigned int uh = PicDatabase::getSingleton().getNumUnhashed();
     if (uh>0)
     {
       const unsigned int info_step = 100;
@@ -769,7 +769,7 @@ void GUI::performIdleTasks()
         std::cout << "Info: unhashed files: "<<uh<<"\n";
         next_info_at = next_info_at > info_step ? next_info_at-info_step : 1;
       }
-      PicDataBase::getSingleton().hashUnhashedFiles(config.Directory, 2);
+      PicDatabase::getSingleton().hashUnhashedFiles(config.Directory, 2);
     }
   }
 }//func performing idle task

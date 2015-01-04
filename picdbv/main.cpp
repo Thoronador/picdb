@@ -22,7 +22,7 @@
 #include <string>
 #include "Configuration.hpp"
 #include "common/Splitter.hpp"
-#include "PicDataBase.h"
+#include "PicDatabase.hpp"
 #include "GUI.h"
 
 //the configuration
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
   std::cout << "Processed command line parameters: "<<argc-1<<"\n";
 
   std::cout << "DataBase starts now.\n";
-  PicDataBase& db = PicDataBase::getSingleton();
+  PicDatabase& db = PicDatabase::getSingleton();
   db.clearAllData();
   if (doSearchNewFiles)
   {

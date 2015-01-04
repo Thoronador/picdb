@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2014  Thoronador
+    Copyright (C) 2011, 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef DATABASE_H
-#define DATABASE_H
+#ifndef DATABASE_HPP
+#define DATABASE_HPP
 
 #include <fstream>
 #include <map>
@@ -31,19 +31,18 @@
 #include "../../libthoro/common/DirectoryFileList.h"
 #include "../../libthoro/hashfunctions/sha-256.h"
 
-class DataBase
+
+/** \brief abstract class Database - serves as interface for all real database classes
+ */
+class Database
 {
   public:
-    /** \brief default constructor */
-    DataBase();
-
-
     /** \brief destructor */
-    virtual ~DataBase();
+    virtual ~Database();
 
 
     /** \brief clears all entries within the database */
-    void clearAllData();
+    virtual void clearAllData() = 0;
 
 
     /** \brief adds all files from the given directory to the database
@@ -52,13 +51,13 @@ class DataBase
      * \param directory the directory that will be searched for files
      * \return Returns true, if at least one file was added.
      */
-    bool getFilesFromDirectory(const std::string& directory);
+    virtual bool getFilesFromDirectory(const std::string& directory) = 0;
 
 
     /** \brief tries to guess names of pictures and their artists from the file names
      *         of the pictures by searching for certain dividers.
      */
-    void AutoTag_Splitter();
+    virtual void AutoTag_Splitter() = 0;
 
 
     /** \brief adds a new file entry to the database.
@@ -68,7 +67,7 @@ class DataBase
      * \param FileName name of the file that will be added
      * \param data the data of that file
      */
-    void addFile(const std::string& FileName, const PicData& data);
+    virtual void addFile(const std::string& FileName, const PicData& data) = 0;
 
 
     /** \brief checks, whether a file with the given file name is in the database
@@ -77,13 +76,13 @@ class DataBase
      * \return Returns true, if a file with the given file name is in the
      *         database.
      */
-    bool hasFile(const std::string& FileName) const;
+    virtual bool hasFile(const std::string& FileName) const = 0;
 
 
     /** \brief returns a set containing all files in the database
      * \return set of all file names in the database
      */
-    std::set<std::string> getListedFiles() const;
+    virtual std::set<std::string> getListedFiles() const = 0;
 
 
     /** \brief deletes an entry from the database
@@ -91,7 +90,7 @@ class DataBase
      * \param FileName name of the file whose DB entry shall be deleted
      * \return Returns true, if an entry was deleted.
      */
-    bool deleteFile(const std::string& FileName);
+    virtual bool deleteFile(const std::string& FileName) = 0;
 
 
     /** \brief tries to get the data entry for a given file and returns it,
@@ -100,7 +99,7 @@ class DataBase
      * present by calling hasFile() before.
      * \param FileName name of the file whose entry shall be returned
      */
-    const PicData& getData(const std::string& FileName) const;
+    virtual const PicData& getData(const std::string& FileName) const = 0;
 
 
     /** \brief tries to get the data entry for a given hash and returns it, if such a
@@ -110,7 +109,7 @@ class DataBase
 
      * \param hash the SHA-256 hash of the file whose entry shall be returned
      */
-    const PicData& getData(const SHA256::MessageDigest& hash) const;
+    virtual const PicData& getData(const SHA256::MessageDigest& hash) const = 0;
 
 
     /** \brief Checks, whether there is a database entry for the file with the given hash value.
@@ -118,7 +117,7 @@ class DataBase
      * \param hash the SHA-256 hash value
      * \return Return true, if an entry for the given hash value exists.
      */
-    bool hasDataForHash(const SHA256::MessageDigest& hash) const;
+    virtual bool hasDataForHash(const SHA256::MessageDigest& hash) const = 0;
 
 
     /** \brief returns all file names for a given hash, if an entry is present.
@@ -128,11 +127,11 @@ class DataBase
      * \param hash the SHA-256 hash value of the files
      * \return list (i.e. std::set) of all matching file names
      */
-    std::set<std::string> getAllFilesForHash(const SHA256::MessageDigest& hash) const;
+    virtual std::set<std::string> getAllFilesForHash(const SHA256::MessageDigest& hash) const = 0;
 
 
     /** \brief writes the data of all files within the DB to the standard output */
-    void ListData() const;
+    virtual void ListData() const = 0;
 
 
     /** \brief tries to calculate the hashes for all files in the DB that do not have a valid hash yet.
@@ -140,42 +139,42 @@ class DataBase
      * \param baseDir  the base directory for the file names in the DB
      * \param limit    the maximum number of files to be hashed - zero means all
      */
-    void hashUnhashedFiles(const std::string& baseDir, unsigned int limit);
+    virtual void hashUnhashedFiles(const std::string& baseDir, unsigned int limit) = 0;
 
 
     /** \brief gets the number of files without hash in database
      * \return returns the number of files without hash in database
      */
-    unsigned int getNumUnhashed() const;
+    virtual unsigned int getNumUnhashed() const = 0;
 
 
     /** \brief gets the number of files with hash in database
      * \return returns the number of files with hash in database
      */
-    unsigned int getNumHashed() const;
+    virtual unsigned int getNumHashed() const = 0;
 
 
     /** returns the number of entries in the database */
-    unsigned int getNumEntries() const;
+    virtual unsigned int getNumEntries() const = 0;
 
 
     /** \brief returns a vector containing all files in the db that have not been tagged yet
      * \returns vector containing the names of untagged files
      */
-    std::vector<std::string> getUntaggedFiles() const;
+    virtual std::vector<std::string> getUntaggedFiles() const = 0;
 
 
     /** \brief returns a vector of files with unknown artist
      * \return returns a vector containing all files in the db that have an unknown
      *  artist entry
      */
-    std::vector<std::string> getUnknownArtistFiles() const;
+    virtual std::vector<std::string> getUnknownArtistFiles() const = 0;
 
 
     /** \return returns a vector containing all file that do not show any persons
      * (or unknown persons for that matter)
      */
-    std::vector<std::string> getUnknownWhoFiles() const;
+    virtual std::vector<std::string> getUnknownWhoFiles() const = 0;
 
 
     /** \brief returns a list of files that are in the database but do not exist on the
@@ -184,29 +183,29 @@ class DataBase
      *
      * \param BaseDir directory containing the files
      */
-    std::vector<std::string> getNonexistingFiles(const std::string& BaseDir) const;
+    virtual std::vector<std::string> getNonexistingFiles(const std::string& BaseDir) const = 0;
 
 
     /** \brief removes entries about all non-existing files from the database
      *
      * \param BaseDir  directory that should contain the files (but doesn't)
      */
-    void purgeNonexistingFiles(const std::string& BaseDir);
+    virtual void purgeNonexistingFiles(const std::string& BaseDir) = 0;
 
 
-    void showTagStatistics() const;
+    virtual void showTagStatistics() const = 0;
 
-    void showWhoStatistics() const;
+    virtual void showWhoStatistics() const = 0;
 
-    bool saveToFile(const std::string& FileName) const;
-    bool loadFromFile(const std::string& FileName);
+    virtual bool saveToFile(const std::string& FileName) const = 0;
+    virtual bool loadFromFile(const std::string& FileName) = 0;
 
     /** \brief translates the given string into query conditions and returns a list of
      * all files that match the given query conditions
      *
      * \param query  the query string
      */
-    std::vector<std::string> executeQuery(const std::string& query) const;
+    virtual std::vector<std::string> executeQuery(const std::string& query) const = 0;
 
 
     static const std::string cFilePrefix;
@@ -215,14 +214,14 @@ class DataBase
     static const std::string cWhoPrefix;
     static const std::string cTagPrefix;
     static const std::string cHashPrefix;
-  private:
+  protected:
     /* returns the union of two query results
 
        parameters:
            query_one - result of first query
            query_two - result of second query
     */
-    std::vector<std::string> getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const;
+    static std::vector<std::string> getQueryResultUnion(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two);
 
     /* returns the intersection of two query results
 
@@ -230,26 +229,10 @@ class DataBase
            query_one - result of first query
            query_two - result of second query
     */
-    std::vector<std::string> getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two) const;
-
-
-    /* removes one file entry from filename-to-hash index, if present.
-
-       parameters:
-           FileName - associated file name
-    */
-    void removeFromFileToHashIndex(const std::string& FileName);
+    static std::vector<std::string> getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two);
 
     ///aux. function to save one single db entry to file
-    void saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data) const;
-
-    ///internal file map - key is file name, value is data record - deprecated
-    std::map<std::string, PicData> m_Files;
-
-    ///internal "database" - key is a file's digest, value is associated record
-    std::map<SHA256::MessageDigest, PicData> m_Data;
-    ///maps known file names to their last known hash
-    std::map<std::string, SHA256::MessageDigest> m_FileToHash;
+    static void saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data);
 }; //class
 
-#endif // DATABASE_H
+#endif // DATABASE_HPP

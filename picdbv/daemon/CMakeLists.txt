@@ -15,7 +15,8 @@ set(picdbd_sources
     ../common/Splitter.cpp
     ../common/WhoStatRecord.cpp
     ../common/filesystem/functions.cpp
-    ../data/DataBase.cpp
+    ../data/Database.cpp
+    ../data/DirectDatabase.cpp
     ../data/DatabaseManager.cpp
     ../data/PicData.cpp
     ../sockets/UnixDomainSocketServer.cpp

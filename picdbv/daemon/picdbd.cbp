@@ -50,10 +50,12 @@
 		<Unit filename="../common/escaping.hpp" />
 		<Unit filename="../common/filesystem/functions.cpp" />
 		<Unit filename="../common/filesystem/functions.hpp" />
-		<Unit filename="../data/DataBase.cpp" />
-		<Unit filename="../data/DataBase.hpp" />
+		<Unit filename="../data/Database.cpp" />
+		<Unit filename="../data/Database.hpp" />
 		<Unit filename="../data/DatabaseManager.cpp" />
 		<Unit filename="../data/DatabaseManager.hpp" />
+		<Unit filename="../data/DirectDatabase.cpp" />
+		<Unit filename="../data/DirectDatabase.hpp" />
 		<Unit filename="../data/PicData.cpp" />
 		<Unit filename="../data/PicData.hpp" />
 		<Unit filename="../sockets/UnixDomainSocketServer.cpp" />

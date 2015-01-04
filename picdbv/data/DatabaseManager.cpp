@@ -22,7 +22,7 @@
 #include <stdexcept>
 
 DatabaseManager::DatabaseManager()
-: m_Databases(std::map<std::string, DataBase>())
+: m_Databases(std::map<std::string, DirectDatabase>())
 {
 }
 
@@ -41,13 +41,13 @@ bool DatabaseManager::createDatabase(const std::string& db_name)
 {
   if (db_name.empty())
     return false;
-  const std::map<std::string, DataBase>::const_iterator iter = m_Databases.find(db_name);
+  const std::map<std::string, DirectDatabase>::const_iterator iter = m_Databases.find(db_name);
   if (iter != m_Databases.end())
   {
     //database already exists
     return false;
   }
-  m_Databases[db_name] = DataBase();
+  m_Databases[db_name] = DirectDatabase();
   return true;
 }
 
@@ -66,7 +66,7 @@ bool DatabaseManager::hasDatabase(const std::string& name) const
 std::set<std::string> DatabaseManager::listAllDatabaseNames() const
 {
   std::set<std::string> result;
-  std::map<std::string, DataBase>::const_iterator iter = m_Databases.begin();
+  std::map<std::string, DirectDatabase>::const_iterator iter = m_Databases.begin();
   while (iter!= m_Databases.end())
   {
     result.insert(iter->first);
@@ -75,9 +75,9 @@ std::set<std::string> DatabaseManager::listAllDatabaseNames() const
   return result;
 }
 
-DataBase& DatabaseManager::getDatabase(const std::string& db_name)
+Database& DatabaseManager::getDatabase(const std::string& db_name)
 {
-  const std::map<std::string, DataBase>::iterator iter = m_Databases.find(db_name);
+  const std::map<std::string, DirectDatabase>::iterator iter = m_Databases.find(db_name);
   if (iter!=m_Databases.end())
   {
     return iter->second;

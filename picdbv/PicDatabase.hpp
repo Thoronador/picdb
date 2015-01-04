@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012, 2013  Thoronador
+    This file is part of picdb.
+    Copyright (C) 2011, 2012, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,21 +18,25 @@
  -----------------------------------------------------------------------------
 */
 
-#include "PicDataBase.h"
+#ifndef PICDATABASE_HPP
+#define PICDATABASE_HPP
 
-PicDataBase& PicDataBase::getSingleton()
-{
-  static PicDataBase Instance;
-  return Instance;
-}
+#include "data/DirectDatabase.hpp"
 
-PicDataBase::~PicDataBase()
+class PicDatabase: public DirectDatabase
 {
-  clearAllData();
-}
+  public:
+    /* singleton access */
+    static PicDatabase& getSingleton();
 
-PicDataBase::PicDataBase()
-: DataBase()
-{
-  //empty
-}
+    /* destructor */
+    virtual ~PicDatabase();
+  private:
+    //constructor
+    PicDatabase();
+
+    //empty copy constructor
+    PicDatabase(const PicDatabase& op) {}
+}; //class
+
+#endif // PICDATABASE_HPP
