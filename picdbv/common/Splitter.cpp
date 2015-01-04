@@ -123,7 +123,7 @@ std::vector<std::string> Splitter::splitAtSpaceVector(std::string line)
   return result;
 }
 
-static std::vector<std::string> splitAtSeparator(std::string line, const char separator)
+std::vector<std::string> splitAtSeparator(std::string line, const char separator)
 {
   std::vector<std::string> result;
   if (line.empty())

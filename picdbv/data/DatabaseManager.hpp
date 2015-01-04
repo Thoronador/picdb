@@ -23,7 +23,7 @@
 
 #include <map>
 #include <string>
-#include "../common/DataBase.hpp"
+#include "DataBase.hpp"
 
 class DatabaseManager
 {

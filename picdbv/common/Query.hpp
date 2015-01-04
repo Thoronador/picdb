@@ -23,7 +23,7 @@
 
 #include <string>
 #include <vector>
-#include "PicData.hpp"
+#include "../data/PicData.hpp"
 
 /** \brief structure to hold criteria for a DB query
  * \remarks The different criteria are AND-ed together, i.e. a picture has to

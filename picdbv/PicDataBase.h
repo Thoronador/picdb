@@ -21,7 +21,7 @@
 #ifndef PICDATABASE_H
 #define PICDATABASE_H
 
-#include "common/DataBase.hpp"
+#include "data/DataBase.hpp"
 
 class PicDataBase: public DataBase
 {

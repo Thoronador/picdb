@@ -23,7 +23,7 @@
 #include <syslog.h>
 #include <sys/socket.h>
 #include "../daemon/constants.hpp"
-#include "../daemon/DatabaseManager.hpp"
+#include "../data/DatabaseManager.hpp"
 #include "../common/escaping.hpp"
 #include "../common/filesystem/functions.hpp"
 

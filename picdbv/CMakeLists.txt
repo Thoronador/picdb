@@ -31,11 +31,11 @@ set(picdbv_sources
     GUIMultiLinePanel.cpp
     GUITextPanel.cpp
     PicDataBase.cpp
-    common/DataBase.cpp
-    common/PicData.cpp
     common/Query.cpp
     common/Splitter.cpp
     common/WhoStatRecord.cpp
+    data/DataBase.cpp
+    data/PicData.cpp
     main.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

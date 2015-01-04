@@ -10,17 +10,17 @@ set(picdbd_sources
     ../../libthoro/common/StringUtils.cpp
     ../../libthoro/hashfunctions/sha-256.cpp
     ../../libthoro/hashfunctions/sha-256_sources.cpp
-    ../common/DataBase.cpp
     ../common/escaping.cpp
-    ../common/PicData.cpp
     ../common/Query.cpp
     ../common/Splitter.cpp
     ../common/WhoStatRecord.cpp
     ../common/filesystem/functions.cpp
+    ../data/DataBase.cpp
+    ../data/DatabaseManager.cpp
+    ../data/PicData.cpp
     ../sockets/UnixDomainSocketServer.cpp
     ../sockets/picdbvUDSServer.cpp
     Daemonic.cpp
-    DatabaseManager.cpp
     main.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
