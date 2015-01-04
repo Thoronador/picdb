@@ -103,6 +103,26 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         answer = codeBadRequest + " database names shall not contain whitespace characters";
       }
     } //if delete_db
+    else if (message.size() > 10 && (message.substr(0, 10) == "exists_db "))
+    {
+      std::string db_name = message.substr(10);
+      //check for spaces in name
+      if (db_name.find(' ')==std::string::npos)
+      {
+        const bool exists = DatabaseManager::get().hasDatabase(db_name);
+        if (exists)
+          answer = codeOK + " database " + db_name + " exists";
+        else
+        {
+          answer = codeNoContent + " database " + db_name + " does not exist";
+        }
+      }
+      else
+      {
+        //name contains spaces
+        answer = codeBadRequest + " database names shall not contain whitespace characters";
+      }
+    } //if exists_db
     else if (message.size() > 8 && (message.substr(0, 8) == "load_db "))
     {
       const std::vector<std::string> args = Splitter::splitAtSpaceVector(message.substr(8));
@@ -168,7 +188,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     } //if untagged
     else if (message == "supported_commands")
     {
-      answer = codeOK +" version stop list_dbs create_db delete_db load_db untagged supported_commands";
+      answer = codeOK +" version stop list_dbs create_db delete_db exists_db load_db untagged supported_commands";
     }
     else if (message == "help")
     {
@@ -191,6 +211,7 @@ void picdbvUDSServer::help(std::string& answer)
   answer = std::string("List of commonly used commands:\n")
          + "   create_db          - create a new database\n"
          + "   delete_db          - delete a database\n"
+         + "   exists_db          - checks existence of a database\n"
          + "   help               - show this help\n"
          + "   list_dbs           - lists all current databases\n"
          + "   load_db            - load database content from a file\n"
