@@ -6,6 +6,9 @@ enable_testing()
 # Recurse into subdirectory for picdbd
 add_subdirectory (picdbv/daemon)
 
+# Recurse into subdirectory for picdb-client-cli
+add_subdirectory (picdbv/client-cli)
+
 # Recurse into subdirectory for picdbv
 add_subdirectory (picdbv)
 
