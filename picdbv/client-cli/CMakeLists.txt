@@ -15,4 +15,3 @@ set(client_cli_sources
 #set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
 add_executable(client_cli ${client_cli_sources})
-

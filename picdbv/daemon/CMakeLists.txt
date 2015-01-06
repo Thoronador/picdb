@@ -31,12 +31,3 @@ endif (CMAKE_COMPILER_IS_GNUCC)
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
 add_executable(picdbd ${picdbd_sources})
-
-
-# find_package (GLUT)
-# if (GLUT_FOUND)
-#   include_directories(${GLUT_INCLUDE_DIRS})
-#   target_link_libraries (picdbd ${GLUT_LIBRARIES})
-# else ()
-#   message ( FATAL_ERROR "GLUT was not found!" )
-# endif (GLUT_FOUND)
