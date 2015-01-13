@@ -123,6 +123,27 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         answer = codeBadRequest + " database names shall not contain whitespace characters";
       }
     } //if exists_db
+    else if (message.size() > 9 && (message.substr(0, 9) == "clear_db "))
+    {
+      const std::string db_name = message.substr(9);
+      //check for spaces in name
+      if (db_name.find(' ')==std::string::npos)
+      {
+        const bool exists = DatabaseManager::get().hasDatabase(db_name);
+        if (!exists)
+          answer = codeBadRequest + " database " + db_name + " does not exist";
+        else
+        {
+          DatabaseManager::get().getDatabase(db_name).clearAllData();
+          answer = codeOK + " database " + db_name + " was cleared";
+        }
+      }
+      else
+      {
+        //name contains spaces
+        answer = codeBadRequest + " database names shall not contain whitespace characters";
+      }
+    } //if clear_db
     else if (message.size() > 8 && (message.substr(0, 8) == "load_db "))
     {
       const std::vector<std::string> args = Splitter::splitAtSpaceVector(message.substr(8));
