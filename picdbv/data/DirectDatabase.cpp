@@ -188,7 +188,7 @@ void DirectDatabase::AutoTag_Splitter()
   iter = m_Files.begin();
   while (iter != m_Files.end())
   {
-    fe_vec.push_back((FileEntry){iter->first, false});
+    fe_vec.push_back(FileEntry(iter->first, false));
     ++iter;
   }//while
   ts = Splitter::splitFileNames(fe_vec);
