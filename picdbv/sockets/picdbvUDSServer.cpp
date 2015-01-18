@@ -27,6 +27,26 @@
 #include "../common/escaping.hpp"
 #include "../common/filesystem/functions.hpp"
 
+#include "../daemon/commands/CmdVersion.hpp"
+#include "../daemon/commands/CmdHelp.hpp"
+#include "../daemon/commands/CmdListDatabases.hpp"
+#include "../daemon/commands/CmdCreateDB.hpp"
+#include "../daemon/commands/CmdDeleteDB.hpp"
+#include "../daemon/commands/CmdExistsDB.hpp"
+
+picdbvUDSServer::picdbvUDSServer()
+: UnixDomainSocketServer(), m_Commands(std::vector<std::unique_ptr<Command> >())
+{
+  // add some "built-in" commands
+  m_Commands.push_back(std::unique_ptr<CommandHelp>(new CommandHelp()));
+  m_Commands.push_back(std::unique_ptr<CommandVersion>(new CommandVersion()));
+  // add DatabaseManager-related commands
+  m_Commands.push_back(std::unique_ptr<CommandListDatabases>(new CommandListDatabases()));
+  m_Commands.push_back(std::unique_ptr<CommandCreateDatabase>(new CommandCreateDatabase()));
+  m_Commands.push_back(std::unique_ptr<CommandDeleteDB>(new CommandDeleteDB()));
+  m_Commands.push_back(std::unique_ptr<CommandExistsDB>(new CommandExistsDB()));
+}
+
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
 {
   closeWhenDone = false;
@@ -34,13 +54,22 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
   if (receiveString(client_socket_fd, message))
   {
     std::string answer;
-    if (processBuiltInCommands(message, answer, closeWhenDone))
+
+    if (message == "stop")
     {
-      //stuff is done in function call above
+      answer = codeOK + " stopping server soon";
+      m_shutdown = true;
+      closeWhenDone = true;
     }
-    else if (processManagerCommands(message, answer))
+    else if (message == "supported_commands")
     {
-      //stuff is done in function call above
+      answer = codeOK +" stop supported_commands";
+      std::vector<std::unique_ptr<Command> >::const_iterator iter = m_Commands.begin();
+      while (iter != m_Commands.end())
+      {
+        answer += " " + iter->get()->getName();
+        ++iter;
+      }//while
     }
     else if (processDatabaseCommands(message, answer))
     {
@@ -48,7 +77,20 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     }
     else
     {
-      answer = codeBadRequest + " Bad request";
+      bool processed = false;
+      std::vector<std::unique_ptr<Command> >::const_iterator iter = m_Commands.begin();
+      while (iter != m_Commands.end())
+      {
+        processed = iter->get()->processMessage(message, answer);
+        if (processed)
+          break;
+        ++iter;
+      }//while
+
+      if (!processed)
+      {
+        answer = codeBadRequest + " Bad request";
+      }
     }
     //send answer to client
     if (!answer.empty())
@@ -57,149 +99,6 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
       sendString(client_socket_fd, codeInternalServerError+" Server did not generate a response");
   }
 }
-
-void picdbvUDSServer::help(std::string& answer)
-{
-  answer = std::string("List of commonly used commands:\n")
-         + "   create_db          - create a new database\n"
-         + "   delete_db          - delete a database\n"
-         + "   exists_db          - checks existence of a database\n"
-         + "   help               - show this help\n"
-         + "   list_dbs           - lists all current databases\n"
-         + "   load_db            - load database content from a file\n"
-         + "   supported_commands - prints a list of supported commands\n"
-         + "   stop               - stops the server\n"
-         + "   untagged           - list untagged files in a database\n"
-         + "   version            - return version of server";
-}
-
-
-bool picdbvUDSServer::processBuiltInCommands(const std::string& message, std::string& answer, bool& closeWhenDone)
-{
-  if (message == "version")
-  {
-    answer = codeOK + " " + serverVersion;
-    return true;
-  }
-  else if (message == "stop")
-  {
-    answer = codeOK + " stopping server soon";
-    m_shutdown = true;
-    closeWhenDone = true;
-    return true;
-  }
-  else if (message == "supported_commands")
-  {
-    answer = codeOK +" version stop list_dbs create_db delete_db exists_db load_db untagged supported_commands";
-    return true;
-  }
-  else if (message == "help")
-  {
-    help(answer);
-    return true;
-  }
-  //message was not handled
-  return false;
-}
-
-
-bool picdbvUDSServer::processManagerCommands(const std::string& message, std::string& answer)
-{
-  /* list all database names */
-  if (message == "list_dbs")
-  {
-    const std::set<std::string> dbs = DatabaseManager::get().listAllDatabaseNames();
-    if (dbs.empty())
-    {
-      answer = codeNoContent + " none";
-    }
-    else
-    {
-      answer = codeOK;
-      std::set<std::string>::const_iterator iter = dbs.begin();
-      while (iter!=dbs.end())
-      {
-        answer += " "+*iter;
-        ++iter;
-      } //while
-    } //else
-  } //if list_dbs
-
-  /* create a new database */
-  else if (message.size() > 10 && (message.substr(0, 10) == "create_db "))
-  {
-    std::string db_name = message.substr(10);
-    //check for spaces in name
-    if (db_name.find(' ')==std::string::npos)
-    {
-      const bool created = DatabaseManager::get().createDatabase(db_name);
-      if (created)
-        answer = codeOK + " created database "+db_name;
-      else
-      {
-        answer = codeBadRequest + " could not create database";
-      }
-    }
-    else
-    {
-      //name contains spaces
-      answer = codeBadRequest + " database names shall not contain whitespace characters";
-    }
-  } //if create_db
-
-  /* delete a database */
-  else if (message.size() > 10 && (message.substr(0, 10) == "delete_db "))
-  {
-    std::string db_name = message.substr(10);
-    //check for spaces in name
-    if (db_name.find(' ')==std::string::npos)
-    {
-      const bool created = DatabaseManager::get().deleteDatabase(db_name);
-      if (created)
-        answer = codeOK + " deleted database "+db_name;
-      else
-      {
-        answer = codeBadRequest + " could not delete database";
-      }
-    }
-    else
-    {
-      //name contains spaces
-      answer = codeBadRequest + " database names shall not contain whitespace characters";
-    }
-  } //if delete_db
-
-  /* existence check for a database */
-  else if (message.size() > 10 && (message.substr(0, 10) == "exists_db "))
-  {
-    std::string db_name = message.substr(10);
-    //check for spaces in name
-    if (db_name.find(' ')==std::string::npos)
-    {
-      const bool exists = DatabaseManager::get().hasDatabase(db_name);
-      if (exists)
-        answer = codeOK + " database " + db_name + " exists";
-      else
-      {
-        answer = codeNoContent + " database " + db_name + " does not exist";
-      }
-    }
-    else
-    {
-      //name contains spaces
-      answer = codeBadRequest + " database names shall not contain whitespace characters";
-    }
-  } //if exists_db
-
-  /* message was not handled */
-  else
-  {
-    return false;
-  }
-  //message was handled above
-  return true;
-} // end of processManagerCommands
-
 
 bool picdbvUDSServer::processDatabaseCommands(const std::string& message, std::string& answer)
 {

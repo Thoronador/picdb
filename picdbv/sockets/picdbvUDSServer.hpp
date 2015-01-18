@@ -21,10 +21,18 @@
 #ifndef PICDBVUDSSERVER_HPP
 #define PICDBVUDSSERVER_HPP
 
+
 #include "UnixDomainSocketServer.hpp"
+#include <memory> // requires C++11 support
+#include <vector>
+#include "../daemon/commands/Command.hpp"
 
 class picdbvUDSServer: public UnixDomainSocketServer
 {
+  public:
+    /** constructor */
+    picdbvUDSServer();
+
   protected:
     /** \brief virtual function that handles the client/server transactions. Has to be
      * implemented in a derived class.
@@ -34,37 +42,6 @@ class picdbvUDSServer: public UnixDomainSocketServer
      */
     virtual void serveClient(const int client_socket_fd, bool& closeWhenDone);
   private:
-    /** \brief fills a given string with the server's help message
-     *
-     * \param answer string that will be used to store the help message
-     */
-    void help(std::string& answer);
-
-
-    /** \brief function that can handle "built-in" commands
-     *
-     * It checks whether a given message calls for a "built-in" command,
-     * and if so, processes that message.
-     *
-     * \param message  the message that was received from the client
-     * \param answer   string that will be used to store the answer, if any
-     * \return Returns true, if the message was processed. Returns false otherwise.
-     */
-    bool processBuiltInCommands(const std::string& message, std::string& answer, bool& closeWhenDone);
-
-
-    /** \brief function that can handle DatabaseManager-related commands
-     *
-     * It checks whether a given message calls for a DatabaseManager-related
-     * command, and if so, processes that message.
-     *
-     * \param message  the message that was received from the client
-     * \param answer   string that will be used to store the answer, if any
-     * \return Returns true, if the message was processed. Returns false otherwise.
-     */
-    bool processManagerCommands(const std::string& message, std::string& answer);
-
-
     /** \brief function that can handle database-related commands
      *
      * It checks whether a given message calls for a database-related command,
@@ -75,6 +52,8 @@ class picdbvUDSServer: public UnixDomainSocketServer
      * \return Returns true, if the message was processed. Returns false otherwise.
      */
     bool processDatabaseCommands(const std::string& message, std::string& answer);
+
+    std::vector<std::unique_ptr<Command> > m_Commands; /**< recognized commands */
 }; //class
 
 #endif // PICDBVUDSSERVER_HPP

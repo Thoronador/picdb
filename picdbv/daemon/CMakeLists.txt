@@ -22,11 +22,16 @@ set(picdbd_sources
     ../sockets/UnixDomainSocketServer.cpp
     ../sockets/picdbvUDSServer.cpp
     Daemonic.cpp
+    commands/CmdCreateDB.cpp
+    commands/CmdDeleteDB.cpp
+    commands/CmdExistsDB.cpp
+    commands/CmdHelp.cpp
+    commands/CmdListDatabases.cpp
+    commands/CmdVersion.cpp
+    commands/Command.cpp
     main.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions (-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+    add_definitions (-Wall -O3 -fexceptions -std=c++0x)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

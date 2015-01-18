@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -64,6 +65,20 @@
 		<Unit filename="../sockets/picdbvUDSServer.hpp" />
 		<Unit filename="Daemonic.cpp" />
 		<Unit filename="Daemonic.hpp" />
+		<Unit filename="commands/CmdCreateDB.cpp" />
+		<Unit filename="commands/CmdCreateDB.hpp" />
+		<Unit filename="commands/CmdDeleteDB.cpp" />
+		<Unit filename="commands/CmdDeleteDB.hpp" />
+		<Unit filename="commands/CmdExistsDB.cpp" />
+		<Unit filename="commands/CmdExistsDB.hpp" />
+		<Unit filename="commands/CmdHelp.cpp" />
+		<Unit filename="commands/CmdHelp.hpp" />
+		<Unit filename="commands/CmdListDatabases.cpp" />
+		<Unit filename="commands/CmdListDatabases.hpp" />
+		<Unit filename="commands/CmdVersion.cpp" />
+		<Unit filename="commands/CmdVersion.hpp" />
+		<Unit filename="commands/Command.cpp" />
+		<Unit filename="commands/Command.hpp" />
 		<Unit filename="constants.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
