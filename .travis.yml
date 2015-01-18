@@ -5,6 +5,7 @@ compiler:
 branches:
   only:
     - client-server
+    - server-commands
     - travis-ci
 before_install:
   - sudo apt-get install cmake freeglut3-dev libjpeg8-dev libpng12-dev libxmu-dev libxmu-headers -y
