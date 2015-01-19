@@ -42,18 +42,7 @@ class picdbvUDSServer: public UnixDomainSocketServer
      */
     virtual void serveClient(const int client_socket_fd, bool& closeWhenDone);
   private:
-    /** \brief function that can handle database-related commands
-     *
-     * It checks whether a given message calls for a database-related command,
-     * and if so, processes that message.
-     *
-     * \param message  the message that was received from the client
-     * \param answer   string that will be used to store the answer, if any
-     * \return Returns true, if the message was processed. Returns false otherwise.
-     */
-    bool processDatabaseCommands(const std::string& message, std::string& answer);
-
-    std::vector<std::unique_ptr<Command> > m_Commands; /**< recognized commands */
+    std::vector<std::unique_ptr<Command> > m_Commands; /**< vector of recognized commands */
 }; //class
 
 #endif // PICDBVUDSSERVER_HPP
