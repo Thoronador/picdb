@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of picdbv.
-    Copyright (C) 2014, 2015  Thoronador
+    This file is part of picdbd.
+    Copyright (C) 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,23 +18,35 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PIDDBD_CONSTANTS_H
-#define PIDDBD_CONSTANTS_H
+#include "CmdListDatabases.hpp"
+#include "../constants.hpp"
+#include "../../data/DatabaseManager.hpp"
 
-#include <string>
+CommandListDatabases::CommandListDatabases()
+: Command("list_dbs")
+{ }
 
-//socket location
-const std::string serverSocketFile = "/tmp/picdb_server.sock";
-
-//server version
-const std::string serverVersion    = "20150119.1";
-
-//server response codes
-const std::string codeContinue              = "100";
-const std::string codeOK                    = "200";
-const std::string codeNoContent             = "204";
-const std::string codeBadRequest            = "400";
-const std::string codeRequestEntityTooLarge = "413";
-const std::string codeInternalServerError   = "500";
-
-#endif // PIDDBD_CONSTANTS_H
+bool CommandListDatabases::processMessage(const std::string& message, std::string& answer) const
+{
+  if (message == "list_dbs")
+  {
+    const std::set<std::string> dbs = DatabaseManager::get().listAllDatabaseNames();
+    if (dbs.empty())
+    {
+      answer = codeNoContent + " none";
+    }
+    else
+    {
+      answer = codeOK;
+      std::set<std::string>::const_iterator iter = dbs.begin();
+      while (iter!=dbs.end())
+      {
+        answer += " "+*iter;
+        ++iter;
+      } //while
+    } //else
+    return true;
+  } //if list_dbs
+  else
+    return false;
+}

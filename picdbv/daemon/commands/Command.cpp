@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of picdbv.
-    Copyright (C) 2014, 2015  Thoronador
+    This file is part of picdbd.
+    Copyright (C) 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,23 +18,13 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PIDDBD_CONSTANTS_H
-#define PIDDBD_CONSTANTS_H
+#include "Command.hpp"
 
-#include <string>
+Command::Command(const std::string& name)
+: m_Name(name)
+{ }
 
-//socket location
-const std::string serverSocketFile = "/tmp/picdb_server.sock";
-
-//server version
-const std::string serverVersion    = "20150119.1";
-
-//server response codes
-const std::string codeContinue              = "100";
-const std::string codeOK                    = "200";
-const std::string codeNoContent             = "204";
-const std::string codeBadRequest            = "400";
-const std::string codeRequestEntityTooLarge = "413";
-const std::string codeInternalServerError   = "500";
-
-#endif // PIDDBD_CONSTANTS_H
+const std::string& Command::getName() const
+{
+  return m_Name;
+}
