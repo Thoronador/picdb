@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Morrowind Tools Project.
-    Copyright (C) 2012, 2014  Thoronador
+    Copyright (C) 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -114,9 +114,10 @@ bool UnixDomainSocketClient::connectToServer(const std::string& file)
   serv_addr.sun_family = AF_UNIX;
   snprintf(serv_addr.sun_path, file.length()+1, file.c_str());
 
-  int nbytes = connect(socket_fd, (struct sockaddr *) &serv_addr, sizeof(struct sockaddr_un));
-  if (nbytes != 0)
+  const int conn_status = connect(socket_fd, (struct sockaddr *) &serv_addr, sizeof(struct sockaddr_un));
+  if (conn_status != 0)
   {
+    close(socket_fd);
     std::cout << "SocketClient: Error: connect() failed!\n"
               << "Error code is "<< errno<<", indicating the following error:\n"
               << connectErrnoToString(errno)<<"\n";
@@ -144,7 +145,7 @@ int UnixDomainSocketClient::writeConnection(const void * buffer, const size_t by
 
 bool UnixDomainSocketClient::sendString(const std::string& message)
 {
-  std::string::size_type len = message.size()+1;
+  const std::string::size_type len = message.size()+1;
   int written = 0;
   while (written<len)
   {
