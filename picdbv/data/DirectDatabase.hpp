@@ -58,8 +58,10 @@ class DirectDatabase: public Database
 
     /** \brief tries to guess names of pictures and their artists from the file names
      *         of the pictures by searching for certain dividers.
+     * \return Returns true, if the values could be changed or updated.
+     *         Returns false otherwise.
      */
-    virtual void AutoTag_Splitter();
+    virtual bool AutoTag_Splitter();
 
 
     /** \brief adds a new file entry to the database.

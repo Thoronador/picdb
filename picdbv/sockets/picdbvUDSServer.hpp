@@ -21,9 +21,8 @@
 #ifndef PICDBVUDSSERVER_HPP
 #define PICDBVUDSSERVER_HPP
 
-
 #include "UnixDomainSocketServer.hpp"
-#include <memory> // requires C++11 support
+#include <memory> // contains std::unique_ptr, requires C++11 support
 #include <vector>
 #include "../daemon/commands/Command.hpp"
 

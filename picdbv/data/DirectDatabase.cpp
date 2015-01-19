@@ -176,38 +176,34 @@ std::set<std::string> DirectDatabase::getAllFilesForHash(const SHA256::MessageDi
   return result;
 }
 
-void DirectDatabase::AutoTag_Splitter()
+bool DirectDatabase::AutoTag_Splitter()
 {
-  std::vector<TwoStrings> ts;
-  PicData temp_data;
-
   //build FileEntry vector
   std::vector<FileEntry> fe_vec;
-  fe_vec.clear();
-  std::map<std::string, PicData>::const_iterator iter;
-  iter = m_Files.begin();
+  std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
     fe_vec.push_back(FileEntry(iter->first, false));
     ++iter;
   }//while
-  ts = Splitter::splitFileNames(fe_vec);
+  std::vector<TwoStrings> ts = Splitter::splitFileNames(fe_vec);
 
   unsigned int i;
   i = fe_vec.size();
   if (i!= ts.size())
   {
     std::cout << "AutoTag_Splitter: Error: vectors are not of same size.\n";
-    return;
+    return false;
   }
-  for (i=0; i<ts.size(); i=i+1)
+  PicData temp_data;
+  for (i=0; i<ts.size(); ++i)
   {
-    temp_data = getData(fe_vec.at(i).FileName);
-    temp_data.artist = ts.at(i).Artist;
-    temp_data.name = ts.at(i).Name;
-    m_Files[fe_vec.at(i).FileName] = temp_data;
+    temp_data = getData(fe_vec[i].FileName);
+    temp_data.artist = ts[i].Artist;
+    temp_data.name = ts[i].Name;
+    m_Files[fe_vec[i].FileName] = temp_data;
   }//for
-  return;
+  return true;
 }
 
 void DirectDatabase::ListData() const
@@ -218,7 +214,7 @@ void DirectDatabase::ListData() const
   {
     std::cout << cFilePrefix <<": "<<iter->first<<"\n";
     iter->second.show();
-    iter++;
+    ++iter;
   }//while
 }
 
@@ -239,7 +235,7 @@ void DirectDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int 
   {
     if (FileExists(baseDir+iter->first))
     {
-      SHA256::MessageDigest md256 = SHA256::computeFromFile(baseDir+iter->first);
+      const SHA256::MessageDigest md256 = SHA256::computeFromFile(baseDir+iter->first);
       if (!md256.isNull())
       {
         PicData data = iter->second;
@@ -406,8 +402,7 @@ void DirectDatabase::purgeNonexistingFiles(const std::string& BaseDir)
 void DirectDatabase::showTagStatistics() const
 {
   std::map<std::string, unsigned int> tagList;
-  tagList.clear();
-  unsigned int total_tags=0;
+  unsigned int total_tags = 0;
   std::set<std::string>::const_iterator setIter;
   //search first index
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
@@ -440,18 +435,18 @@ void DirectDatabase::showTagStatistics() const
     std::cout << "  "<<listIter->first<<": "<<listIter->second<<"\n";
     ++listIter;
   }//while
-  if (tagList.size()==0)
+  if (tagList.empty())
   {
     std::cout << "  none at all\n";
   }
   else
   {
-    std::cout << "Total: "<<tagList.size()<<" distinct tags.\n";
+    std::cout << "Total: " << tagList.size() << " distinct tags.\n";
   }
   const unsigned int file_count = m_Files.size() + m_FileToHash.size();
-  std::cout << "A total of "<<total_tags<<" tags on "<<file_count
-            <<" files, that means "<<static_cast<float>(total_tags)/(file_count==0 ? 1 : file_count)
-            <<" tags per file.\n";
+  std::cout << "A total of " << total_tags << " tags on " << file_count
+            << " files, that means " << static_cast<float>(total_tags)/(file_count==0 ? 1 : file_count)
+            << " tags per file.\n";
 }
 
 void DirectDatabase::showWhoStatistics() const
@@ -465,7 +460,7 @@ void DirectDatabase::showWhoStatistics() const
   {
     for (it=iter->second.who.begin(); it!=iter->second.who.end(); ++it)
     {
-      whoList[*it]++;
+      ++whoList[*it];
     }//for
     ++iter;
   }
@@ -477,7 +472,7 @@ void DirectDatabase::showWhoStatistics() const
     const std::map<SHA256::MessageDigest, PicData>::const_iterator aux_iter = m_Data.find(fth_iter->second);
     for (it=aux_iter->second.who.begin(); it!=aux_iter->second.who.end(); ++it)
     {
-      whoList[*it]++;
+      ++whoList[*it];
     }//for
     ++fth_iter;
   }
@@ -486,16 +481,16 @@ void DirectDatabase::showWhoStatistics() const
   std::map<std::string, unsigned int>::const_iterator listIter = whoList.begin();
   while (listIter != whoList.end())
   {
-    std::cout << "  "<<listIter->first<<": "<<listIter->second<<"\n";
+    std::cout << "  " <<listIter->first << ": " << listIter->second << "\n";
     ++listIter;
   }//while
-  if (whoList.size()==0)
+  if (whoList.empty())
   {
     std::cout << "  none at all\n";
   }
   else
   {
-    std::cout << "Total: "<<whoList.size()<<" persons.\n";
+    std::cout << "Total: " << whoList.size() << " persons.\n";
     //order them by number
     std::vector<WhoStatRec> sortedList;
     WhoStatRec wsr;
@@ -508,7 +503,7 @@ void DirectDatabase::showWhoStatistics() const
       ++listIter;
     }//while
     sort(sortedList.begin(), sortedList.end(), wsr_compare);
-    std::cout<<"\nPresent person names in database by count:\n";
+    std::cout << "\nPresent person names in database by count:\n";
     unsigned int i;
     for (i=0; i<sortedList.size(); ++i)
     {
@@ -524,7 +519,7 @@ bool DirectDatabase::saveToFile(const std::string& FileName) const
   output.open(FileName.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
   if (!output)
   {
-    std::cout << "Error: Unable to open file \""<<FileName<<"\".\n";
+    std::cout << "Error: Unable to open file \"" << FileName << "\".\n";
     return false;
   }
   //save old-style index
@@ -646,13 +641,11 @@ bool DirectDatabase::loadFromFile(const std::string& FileName)
           temp_data.hash_sha256.setToNull();
         }
       }
-    }//if name
-
-
+    }//if sha256
   }//while
 
   //care for last data set
-  if (db_file != "")
+  if (!db_file.empty())
   {
     addFile(db_file, temp_data);
   }
