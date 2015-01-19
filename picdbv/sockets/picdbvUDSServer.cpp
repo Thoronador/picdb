@@ -31,6 +31,7 @@
 #include "../daemon/commands/CmdClearDB.hpp"
 #include "../daemon/commands/CmdLoadDB.hpp"
 #include "../daemon/commands/CmdUntagged.hpp"
+#include "../daemon/commands/CmdAutoTagDB.hpp"
 
 picdbvUDSServer::picdbvUDSServer()
 : UnixDomainSocketServer(), m_Commands(std::vector<std::unique_ptr<Command> >())
@@ -47,6 +48,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandClearDB>(new CommandClearDB()));
   m_Commands.push_back(std::unique_ptr<CommandLoadDB>(new CommandLoadDB()));
   m_Commands.push_back(std::unique_ptr<CommandUntagged>(new CommandUntagged()));
+  m_Commands.push_back(std::unique_ptr<CommandAutoTagDB>(new CommandAutoTagDB()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)

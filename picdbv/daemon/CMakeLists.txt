@@ -22,6 +22,7 @@ set(picdbd_sources
     ../sockets/UnixDomainSocketServer.cpp
     ../sockets/picdbvUDSServer.cpp
     Daemonic.cpp
+    commands/CmdAutoTagDB.cpp
     commands/CmdClearDB.cpp
     commands/CmdCreateDB.cpp
     commands/CmdDeleteDB.cpp
