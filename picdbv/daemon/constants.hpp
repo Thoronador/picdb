@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PIDDBD_CONSTANTS_H
-#define PIDDBD_CONSTANTS_H
+#ifndef PICDBD_CONSTANTS_HPP
+#define PICDBD_CONSTANTS_HPP
 
 #include <string>
 
@@ -27,7 +27,7 @@
 const std::string serverSocketFile = "/tmp/picdb_server.sock";
 
 //server version
-const std::string serverVersion    = "20150119.1";
+const std::string serverVersion    = "20150120.1";
 
 //server response codes
 const std::string codeContinue              = "100";
@@ -37,4 +37,4 @@ const std::string codeBadRequest            = "400";
 const std::string codeRequestEntityTooLarge = "413";
 const std::string codeInternalServerError   = "500";
 
-#endif // PIDDBD_CONSTANTS_H
+#endif // PICDBD_CONSTANTS_HPP

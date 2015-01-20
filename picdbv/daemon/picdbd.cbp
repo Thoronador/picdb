@@ -75,6 +75,8 @@
 		<Unit filename="commands/CmdDeleteDB.hpp" />
 		<Unit filename="commands/CmdExistsDB.cpp" />
 		<Unit filename="commands/CmdExistsDB.hpp" />
+		<Unit filename="commands/CmdFileExists.cpp" />
+		<Unit filename="commands/CmdFileExists.hpp" />
 		<Unit filename="commands/CmdHelp.cpp" />
 		<Unit filename="commands/CmdHelp.hpp" />
 		<Unit filename="commands/CmdListDatabases.cpp" />
