@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef PICDBV_GUI_H
-#define PICDBV_GUI_H
+#ifndef PICDBV_GUI_HPP
+#define PICDBV_GUI_HPP
 
 #include <string>
 #include <vector>
@@ -163,4 +163,4 @@ bool getCorners(const int window_width, const int window_height, const int img_w
                 const int img_height, GLfloat& left, GLfloat&right, GLfloat& bottom,
                 GLfloat& top);
 
-#endif // PICDBV_GUI_H
+#endif // PICDBV_GUI_HPP

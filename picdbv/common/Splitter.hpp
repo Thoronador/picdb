@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef SPLITTER_H
-#define SPLITTER_H
+#ifndef SPLITTER_HPP
+#define SPLITTER_HPP
 
 #include <string>
 #include <set>
@@ -77,4 +77,4 @@ class Splitter
     static const std::string cUnknownArtist;
 }; //class
 
-#endif // SPLITTER_H
+#endif // SPLITTER_HPP

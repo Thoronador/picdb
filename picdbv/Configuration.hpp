@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#ifndef CONFIGURATION_HPP
+#define CONFIGURATION_HPP
 
 #include <string>
 
@@ -61,4 +61,4 @@ struct Configuration
   static const char cCommentCharacter;
 };//struct
 
-#endif //CONFIGURATION_H
+#endif //CONFIGURATION_HPP

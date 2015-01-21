@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef UNIXDOMAINSOCKETSERVER_H
-#define UNIXDOMAINSOCKETSERVER_H
+#ifndef UNIXDOMAINSOCKETSERVER_HPP
+#define UNIXDOMAINSOCKETSERVER_HPP
 
 #include <string>
 
@@ -119,4 +119,4 @@ class UnixDomainSocketServer
     std::string m_File;
 }; //class
 
-#endif // UNIXDOMAINSOCKETSERVER_H
+#endif // UNIXDOMAINSOCKETSERVER_HPP

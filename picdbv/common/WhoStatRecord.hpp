@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef WHOSTATRECORD_H
-#define WHOSTATRECORD_H
+#ifndef WHOSTATRECORD_HPP
+#define WHOSTATRECORD_HPP
 
 #include <string>
 
@@ -34,4 +34,4 @@ struct WhoStatRec
 
 bool wsr_compare(const WhoStatRec& a, const WhoStatRec& b);
 
-#endif // WHOSTATRECORD_H
+#endif // WHOSTATRECORD_HPP
