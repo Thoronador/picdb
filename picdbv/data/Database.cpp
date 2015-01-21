@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2011, 2012, 2013, 2014  Thoronador
+    Copyright (C) 2011, 2012, 2013, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ Database::~Database()
   //clearAllData();
 }
 
-void Database::saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data)
+void Database::saveFileEntry(std::ostream& output, const std::string& fileName, const PicData& data)
 {
   std::set<std::string>::const_iterator set_i;
   //filename

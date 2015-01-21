@@ -21,7 +21,7 @@
 #ifndef DATABASE_HPP
 #define DATABASE_HPP
 
-#include <fstream>
+#include <ostream>
 #include <map>
 #include <set>
 #include <string>
@@ -234,7 +234,7 @@ class Database
     static std::vector<std::string> getQueryResultIntersection(const std::vector<std::string>& query_one, const std::vector<std::string>& query_two);
 
     ///aux. function to save one single db entry to file
-    static void saveFileEntry(std::ofstream& output, const std::string& fileName, const PicData& data);
+    static void saveFileEntry(std::ostream& output, const std::string& fileName, const PicData& data);
 }; //class
 
 #endif // DATABASE_HPP
