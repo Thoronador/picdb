@@ -59,6 +59,8 @@
 		<Unit filename="../data/DirectDatabase.hpp" />
 		<Unit filename="../data/PicData.cpp" />
 		<Unit filename="../data/PicData.hpp" />
+		<Unit filename="../data/Serializer.cpp" />
+		<Unit filename="../data/Serializer.hpp" />
 		<Unit filename="../sockets/UnixDomainSocketServer.cpp" />
 		<Unit filename="../sockets/UnixDomainSocketServer.hpp" />
 		<Unit filename="../sockets/picdbvUDSServer.cpp" />

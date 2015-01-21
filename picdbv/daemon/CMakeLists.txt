@@ -19,6 +19,7 @@ set(picdbd_sources
     ../data/DirectDatabase.cpp
     ../data/DatabaseManager.cpp
     ../data/PicData.cpp
+    ../data/Serializer.cpp
     ../sockets/UnixDomainSocketServer.cpp
     ../sockets/picdbvUDSServer.cpp
     Daemonic.cpp
