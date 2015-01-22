@@ -22,17 +22,21 @@
 #include "../daemon/constants.hpp"
 #include "../common/escaping.hpp"
 //all implemented commands
+// ---- builtins
 #include "../daemon/commands/CmdVersion.hpp"
 #include "../daemon/commands/CmdHelp.hpp"
 #include "../daemon/commands/CmdListDatabases.hpp"
+// ---- DB management
 #include "../daemon/commands/CmdCreateDB.hpp"
 #include "../daemon/commands/CmdDeleteDB.hpp"
 #include "../daemon/commands/CmdExistsDB.hpp"
+// ---- DB-related
 #include "../daemon/commands/CmdClearDB.hpp"
 #include "../daemon/commands/CmdLoadDB.hpp"
 #include "../daemon/commands/CmdUntagged.hpp"
 #include "../daemon/commands/CmdAutoTagDB.hpp"
 #include "../daemon/commands/CmdFileExists.hpp"
+#include "../daemon/commands/CmdDeleteFile.hpp"
 
 picdbvUDSServer::picdbvUDSServer()
 : UnixDomainSocketServer(), m_Commands(std::vector<std::unique_ptr<Command> >())
@@ -51,6 +55,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandUntagged>(new CommandUntagged()));
   m_Commands.push_back(std::unique_ptr<CommandAutoTagDB>(new CommandAutoTagDB()));
   m_Commands.push_back(std::unique_ptr<CommandFileExists>(new CommandFileExists()));
+  m_Commands.push_back(std::unique_ptr<CommandDeleteFile>(new CommandDeleteFile()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
