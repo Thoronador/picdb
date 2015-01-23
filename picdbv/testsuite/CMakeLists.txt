@@ -9,3 +9,6 @@ add_subdirectory (client-cli)
 
 # Recurse into subdirectory for escaping test
 add_subdirectory (escaping)
+
+# Recurse into subdirectory for Serializer tests.
+add_subdirectory (serializer)

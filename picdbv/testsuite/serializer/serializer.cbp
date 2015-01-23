@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="serializer" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/serializer" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../../libthoro/hashfunctions/sha-256.cpp" />
+		<Unit filename="../../../libthoro/hashfunctions/sha-256.h" />
+		<Unit filename="../../../libthoro/hashfunctions/sha-256_sources.cpp" />
+		<Unit filename="../../../libthoro/hashfunctions/sha-256_sources.h" />
+		<Unit filename="../../common/Splitter.cpp" />
+		<Unit filename="../../common/Splitter.hpp" />
+		<Unit filename="../../data/PicData.cpp" />
+		<Unit filename="../../data/PicData.hpp" />
+		<Unit filename="../../data/Serializer.cpp" />
+		<Unit filename="../../data/Serializer.hpp" />
+		<Unit filename="serializer.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
