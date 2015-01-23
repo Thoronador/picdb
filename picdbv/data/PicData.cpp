@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2013  Thoronador
+    Copyright (C) 2011, 2012, 2013, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -127,4 +127,14 @@ void PicData::mergeWith(const PicData& other)
 
   //hrmpf;
   #warning Incomplete!
+}
+
+bool PicData::operator==(const PicData& other) const
+{
+  return (name==other.name && artist == other.artist && who == other.who && tags == other.tags && hash_sha256 == other.hash_sha256);
+}
+
+bool PicData::operator!=(const PicData& other) const
+{
+  return (name!=other.name || artist != other.artist || who != other.who || tags != other.tags || hash_sha256 != other.hash_sha256);
 }

@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2014  Thoronador
+    Copyright (C) 2011, 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -55,6 +55,22 @@ struct PicData
   //constants
   static const std::string cEmptyVector;/**< constant that indicates an empty vector/set */
   static const std::string cNoTags; /**< constant that means "no tags" */
+
+
+  /** \brief equality operator
+   *
+   * \param other  another PicData instance against which this one will be compared
+   * \return Returns true, if both instances have the same content.
+   */
+  bool operator==(const PicData& other) const;
+
+
+  /** \brief inequality operator
+   *
+   * \param other  another PicData instance against which this one will be compared
+   * \return Returns true, if both instances have different content.
+   */
+  bool operator!=(const PicData& other) const;
 }; //struct
 
 #endif // PICDATA_HPP_INCLUDED
