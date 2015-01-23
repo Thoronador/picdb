@@ -23,19 +23,21 @@
 
 #include "data/DirectDatabase.hpp"
 
+/** \brief wraps the DirectDatabase class inside of a singleton pattern
+ */
 class PicDatabase: public DirectDatabase
 {
   public:
-    /* singleton access */
+    /** singleton access */
     static PicDatabase& getSingleton();
 
-    /* destructor */
+    /** destructor */
     virtual ~PicDatabase();
   private:
-    //constructor
+    ///constructor
     PicDatabase();
 
-    //empty copy constructor
+    ///empty copy constructor
     PicDatabase(const PicDatabase& op) {}
 }; //class
 
