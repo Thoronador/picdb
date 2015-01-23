@@ -53,7 +53,7 @@ std::string Serializer::serialize(const PicData& data)
     {
       output += *set_i + " ";
     }//for
-    output + "\n";
+    output += "\n";
   }//else branch
   //SHA-256 hash
   output += data.hash_sha256.toHexString();
