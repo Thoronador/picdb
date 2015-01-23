@@ -20,7 +20,6 @@
 
 #include "PicData.hpp"
 #include <iostream>
-#include "../PicDatabase.hpp"
 #include "../common/Splitter.hpp"
 
 void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
@@ -69,10 +68,10 @@ PicData::PicData()
 
 void PicData::show() const
 {
-  std::cout << "  name: "<<name<<"\n  artist: "<<artist <<"\n  who: ";
-  if (who.size()==0)
+  std::cout << "  name: " << name << "\n  artist: " << artist << "\n  who: ";
+  if (who.empty())
   {
-    std::cout <<cEmptyVector;
+    std::cout << cEmptyVector;
   }
   else
   { //list all
@@ -82,12 +81,12 @@ void PicData::show() const
       std::cout << *iter <<" ";
     }//for
   } //else-branch
-  std::cout <<"\n";
+  std::cout << "\n";
   //tags
-  std::cout << "  " << Database::cTagPrefix<<": ";
-  if (tags.size()==0)
+  std::cout << "  tags: ";
+  if (tags.empty())
   {
-    std::cout <<cNoTags;
+    std::cout << cNoTags;
   }
   else
   { //list all
@@ -97,7 +96,7 @@ void PicData::show() const
       std::cout << *iter <<" ";
     }//for
   } //else-branch
-  std::cout <<"\n";
+  std::cout << "\n";
 }
 
 void PicData::clear()
