@@ -131,7 +131,7 @@ std::vector<std::string> Splitter::splitAtSeparator(std::string line, const char
     result.push_back("");
     return result;
   }
-  size_t pos =line.find(separator);
+  std::string::size_type pos = line.find(separator);
   while (pos != std::string::npos)
   {
     result.push_back(line.substr(0, pos));
@@ -142,5 +142,20 @@ std::vector<std::string> Splitter::splitAtSeparator(std::string line, const char
   {
     result.push_back(line);
   }
+  return result;
+}
+
+std::string Splitter::joinWithSeparator(const std::vector<std::string>& elems, const char separator)
+{
+  if (elems.empty())
+    return std::string();
+
+  std::string result = elems[0];
+  const std::vector<std::string>::size_type len = elems.size();
+  std::vector<std::string>::size_type i = 1;
+  for ( ; i<len; ++i)
+  {
+    result += std::string(1, separator) + elems[i];
+  } //for
   return result;
 }

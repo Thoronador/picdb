@@ -73,6 +73,15 @@ class Splitter
      */
     static std::vector<std::string> splitAtSeparator(std::string line, const char separator);
 
+
+    /** \brief joins the elements of a vector to a single string, putting a given separator between them
+     *
+     * \param elems     the strings that shall be joined together
+     * \param separator character that gets added between the elements
+     * \return Returns a string that contains the joined elements.
+     */
+    static std::string joinWithSeparator(const std::vector<std::string>& elems, const char separator);
+
     static const std::string cSplitString;
     static const std::string cUnknownArtist;
 }; //class
