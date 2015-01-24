@@ -37,6 +37,7 @@
 #include "../daemon/commands/CmdAutoTagDB.hpp"
 #include "../daemon/commands/CmdAddFile.hpp"
 #include "../daemon/commands/CmdFileExists.hpp"
+#include "../daemon/commands/CmdListFiles.hpp"
 #include "../daemon/commands/CmdDeleteFile.hpp"
 
 picdbvUDSServer::picdbvUDSServer()
@@ -57,6 +58,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandAutoTagDB>(new CommandAutoTagDB()));
   m_Commands.push_back(std::unique_ptr<CommandAddFile>(new CommandAddFile()));
   m_Commands.push_back(std::unique_ptr<CommandFileExists>(new CommandFileExists()));
+  m_Commands.push_back(std::unique_ptr<CommandListFiles>(new CommandListFiles()));
   m_Commands.push_back(std::unique_ptr<CommandDeleteFile>(new CommandDeleteFile()));
 }
 

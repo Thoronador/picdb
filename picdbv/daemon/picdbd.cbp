@@ -87,6 +87,8 @@
 		<Unit filename="commands/CmdHelp.hpp" />
 		<Unit filename="commands/CmdListDatabases.cpp" />
 		<Unit filename="commands/CmdListDatabases.hpp" />
+		<Unit filename="commands/CmdListFiles.cpp" />
+		<Unit filename="commands/CmdListFiles.hpp" />
 		<Unit filename="commands/CmdLoadDB.cpp" />
 		<Unit filename="commands/CmdLoadDB.hpp" />
 		<Unit filename="commands/CmdUntagged.cpp" />

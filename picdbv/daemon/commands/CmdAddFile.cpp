@@ -29,7 +29,7 @@ CommandAddFile::CommandAddFile()
 
 bool CommandAddFile::processMessage(const std::string& message, std::string& answer) const
 {
-  /* load a database from a specified file */
+  /* adds data of a file to a database or updates the data, if the file is already there */
   if (message.size() > 9 && (message.substr(0, 9) == "add_file "))
   {
     const std::vector<std::string> lines = Splitter::splitAtSeparator(message.substr(9), '\n');
