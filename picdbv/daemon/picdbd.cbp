@@ -67,6 +67,8 @@
 		<Unit filename="../sockets/picdbvUDSServer.hpp" />
 		<Unit filename="Daemonic.cpp" />
 		<Unit filename="Daemonic.hpp" />
+		<Unit filename="commands/CmdAddFile.cpp" />
+		<Unit filename="commands/CmdAddFile.hpp" />
 		<Unit filename="commands/CmdAutoTagDB.cpp" />
 		<Unit filename="commands/CmdAutoTagDB.hpp" />
 		<Unit filename="commands/CmdClearDB.cpp" />
