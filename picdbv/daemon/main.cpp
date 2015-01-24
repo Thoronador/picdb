@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 
 int main()
 {
-  std::cout << "Hello world!" << std::endl;
   if (!Daemonic::get().daemonize(std::string("picdbd")))
   {
     syslog(LOG_INFO | LOG_DAEMON, "Could not create daemon!");

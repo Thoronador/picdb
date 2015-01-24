@@ -54,9 +54,8 @@ bool Daemonic::daemonize(const std::string& logName)
   } //if pid < 0
   if (procID>0)
   {
-    //parent process
-    std::cout << "Child's PID is " << (int) procID << std::endl;
-    //stop/exit parent process
+    //We are in the parent process.
+    // -> stop/exit parent process
     exit(0);
     return false; //should never get to this point
   } //if pid > 0
@@ -88,8 +87,7 @@ bool Daemonic::daemonize(const std::string& logName)
   if (procID>0)
   {
     //parent process
-    std::cout << "Second child's PID is " << (int) procID << std::endl;
-    //stop/exit parent process
+    // -> stop/exit parent process
     exit(0);
     return false; //should never get to this point
   } //if pid > 0
