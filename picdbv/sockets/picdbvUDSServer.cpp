@@ -22,7 +22,7 @@
 #include "../daemon/constants.hpp"
 #include "../common/escaping.hpp"
 //all implemented commands
-// ---- builtins
+// ---- built in
 #include "../daemon/commands/CmdVersion.hpp"
 #include "../daemon/commands/CmdHelp.hpp"
 #include "../daemon/commands/CmdListDatabases.hpp"

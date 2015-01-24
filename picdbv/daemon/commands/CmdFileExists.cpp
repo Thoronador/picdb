@@ -55,7 +55,7 @@ bool CommandFileExists::processMessage(const std::string& message, std::string& 
       } //else
     } //else
     return true;
-  } //if load_db
+  } //if file_exists
   else
     return false;
 }
