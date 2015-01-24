@@ -106,7 +106,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
       std::map<std::string, std::string>::const_iterator mapIter = helpTexts.begin();
       while (mapIter != helpTexts.end())
       {
-        answer += "\n" + padString(mapIter->first, padding) + " - " + mapIter->second;
+        answer += "\n    " + padString(mapIter->first, padding) + " - " + mapIter->second;
         ++mapIter;
       } //while
     } //if help
