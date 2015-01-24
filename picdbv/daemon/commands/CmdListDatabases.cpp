@@ -50,3 +50,8 @@ bool CommandListDatabases::processMessage(const std::string& message, std::strin
   else
     return false;
 }
+
+std::string CommandListDatabases::helpText() const
+{
+  return "lists all current databases";
+}

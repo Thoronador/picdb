@@ -65,3 +65,8 @@ bool CommandLoadDB::processMessage(const std::string& message, std::string& answ
   else
     return false;
 }
+
+std::string CommandLoadDB::helpText() const
+{
+  return "load database content from a file";
+}

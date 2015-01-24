@@ -34,3 +34,8 @@ bool CommandVersion::processMessage(const std::string& message, std::string& ans
   }
   return false;
 }
+
+std::string CommandVersion::helpText() const
+{
+  return "return version of server";
+}

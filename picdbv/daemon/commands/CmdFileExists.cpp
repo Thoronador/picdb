@@ -59,3 +59,8 @@ bool CommandFileExists::processMessage(const std::string& message, std::string& 
   else
     return false;
 }
+
+std::string CommandFileExists::helpText() const
+{
+  return "checks for existence of a file in a database";
+}

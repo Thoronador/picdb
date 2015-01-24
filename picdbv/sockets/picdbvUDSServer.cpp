@@ -19,12 +19,12 @@
 */
 
 #include "picdbvUDSServer.hpp"
+#include <map>
 #include "../daemon/constants.hpp"
 #include "../common/escaping.hpp"
 //all implemented commands
 // ---- built in
 #include "../daemon/commands/CmdVersion.hpp"
-#include "../daemon/commands/CmdHelp.hpp"
 #include "../daemon/commands/CmdListDatabases.hpp"
 // ---- DB management
 #include "../daemon/commands/CmdCreateDB.hpp"
@@ -41,11 +41,18 @@
 #include "../daemon/commands/CmdDeleteFile.hpp"
 #include "../daemon/commands/CmdFileData.hpp"
 
+std::string padString(std::string str, const std::string::size_type n)
+{
+  const std::string::size_type len = str.size();
+  if (n <= len || n == std::string::npos)
+    return str;
+  return str + std::string(n-len, ' ');
+}
+
 picdbvUDSServer::picdbvUDSServer()
 : UnixDomainSocketServer(), m_Commands(std::vector<std::unique_ptr<Command> >())
 {
   // add some "built-in" commands
-  m_Commands.push_back(std::unique_ptr<CommandHelp>(new CommandHelp()));
   m_Commands.push_back(std::unique_ptr<CommandVersion>(new CommandVersion()));
   // add DatabaseManager-related commands
   m_Commands.push_back(std::unique_ptr<CommandListDatabases>(new CommandListDatabases()));
@@ -77,7 +84,32 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
       answer = codeOK + " stopping server soon";
       m_shutdown = true;
       closeWhenDone = true;
-    }
+    } //if stop
+    else if (message == "help")
+    {
+      std::map<std::string, std::string> helpTexts;
+      helpTexts["help"] = "shows this help message";
+      helpTexts["stop"] = "stops the server";
+      helpTexts["supported_commands"] = "prints a list of supported commands";
+      std::string::size_type padding = 18; //length of "supported_commands"
+      std::vector<std::unique_ptr<Command> >::const_iterator cmdIter = m_Commands.begin();
+      while (cmdIter != m_Commands.end())
+      {
+        const std::string curName = cmdIter->get()->getName();
+        helpTexts[curName] = cmdIter->get()->helpText();
+        if (curName.size() > padding)
+          padding = curName.size();
+        ++cmdIter;
+      } //while
+
+      answer = std::string("List of commonly used commands:");
+      std::map<std::string, std::string>::const_iterator mapIter = helpTexts.begin();
+      while (mapIter != helpTexts.end())
+      {
+        answer += "\n" + padString(mapIter->first, padding) + " - " + mapIter->second;
+        ++mapIter;
+      } //while
+    } //if help
     else if (message == "supported_commands")
     {
       answer = codeOK +" stop supported_commands";
@@ -87,7 +119,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         answer += " " + iter->get()->getName();
         ++iter;
       }//while
-    }
+    } //if supported_commands
     else
     {
       bool processed = false;

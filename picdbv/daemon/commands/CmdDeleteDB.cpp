@@ -53,3 +53,8 @@ bool CommandDeleteDB::processMessage(const std::string& message, std::string& an
   else
     return false;
 }
+
+std::string CommandDeleteDB::helpText() const
+{
+  return "delete a database";
+}

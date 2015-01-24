@@ -53,3 +53,8 @@ bool CommandCreateDatabase::processMessage(const std::string& message, std::stri
   else
     return false;
 }
+
+std::string CommandCreateDatabase::helpText() const
+{
+  return "create a new database";
+}

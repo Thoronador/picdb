@@ -76,3 +76,8 @@ bool CommandAddFile::processMessage(const std::string& message, std::string& ans
   else
     return false;
 }
+
+std::string CommandAddFile::helpText() const
+{
+  return "add data for a file to a database";
+}

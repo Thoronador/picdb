@@ -54,3 +54,8 @@ bool CommandClearDB::processMessage(const std::string& message, std::string& ans
   else
     return false;
 }
+
+std::string CommandClearDB::helpText() const
+{
+  return "deletes all entries from a database";
+}

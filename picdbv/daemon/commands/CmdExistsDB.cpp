@@ -53,3 +53,8 @@ bool CommandExistsDB::processMessage(const std::string& message, std::string& an
   else
     return false;
 }
+
+std::string CommandExistsDB::helpText() const
+{
+  return "checks existence of a database";
+}

@@ -59,3 +59,8 @@ bool CommandDeleteFile::processMessage(const std::string& message, std::string& 
   else
     return false;
 }
+
+std::string CommandDeleteFile::helpText() const
+{
+  return "deletes a file from a database";
+}

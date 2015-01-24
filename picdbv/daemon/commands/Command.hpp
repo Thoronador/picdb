@@ -55,6 +55,14 @@ class Command
      * \return Returns true, if the message was processed. Returns false otherwise.
      */
     virtual bool processMessage(const std::string& message, std::string& answer) const = 0;
+
+
+    /** \brief gets a short help text for the command
+     *
+     * The text should not exceed 55 characters.
+     * \return Returns a string containing the help text.
+     */
+    virtual std::string helpText() const = 0;
   private:
     std::string m_Name;
 }; //class

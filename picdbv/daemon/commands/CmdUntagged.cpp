@@ -65,3 +65,8 @@ bool CommandUntagged::processMessage(const std::string& message, std::string& an
   else
     return false;
 }
+
+std::string CommandUntagged::helpText() const
+{
+  return "list untagged files in a database";
+}

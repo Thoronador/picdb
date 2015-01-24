@@ -62,3 +62,8 @@ bool CommandListFiles::processMessage(const std::string& message, std::string& a
   else
     return false;
 }
+
+std::string CommandListFiles::helpText() const
+{
+  return "list all files in a database";
+}

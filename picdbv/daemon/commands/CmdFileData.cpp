@@ -64,3 +64,8 @@ bool CommandFileData::processMessage(const std::string& message, std::string& an
   else
     return false;
 }
+
+std::string CommandFileData::helpText() const
+{
+  return "returns the data of a file from a database";
+}

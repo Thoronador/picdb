@@ -28,7 +28,7 @@ CommandAutoTagDB::CommandAutoTagDB()
 
 bool CommandAutoTagDB::processMessage(const std::string& message, std::string& answer) const
 {
-  /* clear a database */
+  /* tries to guess names and artists of pictures by analyzing files */
   if (message.size() > 11 && (message.substr(0, 11) == "autotag_db "))
   {
     const std::string db_name = message.substr(11);
@@ -55,4 +55,9 @@ bool CommandAutoTagDB::processMessage(const std::string& message, std::string& a
   } //if autotag_db
   else
     return false;
+}
+
+std::string CommandAutoTagDB::helpText() const
+{
+  return "try to guess names and artists of pictures by analyzing files";
 }
