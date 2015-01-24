@@ -81,6 +81,8 @@
 		<Unit filename="commands/CmdDeleteFile.hpp" />
 		<Unit filename="commands/CmdExistsDB.cpp" />
 		<Unit filename="commands/CmdExistsDB.hpp" />
+		<Unit filename="commands/CmdFileData.cpp" />
+		<Unit filename="commands/CmdFileData.hpp" />
 		<Unit filename="commands/CmdFileExists.cpp" />
 		<Unit filename="commands/CmdFileExists.hpp" />
 		<Unit filename="commands/CmdHelp.cpp" />

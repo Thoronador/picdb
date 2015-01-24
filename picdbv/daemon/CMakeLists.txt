@@ -30,6 +30,7 @@ set(picdbd_sources
     commands/CmdDeleteDB.cpp
     commands/CmdDeleteFile.cpp
     commands/CmdExistsDB.cpp
+    commands/CmdFileData.cpp
     commands/CmdFileExists.cpp
     commands/CmdHelp.cpp
     commands/CmdListDatabases.cpp
