@@ -40,6 +40,7 @@
 #include "../daemon/commands/CmdListFiles.hpp"
 #include "../daemon/commands/CmdDeleteFile.hpp"
 #include "../daemon/commands/CmdFileData.hpp"
+#include "../daemon/commands/CmdHashData.hpp"
 
 std::string padString(std::string str, const std::string::size_type n)
 {
@@ -69,6 +70,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandListFiles>(new CommandListFiles()));
   m_Commands.push_back(std::unique_ptr<CommandDeleteFile>(new CommandDeleteFile()));
   m_Commands.push_back(std::unique_ptr<CommandFileData>(new CommandFileData()));
+  m_Commands.push_back(std::unique_ptr<CommandHashData>(new CommandHashData()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
