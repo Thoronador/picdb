@@ -33,6 +33,7 @@ set(picdbd_sources
     commands/CmdFileData.cpp
     commands/CmdFileExists.cpp
     commands/CmdHashData.cpp
+    commands/CmdHashExists.cpp
     commands/CmdListDatabases.cpp
     commands/CmdListFiles.cpp
     commands/CmdLoadDB.cpp

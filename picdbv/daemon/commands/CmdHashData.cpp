@@ -68,7 +68,7 @@ bool CommandHashData::processMessage(const std::string& message, std::string& an
       } //else
     } //else
     return true;
-  } //if file_data
+  } //if hash_data
   else
     return false;
 }

@@ -28,7 +28,7 @@ CommandFileExists::CommandFileExists()
 
 bool CommandFileExists::processMessage(const std::string& message, std::string& answer) const
 {
-  /* load a database from a specified file */
+  /* check for existence of file in a database */
   if (message.size() > 12 && (message.substr(0, 12) == "file_exists "))
   {
     const std::vector<std::string> args = Splitter::splitAtSpaceVector(message.substr(12));
