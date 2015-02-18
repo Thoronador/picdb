@@ -43,6 +43,7 @@
 #include "../daemon/commands/CmdHashData.hpp"
 #include "../daemon/commands/CmdHashExists.hpp"
 #include "../daemon/commands/CmdFilesForHash.hpp"
+#include "../daemon/commands/CmdNumHashed.hpp"
 
 std::string padString(std::string str, const std::string::size_type n)
 {
@@ -75,6 +76,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandHashData>(new CommandHashData()));
   m_Commands.push_back(std::unique_ptr<CommandHashExists>(new CommandHashExists()));
   m_Commands.push_back(std::unique_ptr<CommandFilesForHash>(new CommandFilesForHash()));
+  m_Commands.push_back(std::unique_ptr<CommandNumHashed>(new CommandNumHashed()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)

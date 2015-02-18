@@ -97,6 +97,8 @@
 		<Unit filename="commands/CmdListFiles.hpp" />
 		<Unit filename="commands/CmdLoadDB.cpp" />
 		<Unit filename="commands/CmdLoadDB.hpp" />
+		<Unit filename="commands/CmdNumHashed.cpp" />
+		<Unit filename="commands/CmdNumHashed.hpp" />
 		<Unit filename="commands/CmdUntagged.cpp" />
 		<Unit filename="commands/CmdUntagged.hpp" />
 		<Unit filename="commands/CmdVersion.cpp" />
