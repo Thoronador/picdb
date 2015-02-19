@@ -18,18 +18,18 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef CMDNUMHASHED_HPP
-#define CMDNUMHASHED_HPP
+#ifndef CMDNUMUNHASHED_HPP
+#define CMDNUMUNHASHED_HPP
 
 #include "Command.hpp"
 
 /** \brief class retrieving the numer of hashed files in a database
  */
-class CommandNumHashed: public Command
+class CommandNumUnhashed: public Command
 {
   public:
     /** \brief constructor */
-    CommandNumHashed();
+    CommandNumUnhashed();
 
 
     /** \brief tries to process a client's message/request
@@ -53,4 +53,4 @@ class CommandNumHashed: public Command
     virtual std::string helpText() const;
 }; //class
 
-#endif // CMDNUMHASHED_HPP
+#endif // CMDNUMUNHASHED_HPP

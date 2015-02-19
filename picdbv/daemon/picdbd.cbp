@@ -99,6 +99,8 @@
 		<Unit filename="commands/CmdLoadDB.hpp" />
 		<Unit filename="commands/CmdNumHashed.cpp" />
 		<Unit filename="commands/CmdNumHashed.hpp" />
+		<Unit filename="commands/CmdNumUnhashed.cpp" />
+		<Unit filename="commands/CmdNumUnhashed.hpp" />
 		<Unit filename="commands/CmdUntagged.cpp" />
 		<Unit filename="commands/CmdUntagged.hpp" />
 		<Unit filename="commands/CmdVersion.cpp" />
