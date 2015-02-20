@@ -18,27 +18,27 @@
  -------------------------------------------------------------------------------
 */
 
-#include "CmdNumHashed.hpp"
+#include "CmdNumEntries.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
 #include "../../../libthoro/common/StringUtils.h"
 
-CommandNumHashed::CommandNumHashed()
-: Command("num_hashed")
+CommandNumEntries::CommandNumEntries()
+: Command("num_entries")
 { }
 
-bool CommandNumHashed::processMessage(const std::string& message, std::string& answer) const
+bool CommandNumEntries::processMessage(const std::string& message, std::string& answer) const
 {
-  /* get number of hashed files in a database */
-  if (message.size() > 11 && (message.substr(0, 11) == "num_hashed "))
+  /* get number of entries in a database */
+  if (message.size() > 12 && (message.substr(0, 12) == "num_entries "))
   {
-    std::string db_name = message.substr(11);
+    std::string db_name = message.substr(12);
     //check for spaces in name
     if (db_name.find(' ')==std::string::npos)
     {
       const bool exists = DatabaseManager::get().hasDatabase(db_name);
       if (exists)
-        answer = codeOK + intToString(DatabaseManager::get().getDatabase(db_name).getNumHashed()) + " hashed files in database " + db_name;
+        answer = codeOK + intToString(DatabaseManager::get().getDatabase(db_name).getNumEntries()) + " entries in database " + db_name;
       else
       {
         answer = codeBadRequest + " database " + db_name + " does not exist";
@@ -50,12 +50,12 @@ bool CommandNumHashed::processMessage(const std::string& message, std::string& a
       answer = codeBadRequest + " database names shall not contain whitespace characters";
     }
     return true;
-  } //if num_hashed
+  } //if num_entries
   else
     return false;
 }
 
-std::string CommandNumHashed::helpText() const
+std::string CommandNumEntries::helpText() const
 {
-  return "gets number of hashed files in database";
+  return "gets number of entries in database";
 }

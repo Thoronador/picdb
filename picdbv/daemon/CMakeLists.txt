@@ -38,8 +38,9 @@ set(picdbd_sources
     commands/CmdListDatabases.cpp
     commands/CmdListFiles.cpp
     commands/CmdLoadDB.cpp
+    commands/CmdNumEntries.cpp
     commands/CmdNumHashed.cpp
-    commands/CmdNumUnhashed.hpp
+    commands/CmdNumUnhashed.cpp
     commands/CmdUntagged.cpp
     commands/CmdVersion.cpp
     commands/Command.cpp
