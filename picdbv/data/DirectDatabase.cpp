@@ -52,7 +52,7 @@ bool DirectDatabase::getFilesFromDirectory(const std::string& directory)
   {
     return false;
   }
-  if (temp.size()==0)
+  if (temp.empty())
   {
     return false;
   }
@@ -281,7 +281,7 @@ std::vector<std::string> DirectDatabase::getUntaggedFiles() const
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
-    if (iter->second.tags.size() == 0)
+    if (iter->second.tags.empty())
     {
       result.push_back(iter->first);
     }
@@ -292,7 +292,7 @@ std::vector<std::string> DirectDatabase::getUntaggedFiles() const
   std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
   while (fth_iter != m_FileToHash.end())
   {
-    if (m_Data.find(fth_iter->second)->second.tags.size() == 0)
+    if (m_Data.find(fth_iter->second)->second.tags.empty())
     {
       newResult.push_back(fth_iter->first);
     }
@@ -337,7 +337,7 @@ std::vector<std::string> DirectDatabase::getUnknownWhoFiles() const
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
-    if (iter->second.who.size() == 0)
+    if (iter->second.who.empty())
     {
       result.push_back(iter->first);
     }
@@ -348,7 +348,7 @@ std::vector<std::string> DirectDatabase::getUnknownWhoFiles() const
   std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
   while (fth_iter != m_FileToHash.end())
   {
-    if (m_Data.find(fth_iter->second)->second.who.size() == 0)
+    if (m_Data.find(fth_iter->second)->second.who.empty())
     {
       newResult.push_back(fth_iter->first);
     }

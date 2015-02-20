@@ -63,7 +63,7 @@ void Database::saveFileEntry(std::ostream& output, const std::string& fileName, 
   }//else branch
   //tags
   output<<cTagPrefix<<":";
-  if (data.tags.size()==0)
+  if (data.tags.empty())
   {
     output << PicData::cNoTags<<"\n";
   }
