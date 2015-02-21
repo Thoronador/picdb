@@ -39,13 +39,20 @@ bool CommandListFiles::processMessage(const std::string& message, std::string& a
       if (DatabaseManager::get().hasDatabase(db_name))
       {
         const std::set<std::string> result = DatabaseManager::get().getDatabase(db_name).getListedFiles();
-        answer = codeOK + " database " + db_name + " contains " + uintToString(result.size()) + " files";
-        std::set<std::string>::const_iterator setIterator = result.begin();
-        while (setIterator != result.end())
+        if (result.empty())
         {
-          answer += '\n' + *setIterator;
-          ++setIterator;
-        } //while
+          answer = codeNoContent +  " database " + db_name + " contains no files";
+        }
+        else
+        {
+          answer = codeOK + " database " + db_name + " contains " + uintToString(result.size()) + " files";
+          std::set<std::string>::const_iterator setIterator = result.begin();
+          while (setIterator != result.end())
+          {
+            answer += '\n' + *setIterator;
+            ++setIterator;
+          } //while
+        } //else
       }
       else
       {
