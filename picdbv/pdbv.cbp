@@ -161,7 +161,6 @@
 		<Unit filename="GUIMultiLinePanel.h" />
 		<Unit filename="GUITextPanel.cpp" />
 		<Unit filename="GUITextPanel.h" />
-		<Unit filename="PicDatabase.cpp" />
 		<Unit filename="PicDatabase.hpp" />
 		<Unit filename="common/Query.cpp" />
 		<Unit filename="common/Query.hpp" />
@@ -176,6 +175,7 @@
 		<Unit filename="data/PicData.cpp" />
 		<Unit filename="data/PicData.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="patterns/Singleton.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

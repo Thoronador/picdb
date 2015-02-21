@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2011, 2012, 2015  Thoronador
+    Copyright (C) 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,23 +22,10 @@
 #define PICDATABASE_HPP
 
 #include "data/DirectDatabase.hpp"
+#include "patterns/Singleton.hpp"
 
 /** \brief wraps the DirectDatabase class inside of a singleton pattern
  */
-class PicDatabase: public DirectDatabase
-{
-  public:
-    /** singleton access */
-    static PicDatabase& getSingleton();
-
-    /** destructor */
-    virtual ~PicDatabase();
-  private:
-    ///constructor
-    PicDatabase();
-
-    ///empty copy constructor
-    PicDatabase(const PicDatabase& op) {}
-}; //class
+typedef Singleton<DirectDatabase> PicDatabase;
 
 #endif // PICDATABASE_HPP

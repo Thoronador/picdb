@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2011, 2012, 2013, 2015  Thoronador
+    Copyright (C) 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,21 +18,38 @@
  -----------------------------------------------------------------------------
 */
 
-#include "PicDatabase.hpp"
+#ifndef SINGLETON_HPP
+#define SINGLETON_HPP
 
-PicDatabase& PicDatabase::getSingleton()
+template<class T>
+class Singleton: public T
 {
-  static PicDatabase Instance;
+  public:
+    static Singleton<T>& get();
+    inline static Singleton<T>& getSingleton()
+    {
+      return get();
+    }
+  private:
+    /* constructor */
+    Singleton();
+
+    /* copy constructor */
+    Singleton(const T& op) {}
+}; //class Singleton
+
+
+template<class T>
+Singleton<T>& Singleton<T>::get()
+{
+  static Singleton<T> Instance;
   return Instance;
 }
 
-PicDatabase::~PicDatabase()
+template<class T>
+Singleton<T>::Singleton()
+: T()
 {
-  clearAllData();
 }
 
-PicDatabase::PicDatabase()
-: DirectDatabase()
-{
-  //empty
-}
+#endif // SINGLETON_HPP

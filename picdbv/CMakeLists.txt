@@ -30,7 +30,6 @@ set(picdbv_sources
     GUI.cpp
     GUIMultiLinePanel.cpp
     GUITextPanel.cpp
-    PicDatabase.cpp
     common/Query.cpp
     common/Splitter.cpp
     common/WhoStatRecord.cpp
