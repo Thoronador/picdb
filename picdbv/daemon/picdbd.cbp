@@ -110,6 +110,8 @@
 		<Unit filename="commands/Command.cpp" />
 		<Unit filename="commands/Command.hpp" />
 		<Unit filename="constants.hpp" />
+		<Unit filename="functions.cpp" />
+		<Unit filename="functions.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

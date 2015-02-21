@@ -12,3 +12,7 @@ add_test(NAME start_daemon
 # this should not be a problem.
 # However, it would be better to force a certain order of tests to ensure that
 # behaviour.
+
+
+# Recurse into subdirectory for function-related tests.
+add_subdirectory (functions)
