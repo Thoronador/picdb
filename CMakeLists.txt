@@ -10,7 +10,7 @@ add_subdirectory (picdbv/daemon)
 add_subdirectory (picdbv/client-cli)
 
 # Recurse into subdirectory for picdbv
-add_subdirectory (picdbv)
+add_subdirectory (picdbv/viewer)
 
 # Recurse into subdirectory for testsuite
 add_subdirectory (picdbv/testsuite)

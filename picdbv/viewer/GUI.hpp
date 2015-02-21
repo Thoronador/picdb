@@ -24,16 +24,16 @@
 #include <string>
 #include <vector>
 #include <set>
-#include "../libthoro/common/graphics/GLImageStructure.h"
+#include "../../libthoro/common/graphics/GLImageStructure.h"
 #ifdef USE_GLFW_GUI
-  #include "../libthoro/common/gui/glfwGUI.h"
+  #include "../../libthoro/common/gui/glfwGUI.h"
 #elif defined(USE_GLUT_GUI)
-  #include "../libthoro/common/gui/glutGUI.h"
+  #include "../../libthoro/common/gui/glutGUI.h"
 #else
   #error No GUI defined!
 #endif
 #include "Configuration.hpp"
-#include "GUITextPanel.h"
+#include "GUITextPanel.hpp"
 
 #ifdef USE_GLFW_GUI
 class GUI: public glfwGUI

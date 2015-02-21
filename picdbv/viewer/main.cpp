@@ -21,9 +21,9 @@
 #include <iostream>
 #include <string>
 #include "Configuration.hpp"
-#include "common/Splitter.hpp"
+#include "../common/Splitter.hpp"
 #include "PicDatabase.hpp"
-#include "GUI.h"
+#include "GUI.hpp"
 
 //the configuration
 Configuration& config = GUI::getSingleton().config;

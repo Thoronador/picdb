@@ -21,8 +21,8 @@
 #include "Configuration.hpp"
 #include <fstream>
 #include <iostream>
-#include "../libthoro/common/DirectoryFileList.h"
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/DirectoryFileList.h"
+#include "../../libthoro/common/StringUtils.h"
 
 const char Configuration::cCommentCharacter = '#';
 

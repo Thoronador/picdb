@@ -6,36 +6,36 @@ project(picdbv)
 add_definitions(-DUSE_GLUT_GUI)
 
 set(picdbv_sources
-    ../libthoro/common/DirectoryFileList.cpp
-    ../libthoro/common/IntegerUtils.cpp
-    ../libthoro/common/StringUtils.cpp
-    ../libthoro/common/graphics/Bits.cpp
-    ../libthoro/common/graphics/GLImageStructure.cpp
-    ../libthoro/common/graphics/GLfunctions.cpp
-    ../libthoro/common/graphics/ImageLoader.cpp
-    ../libthoro/common/graphics/gif/DataSubBlock.cpp
-    ../libthoro/common/graphics/gif/Decoder.cpp
-    ../libthoro/common/graphics/gif/ElementBase.cpp
-    ../libthoro/common/graphics/gif/Extensions.cpp
-    ../libthoro/common/graphics/gif/GIFStructures.cpp
-    ../libthoro/common/graphics/readBMP.cpp
-    ../libthoro/common/graphics/readGIF.cpp
-    ../libthoro/common/graphics/readJPEG.cpp
-    ../libthoro/common/graphics/readPNG.cpp
-    ../libthoro/common/graphics/readPPM.cpp
-    ../libthoro/common/gui/glutGUI.cpp
-    ../libthoro/hashfunctions/sha-256.cpp
-    ../libthoro/hashfunctions/sha-256_sources.cpp
+    ../../libthoro/common/DirectoryFileList.cpp
+    ../../libthoro/common/IntegerUtils.cpp
+    ../../libthoro/common/StringUtils.cpp
+    ../../libthoro/common/graphics/Bits.cpp
+    ../../libthoro/common/graphics/GLImageStructure.cpp
+    ../../libthoro/common/graphics/GLfunctions.cpp
+    ../../libthoro/common/graphics/ImageLoader.cpp
+    ../../libthoro/common/graphics/gif/DataSubBlock.cpp
+    ../../libthoro/common/graphics/gif/Decoder.cpp
+    ../../libthoro/common/graphics/gif/ElementBase.cpp
+    ../../libthoro/common/graphics/gif/Extensions.cpp
+    ../../libthoro/common/graphics/gif/GIFStructures.cpp
+    ../../libthoro/common/graphics/readBMP.cpp
+    ../../libthoro/common/graphics/readGIF.cpp
+    ../../libthoro/common/graphics/readJPEG.cpp
+    ../../libthoro/common/graphics/readPNG.cpp
+    ../../libthoro/common/graphics/readPPM.cpp
+    ../../libthoro/common/gui/glutGUI.cpp
+    ../../libthoro/hashfunctions/sha-256.cpp
+    ../../libthoro/hashfunctions/sha-256_sources.cpp
     Configuration.cpp
     GUI.cpp
     GUIMultiLinePanel.cpp
     GUITextPanel.cpp
-    common/Query.cpp
-    common/Splitter.cpp
-    common/WhoStatRecord.cpp
-    data/Database.cpp
-    data/DirectDatabase.cpp
-    data/PicData.cpp
+    ../common/Query.cpp
+    ../common/Splitter.cpp
+    ../common/WhoStatRecord.cpp
+    ../data/Database.cpp
+    ../data/DirectDatabase.cpp
+    ../data/PicData.cpp
     main.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

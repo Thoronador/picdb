@@ -21,8 +21,8 @@
 #ifndef PICDATABASE_HPP
 #define PICDATABASE_HPP
 
-#include "data/DirectDatabase.hpp"
-#include "patterns/Singleton.hpp"
+#include "../data/DirectDatabase.hpp"
+#include "../patterns/Singleton.hpp"
 
 /** \brief wraps the DirectDatabase class inside of a singleton pattern
  */

@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#include "GUITextPanel.h"
-#include "GUI.h"
+#include "GUITextPanel.hpp"
+#include "GUI.hpp"
 
 GUITextPanel::GUITextPanel(const std::string& msg)
 : m_string(msg),

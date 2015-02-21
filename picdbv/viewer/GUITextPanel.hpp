@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef GUITEXTPANEL_H
-#define GUITEXTPANEL_H
+#ifndef GUITEXTPANEL_HPP
+#define GUITEXTPANEL_HPP
 
 #include <string>
 
@@ -82,4 +82,4 @@ class GUIAdjustedTextPanel : virtual public GUITextPanel
     PanelAdjustment m_adjust;
 };//class
 
-#endif // GUITEXTPANEL_H
+#endif // GUITEXTPANEL_HPP

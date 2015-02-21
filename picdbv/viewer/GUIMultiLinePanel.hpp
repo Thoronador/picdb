@@ -18,13 +18,13 @@
  -----------------------------------------------------------------------------
 */
 
-#ifndef GUIMULTILINEPANEL_H
-#define GUIMULTILINEPANEL_H
+#ifndef GUIMULTILINEPANEL_HPP
+#define GUIMULTILINEPANEL_HPP
 
 #include <set>
 #include <string>
 #include <vector>
-#include "GUITextPanel.h"
+#include "GUITextPanel.hpp"
 
 class GUIMultiLinePanel : virtual public GUITextPanel
 {
@@ -86,4 +86,4 @@ class GUIMultiLineAdjustedPanel : public GUIMultiLinePanel, public GUIAdjustedTe
     virtual void draw();
 };//class
 
-#endif // GUIMULTILINEPANEL_H
+#endif // GUIMULTILINEPANEL_HPP

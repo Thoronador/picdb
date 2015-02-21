@@ -18,14 +18,14 @@
  -----------------------------------------------------------------------------
 */
 
-#include "GUI.h"
+#include "GUI.hpp"
 #include <iostream>
 #include <GL/gl.h>
-#include "../libthoro/common/graphics/ImageLoader.h"
-#include "../libthoro/common/graphics/GLfunctions.h"
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/graphics/ImageLoader.h"
+#include "../../libthoro/common/graphics/GLfunctions.h"
+#include "../../libthoro/common/StringUtils.h"
 #include "PicDatabase.hpp"
-#include "GUIMultiLinePanel.h"
+#include "GUIMultiLinePanel.hpp"
 
 GUI::GUI()
 : image_tex(0),

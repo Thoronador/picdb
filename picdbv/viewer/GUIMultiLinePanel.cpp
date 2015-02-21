@@ -18,8 +18,8 @@
  -----------------------------------------------------------------------------
 */
 
-#include "GUIMultiLinePanel.h"
-#include "GUI.h"
+#include "GUIMultiLinePanel.hpp"
+#include "GUI.hpp"
 
 GUIMultiLinePanel::GUIMultiLinePanel(const std::string& msg)
 : GUITextPanel(msg),
