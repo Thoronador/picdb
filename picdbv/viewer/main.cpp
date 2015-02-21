@@ -45,9 +45,6 @@ void showHelp()
             << "              - disables auto-tagging\n"
             << "  --load      - loads database from predefined file (default)\n"
             << "  --noload    - does not load database from file\n"
-            << "  --list      - lists all files in the database after all operations are\n"
-            << "                finished\n"
-            << "  --nolist    - surpress listing (default)\n"
             << "  --save      - saves database to predefined file\n"
             << "  --nosave    - does not save database (default)\n"
             << "  --purge     - removes not existing files from database\n"
@@ -59,7 +56,6 @@ void showHelp()
 
 int main(int argc, char **argv)
 {
-  bool doList = false;
   bool doLoad = true;
   bool doSave = false;
   bool doTagging = true;
@@ -93,14 +89,6 @@ int main(int argc, char **argv)
     {
       showHelp();
       return 0;
-    }
-    else if (arg_string == "--list" || arg_string == "-ls")
-    {
-      doList = true;
-    }
-    else if (arg_string == "--nolist" || arg_string == "-nls")
-    {
-      doList = false;
     }
     else if (arg_string == "--load" || arg_string == "-l")
     {
@@ -196,11 +184,6 @@ int main(int argc, char **argv)
     }
   }//load
 
-  if (doList)
-  {
-    std::cout<<"Listing files:\n";
-    db.ListData();
-  }
   std::cout <<"Number of DB entries: "<<db.getNumEntries()<<"\n";
 
   if (doPurge)

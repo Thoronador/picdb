@@ -132,10 +132,6 @@ class Database
     virtual std::set<std::string> getAllFilesForHash(const SHA256::MessageDigest& hash) const = 0;
 
 
-    /** \brief writes the data of all files within the DB to the standard output */
-    virtual void ListData() const = 0;
-
-
     /** \brief tries to calculate the hashes for all files in the DB that do not have a valid hash yet.
      *
      * \param baseDir  the base directory for the file names in the DB

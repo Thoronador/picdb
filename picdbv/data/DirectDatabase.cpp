@@ -208,18 +208,6 @@ bool DirectDatabase::AutoTag_Splitter()
   return true;
 }
 
-void DirectDatabase::ListData() const
-{
-  std::map<std::string, PicData>::const_iterator iter;
-  iter = m_Files.begin();
-  while (iter != m_Files.end())
-  {
-    std::cout << cFilePrefix <<": "<<iter->first<<"\n";
-    iter->second.show();
-    ++iter;
-  }//while
-}
-
 void DirectDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
 {
   //max set to zero? zero means hash all!

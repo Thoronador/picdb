@@ -244,13 +244,6 @@ bool DomainSocketDatabase::AutoTag_Splitter()
   throw std::runtime_error("Got unexpected server response: "+response);
 }
 
-void DomainSocketDatabase::ListData() const
-{
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::ListData() is not implemented yet.");
-  return;
-}
-
 void DomainSocketDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
 {
   #warning Not implemented yet!
