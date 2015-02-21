@@ -21,6 +21,7 @@
 #include "DirectDatabase.hpp"
 #include <iostream>
 #include <algorithm>
+#include "../../libthoro/common/DirectoryFileList.h"
 #include "../../libthoro/common/StringUtils.h"
 #include "../common/Query.hpp"
 #include "../common/Splitter.hpp"
