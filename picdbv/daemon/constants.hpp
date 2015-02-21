@@ -30,11 +30,17 @@ const std::string serverSocketFile = "/tmp/picdb_server.sock";
 const std::string serverVersion    = "20150220.1";
 
 //server response codes
-const std::string codeContinue              = "100";
-const std::string codeOK                    = "200";
-const std::string codeNoContent             = "204";
-const std::string codeBadRequest            = "400";
-const std::string codeRequestEntityTooLarge = "413";
-const std::string codeInternalServerError   = "500";
+const std::string codeContinue                 = "100";
+const int         codeContinueInt              = 100;
+const std::string codeOK                       = "200";
+const int         codeOKInt                    = 200;
+const std::string codeNoContent                = "204";
+const int         codeNoContentInt             = 204;
+const std::string codeBadRequest               = "400";
+const int         codeBadRequestInt            = 400;
+const std::string codeRequestEntityTooLarge    = "413";
+const int         codeRequestEntityTooLargeInt = 413;
+const std::string codeInternalServerError      = "500";
+const int         codeInternalServerErrorInt   = 500;
 
 #endif // PICDBD_CONSTANTS_HPP
