@@ -23,7 +23,7 @@
 
 #include "Command.hpp"
 
-/** \brief command for clearing all contents of a database
+/** \brief command for listing untagged files of a database
  */
 class CommandUntagged: public Command
 {
