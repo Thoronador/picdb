@@ -28,7 +28,6 @@
 #include <vector>
 #include "Database.hpp"
 #include "PicData.hpp"
-#include "../common/Splitter.hpp"
 #include "../../libthoro/common/DirectoryFileList.h"
 #include "../../libthoro/hashfunctions/sha-256.h"
 

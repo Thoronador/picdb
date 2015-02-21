@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "../../libthoro/common/StringUtils.h"
 #include "../common/Query.hpp"
+#include "../common/Splitter.hpp"
 #include "../common/WhoStatRecord.hpp"
 
 DirectDatabase::~DirectDatabase()
