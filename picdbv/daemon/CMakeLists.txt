@@ -41,6 +41,8 @@ set(picdbd_sources
     commands/CmdNumEntries.cpp
     commands/CmdNumHashed.cpp
     commands/CmdNumUnhashed.cpp
+    commands/CmdUnknownArtist.cpp
+    commands/CmdUnknownWho.cpp
     commands/CmdUntagged.cpp
     commands/CmdVersion.cpp
     commands/Command.cpp

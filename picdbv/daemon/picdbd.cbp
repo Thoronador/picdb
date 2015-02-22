@@ -103,6 +103,10 @@
 		<Unit filename="commands/CmdNumHashed.hpp" />
 		<Unit filename="commands/CmdNumUnhashed.cpp" />
 		<Unit filename="commands/CmdNumUnhashed.hpp" />
+		<Unit filename="commands/CmdUnknownArtist.cpp" />
+		<Unit filename="commands/CmdUnknownArtist.hpp" />
+		<Unit filename="commands/CmdUnknownWho.cpp" />
+		<Unit filename="commands/CmdUnknownWho.hpp" />
 		<Unit filename="commands/CmdUntagged.cpp" />
 		<Unit filename="commands/CmdUntagged.hpp" />
 		<Unit filename="commands/CmdVersion.cpp" />

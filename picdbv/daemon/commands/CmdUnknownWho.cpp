@@ -18,20 +18,20 @@
  -------------------------------------------------------------------------------
 */
 
-#include "CmdUnknownArtist.hpp"
+#include "CmdUnknownWho.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
 
-CommandUnknownArtist::CommandUnknownArtist()
-: Command("no_artist")
+CommandUnknownWho::CommandUnknownWho()
+: Command("no_who")
 { }
 
-bool CommandUnknownArtist::processMessage(const std::string& message, std::string& answer) const
+bool CommandUnknownWho::processMessage(const std::string& message, std::string& answer) const
 {
   /* list untagged files in a database */
-  if (message.size() > 10 && (message.substr(0, 10) == "no_artist "))
+  if (message.size() > 7 && (message.substr(0, 7) == "no_who "))
   {
-    const std::string db_name = message.substr(10);
+    const std::string db_name = message.substr(7);
     //check for spaces in name
     if (db_name.find(' ')==std::string::npos)
     {
@@ -39,7 +39,7 @@ bool CommandUnknownArtist::processMessage(const std::string& message, std::strin
         answer = codeBadRequest + " database does not exist";
       else
       {
-        const std::vector<std::string> result = DatabaseManager::get().getDatabase(db_name).getUnknownArtistFiles();
+        const std::vector<std::string> result = DatabaseManager::get().getDatabase(db_name).getUnknownWhoFiles();
         if (result.empty())
         {
           answer = codeNoContent + " none";
@@ -66,7 +66,7 @@ bool CommandUnknownArtist::processMessage(const std::string& message, std::strin
     return false;
 }
 
-std::string CommandUnknownArtist::helpText() const
+std::string CommandUnknownWho::helpText() const
 {
-  return "list files without artist info in a database";
+  return "list files without \"who\" info in a database";
 }

@@ -47,6 +47,7 @@
 #include "../daemon/commands/CmdNumUnhashed.hpp"
 #include "../daemon/commands/CmdNumEntries.hpp"
 #include "../daemon/commands/CmdUnknownArtist.hpp"
+#include "../daemon/commands/CmdUnknownWho.hpp"
 
 std::string padString(std::string str, const std::string::size_type n)
 {
@@ -83,6 +84,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandNumUnhashed>(new CommandNumUnhashed()));
   m_Commands.push_back(std::unique_ptr<CommandNumEntries>(new CommandNumEntries()));
   m_Commands.push_back(std::unique_ptr<CommandUnknownArtist>(new CommandUnknownArtist()));
+  m_Commands.push_back(std::unique_ptr<CommandUnknownWho>(new CommandUnknownWho()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
