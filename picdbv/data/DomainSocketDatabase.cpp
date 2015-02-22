@@ -432,7 +432,17 @@ bool DomainSocketDatabase::loadFromFile(const std::string& FileName)
 
 std::vector<std::string> DomainSocketDatabase::executeQuery(const std::string& query) const
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::executeQuery() is not implemented yet.");
-  return std::vector<std::string>();
+  std::string response = sendRequestToServer("query "+db_name+" "+query);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeNoContentInt)
+    return std::vector<std::string>();
+  if (code == codeOKInt)
+  {
+    std::vector<std::string> vec = Splitter::splitAtSeparator(response, '\n');
+    //erase first element from vector, because that's the status code + message
+    vec.erase(vec.begin());
+    return vec;
+  }
+  //some kind of error occurred
+  throw std::runtime_error("Got unexpected server response: "+response);
 }
