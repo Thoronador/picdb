@@ -389,7 +389,7 @@ void DirectDatabase::purgeNonexistingFiles(const std::string& BaseDir)
   }//for
 }
 
-void DirectDatabase::showTagStatistics() const
+void DirectDatabase::showTagStatistics(std::ostream& outStream) const
 {
   std::map<std::string, unsigned int> tagList;
   unsigned int total_tags = 0;
@@ -418,28 +418,28 @@ void DirectDatabase::showTagStatistics() const
     ++fth_iter;
   }
   //print it
-  std::cout<<"Present tags in database:\n";
+  outStream << "Present tags in database:\n";
   std::map<std::string, unsigned int>::const_iterator listIter = tagList.begin();
   while (listIter != tagList.end())
   {
-    std::cout << "  "<<listIter->first<<": "<<listIter->second<<"\n";
+    outStream << "  "<<listIter->first<<": "<<listIter->second<<"\n";
     ++listIter;
   }//while
   if (tagList.empty())
   {
-    std::cout << "  none at all\n";
+    outStream << "  none at all\n";
   }
   else
   {
-    std::cout << "Total: " << tagList.size() << " distinct tags.\n";
+    outStream << "Total: " << tagList.size() << " distinct tags.\n";
   }
   const unsigned int file_count = m_Files.size() + m_FileToHash.size();
-  std::cout << "A total of " << total_tags << " tags on " << file_count
+  outStream << "A total of " << total_tags << " tags on " << file_count
             << " files, that means " << static_cast<float>(total_tags)/(file_count==0 ? 1 : file_count)
             << " tags per file.\n";
 }
 
-void DirectDatabase::showWhoStatistics() const
+void DirectDatabase::showWhoStatistics(std::ostream& outStream) const
 {
   std::map<std::string, unsigned int> whoList;
   whoList.clear();
@@ -467,20 +467,20 @@ void DirectDatabase::showWhoStatistics() const
     ++fth_iter;
   }
   //print it
-  std::cout<<"Present person names in database:\n";
+  outStream << "Present person names in database:\n";
   std::map<std::string, unsigned int>::const_iterator listIter = whoList.begin();
   while (listIter != whoList.end())
   {
-    std::cout << "  " <<listIter->first << ": " << listIter->second << "\n";
+    outStream << "  " <<listIter->first << ": " << listIter->second << "\n";
     ++listIter;
   }//while
   if (whoList.empty())
   {
-    std::cout << "  none at all\n";
+    outStream << "  none at all\n";
   }
   else
   {
-    std::cout << "Total: " << whoList.size() << " persons.\n";
+    outStream << "Total: " << whoList.size() << " persons.\n";
     //order them by number
     std::vector<WhoStatRec> sortedList;
     WhoStatRec wsr;
@@ -493,11 +493,11 @@ void DirectDatabase::showWhoStatistics() const
       ++listIter;
     }//while
     sort(sortedList.begin(), sortedList.end(), wsr_compare);
-    std::cout << "\nPresent person names in database by count:\n";
+    outStream << "\nPresent person names in database by count:\n";
     unsigned int i;
     for (i=0; i<sortedList.size(); ++i)
     {
-      std::cout << "  "<<sortedList[i].who<<": "<<sortedList[i].count<<"\n";
+      outStream << "  "<<sortedList[i].who<<": "<<sortedList[i].count<<"\n";
     }//for
   }//else
 }

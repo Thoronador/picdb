@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
-    This file is part of the Thoronador's random stuff.
-    Copyright (C) 2011, 2012 thoronador
+    This file is part of picdbv.
+    Copyright (C) 2011, 2012, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -242,8 +242,8 @@ int main(int argc, char **argv)
     GUI::getSingleton().start();
   }//if not only stats
 
-  db.showTagStatistics();
-  db.showWhoStatistics();
+  db.showTagStatistics(std::cout);
+  db.showWhoStatistics(std::cout);
   std::cout << "untagged files: "<<db.getUntaggedFiles().size()<<"\n";
   std::cout << "unknown artist files: " << db.getUnknownArtistFiles().size()<<"\n";
   std::cout << "unknown who files: " << db.getUnknownWhoFiles().size()<<"\n";

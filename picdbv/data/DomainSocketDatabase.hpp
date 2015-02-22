@@ -192,9 +192,9 @@ class DomainSocketDatabase: public Database
     virtual void purgeNonexistingFiles(const std::string& BaseDir);
 
 
-    virtual void showTagStatistics() const;
+    virtual void showTagStatistics(std::ostream& outStream) const;
 
-    virtual void showWhoStatistics() const;
+    virtual void showWhoStatistics(std::ostream& outStream) const;
 
     virtual bool saveToFile(const std::string& FileName) const;
     virtual bool loadFromFile(const std::string& FileName);

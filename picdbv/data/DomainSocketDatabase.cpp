@@ -404,14 +404,14 @@ void DomainSocketDatabase::purgeNonexistingFiles(const std::string& BaseDir)
   return;
 }
 
-void DomainSocketDatabase::showTagStatistics() const
+void DomainSocketDatabase::showTagStatistics(std::ostream& outStream) const
 {
   #warning Not implemented yet!
   throw std::runtime_error("Function DomainSocketDatabase::showTagStatistics() is not implemented yet.");
   return;
 }
 
-void DomainSocketDatabase::showWhoStatistics() const
+void DomainSocketDatabase::showWhoStatistics(std::ostream& outStream) const
 {
   #warning Not implemented yet!
   throw std::runtime_error("Function DomainSocketDatabase::showTagStatistics() is not implemented yet.");

@@ -191,9 +191,9 @@ class Database
     virtual void purgeNonexistingFiles(const std::string& BaseDir) = 0;
 
 
-    virtual void showTagStatistics() const = 0;
+    virtual void showTagStatistics(std::ostream& outStream) const = 0;
 
-    virtual void showWhoStatistics() const = 0;
+    virtual void showWhoStatistics(std::ostream& outStream) const = 0;
 
     virtual bool saveToFile(const std::string& FileName) const = 0;
     virtual bool loadFromFile(const std::string& FileName) = 0;
