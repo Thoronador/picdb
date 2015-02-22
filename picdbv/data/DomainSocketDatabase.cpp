@@ -257,7 +257,8 @@ unsigned int DomainSocketDatabase::getNumUnhashed() const
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
-    response.erase(4);
+    //remove first four characters (status code + following space)
+    response.erase(0, 4);
     std::string::size_type space_pos = response.find(' ');
     if (space_pos != std::string::npos)
     {
@@ -281,7 +282,8 @@ unsigned int DomainSocketDatabase::getNumHashed() const
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
-    response.erase(4);
+    //remove first four characters (status code + following space)
+    response.erase(0, 4);
     std::string::size_type space_pos = response.find(' ');
     if (space_pos != std::string::npos)
     {
@@ -305,7 +307,8 @@ unsigned int DomainSocketDatabase::getNumEntries() const
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
-    response.erase(4);
+    //remove first four characters (status code + following space)
+    response.erase(0, 4);
     std::string::size_type space_pos = response.find(' ');
     if (space_pos != std::string::npos)
     {
@@ -331,7 +334,8 @@ std::vector<std::string> DomainSocketDatabase::getUntaggedFiles() const
     return std::vector<std::string>();
   if (code == codeOKInt)
   {
-    response.erase(4);
+    //remove first four characters (status code + following space)
+    response.erase(0, 4);
     return Splitter::splitAtSeparator(response, '\0');
   }
   //some kind of error occurred
@@ -340,16 +344,34 @@ std::vector<std::string> DomainSocketDatabase::getUntaggedFiles() const
 
 std::vector<std::string> DomainSocketDatabase::getUnknownArtistFiles() const
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::getUnknownArtistFiles() is not implemented yet.");
-  return std::vector<std::string>();
+  std::string response = sendRequestToServer("no_artist "+db_name);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeNoContentInt)
+    return std::vector<std::string>();
+  if (code == codeOKInt)
+  {
+    //remove first four characters (status code + following space)
+    response.erase(0, 4);
+    return Splitter::splitAtSeparator(response, '\0');
+  }
+  //some kind of error occurred
+  throw std::runtime_error("Got unexpected server response: "+response);
 }
 
 std::vector<std::string> DomainSocketDatabase::getUnknownWhoFiles() const
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::getUnknownArtistFiles() is not implemented yet.");
-  return std::vector<std::string>();
+  std::string response = sendRequestToServer("no_who "+db_name);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeNoContentInt)
+    return std::vector<std::string>();
+  if (code == codeOKInt)
+  {
+    //remove first four characters (status code + following space)
+    response.erase(0, 4);
+    return Splitter::splitAtSeparator(response, '\0');
+  }
+  //some kind of error occurred
+  throw std::runtime_error("Got unexpected server response: "+response);
 }
 
 std::vector<std::string> DomainSocketDatabase::getNonexistingFiles(const std::string& BaseDir) const
