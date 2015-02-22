@@ -37,7 +37,11 @@ int main()
   pd_one.artist = "Arthur McArty";
   tests.push_back(pd_one);
   // add a hash
-  pd_one.hash_sha256.fromHexString("8b508d1865b42c03defe3458bc514eb2c517e48daa36586d3b450a9f072f888f");
+  if (!pd_one.hash_sha256.fromHexString("8b508d1865b42c03defe3458bc514eb2c517e48daa36586d3b450a9f072f888f"))
+  {
+    std::cout << "Error: could not create SHA-256 hash from string.\n";
+    return 1;
+  }
   // add some tags
   pd_one.tags.insert("this");
   pd_one.tags.insert("is");
