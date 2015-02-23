@@ -406,15 +406,22 @@ void DomainSocketDatabase::purgeNonexistingFiles(const std::string& BaseDir)
 
 void DomainSocketDatabase::showTagStatistics(std::ostream& outStream) const
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::showTagStatistics() is not implemented yet.");
-  return;
+  const std::string response = sendRequestToServer("tag_stats "+db_name);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeOKInt)
+  {
+    response.erase(0, 4); //remove status code + space
+    outStream << response;
+    return;
+  }
+  //unexpected code
+  throw std::runtime_error("Got unexpected server response: "+response);
 }
 
 void DomainSocketDatabase::showWhoStatistics(std::ostream& outStream) const
 {
   #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::showTagStatistics() is not implemented yet.");
+  throw std::runtime_error("Function DomainSocketDatabase::showWhoStatistics() is not implemented yet.");
   return;
 }
 
