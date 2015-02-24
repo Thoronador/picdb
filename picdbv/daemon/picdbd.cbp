@@ -115,6 +115,8 @@
 		<Unit filename="commands/CmdUntagged.hpp" />
 		<Unit filename="commands/CmdVersion.cpp" />
 		<Unit filename="commands/CmdVersion.hpp" />
+		<Unit filename="commands/CmdWhoStatistics.cpp" />
+		<Unit filename="commands/CmdWhoStatistics.hpp" />
 		<Unit filename="commands/Command.cpp" />
 		<Unit filename="commands/Command.hpp" />
 		<Unit filename="constants.hpp" />

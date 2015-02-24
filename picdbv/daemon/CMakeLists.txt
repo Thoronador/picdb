@@ -47,6 +47,7 @@ set(picdbd_sources
     commands/CmdUnknownWho.cpp
     commands/CmdUntagged.cpp
     commands/CmdVersion.cpp
+    commands/CmdWhoStatistics.cpp
     commands/Command.cpp
     main.cpp)
 

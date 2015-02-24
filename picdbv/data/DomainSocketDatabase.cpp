@@ -420,9 +420,16 @@ void DomainSocketDatabase::showTagStatistics(std::ostream& outStream) const
 
 void DomainSocketDatabase::showWhoStatistics(std::ostream& outStream) const
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::showWhoStatistics() is not implemented yet.");
-  return;
+  const std::string response = sendRequestToServer("who_stats "+db_name);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeOKInt)
+  {
+    response.erase(0, 4); //remove status code + space
+    outStream << response;
+    return;
+  }
+  //unexpected code
+  throw std::runtime_error("Got unexpected server response: "+response);
 }
 
 bool DomainSocketDatabase::saveToFile(const std::string& FileName) const

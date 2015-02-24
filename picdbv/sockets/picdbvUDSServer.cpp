@@ -50,6 +50,7 @@
 #include "../daemon/commands/CmdUnknownWho.hpp"
 #include "../daemon/commands/CmdQuery.hpp"
 #include "../daemon/commands/CmdTagStatistics.hpp"
+#include "../daemon/commands/CmdWhoStatistics.hpp"
 
 std::string padString(std::string str, const std::string::size_type n)
 {
@@ -89,6 +90,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandUnknownWho>(new CommandUnknownWho()));
   m_Commands.push_back(std::unique_ptr<CommandQuery>(new CommandQuery()));
   m_Commands.push_back(std::unique_ptr<CommandTagStatistics>(new CommandTagStatistics()));
+  m_Commands.push_back(std::unique_ptr<CommandWhoStatistics>(new CommandWhoStatistics()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)

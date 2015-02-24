@@ -18,19 +18,19 @@
  -------------------------------------------------------------------------------
 */
 
-#include "CmdTagStatistics.hpp"
+#include "CmdWhoStatistics.hpp"
 #include <sstream>
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
 
-CommandTagStatistics::CommandTagStatistics()
-: Command("tag_stats")
+CommandWhoStatistics::CommandWhoStatistics()
+: Command("who_stats")
 { }
 
-bool CommandTagStatistics::processMessage(const std::string& message, std::string& answer) const
+bool CommandWhoStatistics::processMessage(const std::string& message, std::string& answer) const
 {
-  /* show tag statistics */
-  if (message.size() > 10 && (message.substr(0, 10) == "tag_stats "))
+  /* show statistics about persons */
+  if (message.size() > 10 && (message.substr(0, 10) == "who_stats "))
   {
     const std::string db_name = message.substr(10);
     //check for spaces in name
@@ -42,7 +42,7 @@ bool CommandTagStatistics::processMessage(const std::string& message, std::strin
       else
       {
         std::ostringstream outStringStream;
-        DatabaseManager::get().getDatabase(db_name).showTagStatistics(outStringStream);
+        DatabaseManager::get().getDatabase(db_name).showWhoStatistics(outStringStream);
         answer = codeOK + " "+outStringStream.str();
       }
     }
@@ -57,7 +57,7 @@ bool CommandTagStatistics::processMessage(const std::string& message, std::strin
     return false;
 }
 
-std::string CommandTagStatistics::helpText() const
+std::string CommandWhoStatistics::helpText() const
 {
-  return "shows tag statistics of a database";
+  return "shows person statistics of a database";
 }
