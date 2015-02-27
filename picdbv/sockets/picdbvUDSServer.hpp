@@ -22,6 +22,7 @@
 #define PICDBVUDSSERVER_HPP
 
 #include "UnixDomainSocketServer.hpp"
+#include <map>
 #include <memory> // contains std::unique_ptr, requires C++11 support
 #include <vector>
 #include "../daemon/commands/Command.hpp"
@@ -41,7 +42,26 @@ class picdbvUDSServer: public UnixDomainSocketServer
      */
     virtual void serveClient(const int client_socket_fd, bool& closeWhenDone);
   private:
+    /** \brief auxiliary function to increase command usage statistics for a certain command
+     *
+     * \param cmdName name of the command
+     */
+    void increaseCount(const std::string& cmdName);
+
+
+    /** \brief reorders commands internally to allow faster processing
+     */
+    void optimizeCommandOrder();
+
+
+    /** \brief auxiliary function for showing how often commands have been used
+     *
+     * \param answer string that shall hold the stats/the servers answer
+     */
+    void showCommandStats(std::string& answer) const;
+
     std::vector<std::unique_ptr<Command> > m_Commands; /**< vector of recognized commands */
+    std::map<std::string, unsigned int> m_CommandCount; /**< counts uses of recognized commands */
 }; //class
 
 #endif // PICDBVUDSSERVER_HPP

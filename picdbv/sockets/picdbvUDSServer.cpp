@@ -20,8 +20,10 @@
 
 #include "picdbvUDSServer.hpp"
 #include <map>
+#include <limits>
 #include "../daemon/constants.hpp"
 #include "../common/escaping.hpp"
+#include "../../libthoro/common/StringUtils.h"
 //all implemented commands
 // ---- built in
 #include "../daemon/commands/CmdVersion.hpp"
@@ -113,6 +115,8 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
       helpTexts["help"] = "shows this help message";
       helpTexts["stop"] = "stops the server";
       helpTexts["supported_commands"] = "prints a list of supported commands";
+      helpTexts["stats"] = "shows how often some commands were invoked";
+      helpTexts["optimize"] = "reorders commands for faster processing";
       std::string::size_type padding = 18; //length of "supported_commands"
       std::vector<std::unique_ptr<Command> >::const_iterator cmdIter = m_Commands.begin();
       while (cmdIter != m_Commands.end())
@@ -132,9 +136,18 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
         ++mapIter;
       } //while
     } //if help
+    else if (message == "optimize")
+    {
+      optimizeCommandOrder();
+      answer = codeOK + " The needs of the many outweigh the needs of the few or the one.";
+    } //if optimize
+    else if (message == "stats")
+    {
+      showCommandStats(answer);
+    }
     else if (message == "supported_commands")
     {
-      answer = codeOK +" stop supported_commands";
+      answer = codeOK +" optimize stats stop supported_commands";
       std::vector<std::unique_ptr<Command> >::const_iterator iter = m_Commands.begin();
       while (iter != m_Commands.end())
       {
@@ -150,7 +163,11 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
       {
         processed = iter->get()->processMessage(message, answer);
         if (processed)
+        {
+          increaseCount(iter->get()->getName());
+          //break out of while loop
           break;
+        }
         ++iter;
       }//while
 
@@ -165,4 +182,61 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     else
       sendString(client_socket_fd, codeInternalServerError+" Server did not generate a response");
   }
+}
+
+void picdbvUDSServer::increaseCount(const std::string& cmdName)
+{
+  const std::map<std::string, unsigned int>::const_iterator countIt = m_CommandCount.find(cmdName);
+  if (countIt != m_CommandCount.end())
+  {
+    if (countIt->second < std::numeric_limits<unsigned int>::max())
+      ++m_CommandCount[cmdName];
+  } //if
+  else
+    m_CommandCount[cmdName] = 1;
+}
+
+void picdbvUDSServer::optimizeCommandOrder()
+{
+  //create entries for missing commands
+  std::vector<std::unique_ptr<Command> >::const_iterator cmdIter = m_Commands.begin();
+  while (cmdIter != m_Commands.end())
+  {
+    if (m_CommandCount.find(cmdIter->get()->getName()) == m_CommandCount.end())
+      m_CommandCount[cmdIter->get()->getName()] = 0;
+    ++cmdIter;
+  } //while
+
+  //sort them
+  unsigned int i, j;
+  for (i = 0; i < m_Commands.size()-1; ++i)
+  {
+    bool swapped = false;
+    for (j = i + 1; j < m_Commands.size(); ++j)
+    {
+      if (m_CommandCount[m_Commands[i]->getName()] < m_CommandCount[m_Commands[j]->getName()])
+      {
+        swapped = true;
+        std::swap<std::unique_ptr<Command> >(m_Commands[i], m_Commands[j]);
+      }
+    } //for j
+    if (!swapped)
+      break;
+  } //for i
+}
+
+void picdbvUDSServer::showCommandStats(std::string& answer) const
+{
+  if (m_CommandCount.empty())
+    answer = codeNoContent + " no stats yet";
+  else
+  {
+    answer = codeOK + " command counts:";
+    auto cIter = m_CommandCount.begin();
+    while (cIter != m_CommandCount.end())
+    {
+      answer += "\n" + cIter->first + ": " + intToString(cIter->second);
+      ++cIter;
+    } //while
+  } //else
 }
