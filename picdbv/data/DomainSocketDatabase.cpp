@@ -377,7 +377,7 @@ std::vector<std::string> DomainSocketDatabase::getUnknownWhoFiles() const
 std::vector<std::string> DomainSocketDatabase::getNonexistingFiles(const std::string& BaseDir) const
 {
   #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::getUnknownArtistFiles() is not implemented yet.");
+  throw std::runtime_error("Function DomainSocketDatabase::getNonexistingFiles() is not implemented yet.");
   return std::vector<std::string>();
 }
 
