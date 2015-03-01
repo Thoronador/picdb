@@ -86,6 +86,7 @@ void DomainSocketDatabase::clearAllData()
 
 bool DomainSocketDatabase::getFilesFromDirectory(const std::string& directory)
 {
+  #warning Not implemented yet!
   throw std::runtime_error("Function DomainSocketDatabase::getFilesFromDirectory() is not implemented yet.");
   return false;
 }
