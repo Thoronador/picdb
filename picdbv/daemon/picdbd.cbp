@@ -105,6 +105,8 @@
 		<Unit filename="commands/CmdNumUnhashed.hpp" />
 		<Unit filename="commands/CmdQuery.cpp" />
 		<Unit filename="commands/CmdQuery.hpp" />
+		<Unit filename="commands/CmdSaveDB.cpp" />
+		<Unit filename="commands/CmdSaveDB.hpp" />
 		<Unit filename="commands/CmdTagStatistics.cpp" />
 		<Unit filename="commands/CmdTagStatistics.hpp" />
 		<Unit filename="commands/CmdUnknownArtist.cpp" />

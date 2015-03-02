@@ -18,18 +18,18 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef CMDLOADDB_HPP
-#define CMDLOADDB_HPP
+#ifndef CMDSAVEDB_HPP
+#define CMDSAVEDB_HPP
 
 #include "Command.hpp"
 
-/** \brief command for loading a database from a file
+/** \brief command for saving a database to a file
  */
-class CommandLoadDB: public Command
+class CommandSaveDB: public Command
 {
   public:
     /** \brief constructor */
-    CommandLoadDB();
+    CommandSaveDB();
 
 
     /** \brief tries to process a client's message/request
@@ -53,4 +53,4 @@ class CommandLoadDB: public Command
     virtual std::string helpText() const;
 }; //class
 
-#endif // CMDLOADDB_HPP
+#endif // CMDSAVEDB_HPP

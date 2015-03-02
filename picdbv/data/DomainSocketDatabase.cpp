@@ -435,8 +435,8 @@ void DomainSocketDatabase::showWhoStatistics(std::ostream& outStream) const
 
 bool DomainSocketDatabase::saveToFile(const std::string& FileName) const
 {
-  #warning Not implemented yet!
-  return false;
+  const std::string response = sendRequestToServer("save_db "+db_name+" "+FileName);
+  return (codeOKInt == extractStatusCodeFromResponse(response));
 }
 
 bool DomainSocketDatabase::loadFromFile(const std::string& FileName)

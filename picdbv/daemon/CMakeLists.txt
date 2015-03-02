@@ -42,6 +42,7 @@ set(picdbd_sources
     commands/CmdNumHashed.cpp
     commands/CmdNumUnhashed.cpp
     commands/CmdQuery.cpp
+    commands/CmdSaveDB.cpp
     commands/CmdTagStatistics.cpp
     commands/CmdUnknownArtist.cpp
     commands/CmdUnknownWho.cpp
