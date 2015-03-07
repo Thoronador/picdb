@@ -21,7 +21,6 @@
 #include "CmdSaveDB.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
-#include "../../common/filesystem/functions.hpp"
 
 CommandSaveDB::CommandSaveDB()
 : Command("save_db")
@@ -29,7 +28,7 @@ CommandSaveDB::CommandSaveDB()
 
 bool CommandSaveDB::processMessage(const std::string& message, std::string& answer) const
 {
-  /* load a database from a specified file */
+  /* save a database to a specified file */
   if (message.size() > 8 && (message.substr(0, 8) == "save_db "))
   {
     std::string db_name = "";

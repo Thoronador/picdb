@@ -1,6 +1,6 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of picdbv.
+    This file is part of picdbd.
     Copyright (C) 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
