@@ -89,7 +89,7 @@ bool DomainSocketDatabase::getFilesFromDirectory(const std::string& directory)
   const std::string response = sendRequestToServer("files_from_directory "+db_name+" "+directory);
   if (response.empty())
     throw std::runtime_error("Could not send request to server!");
-  const int code = extractStatusCodeFromResponse(resp);
+  const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
     return true;
@@ -98,7 +98,7 @@ bool DomainSocketDatabase::getFilesFromDirectory(const std::string& directory)
   {
     return false;
   }
-  throw std::runtime_error("DomainSocketDatabase::getFilesFromDirectory(): Got unexpected server response: "+resp);
+  throw std::runtime_error("DomainSocketDatabase::getFilesFromDirectory(): Got unexpected server response: "+response);
   return false;
 }
 
@@ -413,7 +413,7 @@ std::vector<std::string> DomainSocketDatabase::getNonexistingFiles(const std::st
 
 bool DomainSocketDatabase::deleteFile(const std::string& FileName)
 {
-  std::string response = sendRequestToServer("delete_file "+db_name+" "+FileName);
+  const std::string response = sendRequestToServer("delete_file "+db_name+" "+FileName);
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
@@ -436,7 +436,7 @@ void DomainSocketDatabase::purgeNonexistingFiles(const std::string& BaseDir)
 
 void DomainSocketDatabase::showTagStatistics(std::ostream& outStream) const
 {
-  const std::string response = sendRequestToServer("tag_stats "+db_name);
+  std::string response = sendRequestToServer("tag_stats "+db_name);
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
@@ -450,7 +450,7 @@ void DomainSocketDatabase::showTagStatistics(std::ostream& outStream) const
 
 void DomainSocketDatabase::showWhoStatistics(std::ostream& outStream) const
 {
-  const std::string response = sendRequestToServer("who_stats "+db_name);
+  std::string response = sendRequestToServer("who_stats "+db_name);
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeOKInt)
   {
@@ -476,7 +476,7 @@ bool DomainSocketDatabase::loadFromFile(const std::string& FileName)
 
 std::vector<std::string> DomainSocketDatabase::executeQuery(const std::string& query) const
 {
-  std::string response = sendRequestToServer("query "+db_name+" "+query);
+  const std::string response = sendRequestToServer("query "+db_name+" "+query);
   const int code = extractStatusCodeFromResponse(response);
   if (code == codeNoContentInt)
     return std::vector<std::string>();
