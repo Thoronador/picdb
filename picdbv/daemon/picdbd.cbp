@@ -87,6 +87,8 @@
 		<Unit filename="commands/CmdFileExists.hpp" />
 		<Unit filename="commands/CmdFilesForHash.cpp" />
 		<Unit filename="commands/CmdFilesForHash.hpp" />
+		<Unit filename="commands/CmdFilesFromDirectory.cpp" />
+		<Unit filename="commands/CmdFilesFromDirectory.hpp" />
 		<Unit filename="commands/CmdHashData.cpp" />
 		<Unit filename="commands/CmdHashData.hpp" />
 		<Unit filename="commands/CmdHashExists.cpp" />
