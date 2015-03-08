@@ -7,6 +7,7 @@ project(picdbd)
 
 set(picdbd_sources
     ../../libthoro/common/DirectoryFileList.cpp
+    ../../libthoro/common/DirectoryFunctions.cpp
     ../../libthoro/common/StringUtils.cpp
     ../../libthoro/hashfunctions/sha-256.cpp
     ../../libthoro/hashfunctions/sha-256_sources.cpp

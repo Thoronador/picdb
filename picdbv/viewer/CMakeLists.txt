@@ -7,6 +7,7 @@ add_definitions(-DUSE_GLUT_GUI)
 
 set(picdbv_sources
     ../../libthoro/common/DirectoryFileList.cpp
+    ../../libthoro/common/DirectoryFunctions.cpp
     ../../libthoro/common/IntegerUtils.cpp
     ../../libthoro/common/StringUtils.cpp
     ../../libthoro/common/graphics/Bits.cpp

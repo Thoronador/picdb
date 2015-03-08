@@ -22,6 +22,7 @@
 #include <iostream>
 #include <algorithm>
 #include "../../libthoro/common/DirectoryFileList.h"
+#include "../../libthoro/common/DirectoryFunctions.h"
 #include "../../libthoro/common/StringUtils.h"
 #include "../common/Query.hpp"
 #include "../common/Splitter.hpp"
@@ -219,6 +220,11 @@ void DirectDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int 
   {
     if (limit>m_Files.size()) limit = m_Files.size();
   }
+
+  if (baseDir.empty())
+    return;
+  if (!directoryExists(unslashify(baseDir)))
+    return;
   //now do it
   std::map<std::string, PicData>::iterator iter = m_Files.begin();
   while ((limit>0) and (iter!=m_Files.end()))
