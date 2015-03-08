@@ -46,6 +46,7 @@ Daemonic& Daemonic::get()
 
 bool Daemonic::daemonize(const std::string& logName)
 {
+  #ifndef DO_NOT_FORK
   pid_t procID = fork();
   if (procID < 0)
   {
@@ -91,6 +92,7 @@ bool Daemonic::daemonize(const std::string& logName)
     exit(0);
     return false; //should never get to this point
   } //if pid > 0
+  #endif //ifndef DO_NOT_FORK
 
   /* pid is zero second fork() succeeded - now we are running the "real" daemon process. */
 
