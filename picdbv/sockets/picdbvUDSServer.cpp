@@ -55,6 +55,7 @@
 #include "../daemon/commands/CmdWhoStatistics.hpp"
 #include "../daemon/commands/CmdSaveDB.hpp"
 #include "../daemon/commands/CmdFilesFromDirectory.hpp"
+#include "../daemon/commands/CmdHashUnhashed.hpp"
 
 std::string padString(std::string str, const std::string::size_type n)
 {
@@ -97,6 +98,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandWhoStatistics>(new CommandWhoStatistics()));
   m_Commands.push_back(std::unique_ptr<CommandSaveDB>(new CommandSaveDB()));
   m_Commands.push_back(std::unique_ptr<CommandFilesFromDirectory>(new CommandFilesFromDirectory()));
+  m_Commands.push_back(std::unique_ptr<CommandHashUnhashed>(new CommandHashUnhashed()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)

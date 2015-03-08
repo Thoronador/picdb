@@ -36,6 +36,8 @@
 		</Compiler>
 		<Unit filename="../../libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="../../libthoro/common/DirectoryFileList.h" />
+		<Unit filename="../../libthoro/common/DirectoryFunctions.cpp" />
+		<Unit filename="../../libthoro/common/DirectoryFunctions.h" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
 		<Unit filename="../../libthoro/hashfunctions/sha-256.cpp" />
@@ -94,6 +96,8 @@
 		<Unit filename="commands/CmdHashData.hpp" />
 		<Unit filename="commands/CmdHashExists.cpp" />
 		<Unit filename="commands/CmdHashExists.hpp" />
+		<Unit filename="commands/CmdHashUnhashed.cpp" />
+		<Unit filename="commands/CmdHashUnhashed.hpp" />
 		<Unit filename="commands/CmdListDatabases.cpp" />
 		<Unit filename="commands/CmdListDatabases.hpp" />
 		<Unit filename="commands/CmdListFiles.cpp" />

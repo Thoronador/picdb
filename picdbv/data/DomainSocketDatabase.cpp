@@ -258,8 +258,13 @@ bool DomainSocketDatabase::AutoTag_Splitter()
 
 void DomainSocketDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int limit)
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::hashUnhashedFiles() is not implemented yet.");
+  const std::string response = sendRequestToServer("hash_unhashed "+db_name+" "+uintToString(limit)+" "+baseDir);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code != codeOKInt)
+  {
+    //some kind of error occurred
+    throw std::runtime_error("Got unexpected server response: "+response);
+  }
   return;
 }
 

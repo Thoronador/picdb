@@ -27,7 +27,7 @@
 const std::string serverSocketFile = "/tmp/picdb_server.sock";
 
 //server version
-const std::string serverVersion    = "20150308.1";
+const std::string serverVersion    = "20150308.2";
 
 //server response codes
 const std::string codeContinue                 = "100";
