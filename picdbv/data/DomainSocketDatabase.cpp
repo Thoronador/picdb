@@ -86,8 +86,19 @@ void DomainSocketDatabase::clearAllData()
 
 bool DomainSocketDatabase::getFilesFromDirectory(const std::string& directory)
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::getFilesFromDirectory() is not implemented yet.");
+  const std::string response = sendRequestToServer("files_from_directory "+db_name+" "+directory);
+  if (response.empty())
+    throw std::runtime_error("Could not send request to server!");
+  const int code = extractStatusCodeFromResponse(resp);
+  if (code == codeOKInt)
+  {
+    return true;
+  }
+  if (code == codeNoContentInt)
+  {
+    return false;
+  }
+  throw std::runtime_error("DomainSocketDatabase::getFilesFromDirectory(): Got unexpected server response: "+resp);
   return false;
 }
 
