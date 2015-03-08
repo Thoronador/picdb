@@ -393,9 +393,22 @@ std::vector<std::string> DomainSocketDatabase::getUnknownWhoFiles() const
 
 std::vector<std::string> DomainSocketDatabase::getNonexistingFiles(const std::string& BaseDir) const
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::getNonexistingFiles() is not implemented yet.");
-  return std::vector<std::string>();
+  std::string response = sendRequestToServer("nonexisting_files "+db_name+" "+BaseDir);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeNoContentInt)
+    return std::vector<std::string>();
+  if (code == codeOKInt)
+  {
+    //remove first line (status code + status message)
+    const std::string::size_type pos = response.find('\n');
+    if (pos != std::string::npos)
+    {
+      response.erase(0, pos+1);
+      return Splitter::splitAtSeparator(response, '\n');
+    }
+  }
+  //some kind of error occurred
+  throw std::runtime_error("Got unexpected server response: "+response);
 }
 
 bool DomainSocketDatabase::deleteFile(const std::string& FileName)

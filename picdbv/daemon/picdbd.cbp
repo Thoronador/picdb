@@ -104,6 +104,8 @@
 		<Unit filename="commands/CmdListFiles.hpp" />
 		<Unit filename="commands/CmdLoadDB.cpp" />
 		<Unit filename="commands/CmdLoadDB.hpp" />
+		<Unit filename="commands/CmdNonExistingFiles.cpp" />
+		<Unit filename="commands/CmdNonExistingFiles.hpp" />
 		<Unit filename="commands/CmdNumEntries.cpp" />
 		<Unit filename="commands/CmdNumEntries.hpp" />
 		<Unit filename="commands/CmdNumHashed.cpp" />
