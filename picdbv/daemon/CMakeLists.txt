@@ -45,6 +45,7 @@ set(picdbd_sources
     commands/CmdNumEntries.cpp
     commands/CmdNumHashed.cpp
     commands/CmdNumUnhashed.cpp
+    commands/CmdPurge.cpp
     commands/CmdQuery.cpp
     commands/CmdSaveDB.cpp
     commands/CmdTagStatistics.cpp

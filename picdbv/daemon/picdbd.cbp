@@ -112,6 +112,8 @@
 		<Unit filename="commands/CmdNumHashed.hpp" />
 		<Unit filename="commands/CmdNumUnhashed.cpp" />
 		<Unit filename="commands/CmdNumUnhashed.hpp" />
+		<Unit filename="commands/CmdPurge.cpp" />
+		<Unit filename="commands/CmdPurge.hpp" />
 		<Unit filename="commands/CmdQuery.cpp" />
 		<Unit filename="commands/CmdQuery.hpp" />
 		<Unit filename="commands/CmdSaveDB.cpp" />

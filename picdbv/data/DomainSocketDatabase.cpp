@@ -429,8 +429,14 @@ bool DomainSocketDatabase::deleteFile(const std::string& FileName)
 
 void DomainSocketDatabase::purgeNonexistingFiles(const std::string& BaseDir)
 {
-  #warning Not implemented yet!
-  throw std::runtime_error("Function DomainSocketDatabase::getUnknownArtistFiles() is not implemented yet.");
+  const std::string response = sendRequestToServer("purge "+db_name+" "+BaseDir);
+  const int code = extractStatusCodeFromResponse(response);
+  if (code == codeOKInt)
+  {
+    return;
+  }
+  //some kind of error occurred
+  throw std::runtime_error("Got unexpected server response: "+response);
   return;
 }
 

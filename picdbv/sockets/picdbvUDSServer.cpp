@@ -57,6 +57,7 @@
 #include "../daemon/commands/CmdFilesFromDirectory.hpp"
 #include "../daemon/commands/CmdHashUnhashed.hpp"
 #include "../daemon/commands/CmdNonExistingFiles.hpp"
+#include "../daemon/commands/CmdPurge.hpp"
 
 std::string padString(std::string str, const std::string::size_type n)
 {
@@ -101,6 +102,7 @@ picdbvUDSServer::picdbvUDSServer()
   m_Commands.push_back(std::unique_ptr<CommandFilesFromDirectory>(new CommandFilesFromDirectory()));
   m_Commands.push_back(std::unique_ptr<CommandHashUnhashed>(new CommandHashUnhashed()));
   m_Commands.push_back(std::unique_ptr<CommandNonExistingFiles>(new CommandNonExistingFiles()));
+  m_Commands.push_back(std::unique_ptr<CommandPurge>(new CommandPurge()));
 }
 
 void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDone)
