@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.8)
 
 project(picdbv)
 
-add_definitions(-DUSE_GLUT_GUI)
+add_definitions(-DUSE_GLUT_GUI -std=c++0x)
 
 set(picdbv_sources
     ../../libthoro/common/DirectoryFileList.cpp

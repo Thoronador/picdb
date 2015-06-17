@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012 thoronador
+    Copyright (C) 2011, 2012, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <thread>
+#include <chrono>
 #include "../../libthoro/common/graphics/GLImageStructure.h"
 #ifdef USE_GLFW_GUI
   #include "../../libthoro/common/gui/glfwGUI.h"
@@ -74,6 +76,7 @@ class GUI: public glutGUI
     virtual void idle(void)
     {
       performIdleTasks();
+      std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
 
     /* tries to set the given image to the image currently displayed. Returns
