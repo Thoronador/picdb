@@ -29,6 +29,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O3" />
+					<Add option="-std=c++0x" />
 					<Add option="-DUSE_GLUT_GUI" />
 				</Compiler>
 				<Linker>
@@ -93,6 +94,8 @@
 		</Compiler>
 		<Unit filename="../../libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="../../libthoro/common/DirectoryFileList.h" />
+		<Unit filename="../../libthoro/common/DirectoryFunctions.cpp" />
+		<Unit filename="../../libthoro/common/DirectoryFunctions.h" />
 		<Unit filename="../../libthoro/common/IntegerUtils.cpp" />
 		<Unit filename="../../libthoro/common/IntegerUtils.h" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
@@ -153,15 +156,6 @@
 		<Unit filename="../../libthoro/hashfunctions/sha-256_functions.h" />
 		<Unit filename="../../libthoro/hashfunctions/sha-256_sources.cpp" />
 		<Unit filename="../../libthoro/hashfunctions/sha-256_sources.h" />
-		<Unit filename="Configuration.cpp" />
-		<Unit filename="Configuration.hpp" />
-		<Unit filename="GUI.cpp" />
-		<Unit filename="GUI.hpp" />
-		<Unit filename="GUIMultiLinePanel.cpp" />
-		<Unit filename="GUIMultiLinePanel.hpp" />
-		<Unit filename="GUITextPanel.cpp" />
-		<Unit filename="GUITextPanel.hpp" />
-		<Unit filename="PicDatabase.hpp" />
 		<Unit filename="../common/Query.cpp" />
 		<Unit filename="../common/Query.hpp" />
 		<Unit filename="../common/Splitter.cpp" />
@@ -174,8 +168,17 @@
 		<Unit filename="../data/DirectDatabase.hpp" />
 		<Unit filename="../data/PicData.cpp" />
 		<Unit filename="../data/PicData.hpp" />
-		<Unit filename="main.cpp" />
 		<Unit filename="../patterns/Singleton.hpp" />
+		<Unit filename="Configuration.cpp" />
+		<Unit filename="Configuration.hpp" />
+		<Unit filename="GUI.cpp" />
+		<Unit filename="GUI.hpp" />
+		<Unit filename="GUIMultiLinePanel.cpp" />
+		<Unit filename="GUIMultiLinePanel.hpp" />
+		<Unit filename="GUITextPanel.cpp" />
+		<Unit filename="GUITextPanel.hpp" />
+		<Unit filename="PicDatabase.hpp" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
