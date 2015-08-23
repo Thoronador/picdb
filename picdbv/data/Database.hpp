@@ -29,7 +29,7 @@
 #include "PicData.hpp"
 #include "../common/Splitter.hpp"
 #include "../../libthoro/common/DirectoryFileList.h"
-#include "../../libthoro/hashfunctions/sha-256.h"
+#include "../../libthoro/hash/sha256/sha256.hpp"
 
 
 /** \brief abstract class Database - serves as interface for all real database classes

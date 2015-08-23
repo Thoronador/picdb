@@ -29,7 +29,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O3" />
-					<Add option="-std=c++0x" />
 					<Add option="-DUSE_GLUT_GUI" />
 				</Compiler>
 				<Linker>
@@ -89,13 +88,12 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="../../libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="../../libthoro/common/DirectoryFileList.h" />
-		<Unit filename="../../libthoro/common/DirectoryFunctions.cpp" />
-		<Unit filename="../../libthoro/common/DirectoryFunctions.h" />
 		<Unit filename="../../libthoro/common/IntegerUtils.cpp" />
 		<Unit filename="../../libthoro/common/IntegerUtils.h" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
@@ -150,12 +148,20 @@
 			<Option target="Release-GLUT" />
 			<Option target="Release-GLUT Win32" />
 		</Unit>
-		<Unit filename="../../libthoro/hashfunctions/sha-1-256_functions.h" />
-		<Unit filename="../../libthoro/hashfunctions/sha-256.cpp" />
-		<Unit filename="../../libthoro/hashfunctions/sha-256.h" />
-		<Unit filename="../../libthoro/hashfunctions/sha-256_functions.h" />
-		<Unit filename="../../libthoro/hashfunctions/sha-256_sources.cpp" />
-		<Unit filename="../../libthoro/hashfunctions/sha-256_sources.h" />
+		<Unit filename="../../libthoro/filesystem/DirectoryFunctions.cpp" />
+		<Unit filename="../../libthoro/filesystem/DirectoryFunctions.hpp" />
+		<Unit filename="../../libthoro/filesystem/FileFunctions.cpp" />
+		<Unit filename="../../libthoro/filesystem/FileFunctions.hpp" />
+		<Unit filename="../../libthoro/hash/sha-1-256_functions.hpp" />
+		<Unit filename="../../libthoro/hash/sha256/FileSource.cpp" />
+		<Unit filename="../../libthoro/hash/sha256/FileSource.hpp" />
+		<Unit filename="../../libthoro/hash/sha256/FileSourceUtility.cpp" />
+		<Unit filename="../../libthoro/hash/sha256/FileSourceUtility.hpp" />
+		<Unit filename="../../libthoro/hash/sha256/MessageSource.cpp" />
+		<Unit filename="../../libthoro/hash/sha256/MessageSource.hpp" />
+		<Unit filename="../../libthoro/hash/sha256/functions.hpp" />
+		<Unit filename="../../libthoro/hash/sha256/sha256.cpp" />
+		<Unit filename="../../libthoro/hash/sha256/sha256.hpp" />
 		<Unit filename="../common/Query.cpp" />
 		<Unit filename="../common/Query.hpp" />
 		<Unit filename="../common/Splitter.cpp" />

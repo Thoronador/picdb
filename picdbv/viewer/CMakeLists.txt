@@ -7,7 +7,6 @@ add_definitions(-DUSE_GLUT_GUI -std=c++0x)
 
 set(picdbv_sources
     ../../libthoro/common/DirectoryFileList.cpp
-    ../../libthoro/common/DirectoryFunctions.cpp
     ../../libthoro/common/IntegerUtils.cpp
     ../../libthoro/common/StringUtils.cpp
     ../../libthoro/common/graphics/Bits.cpp
@@ -25,8 +24,12 @@ set(picdbv_sources
     ../../libthoro/common/graphics/readPNG.cpp
     ../../libthoro/common/graphics/readPPM.cpp
     ../../libthoro/common/gui/glutGUI.cpp
-    ../../libthoro/hashfunctions/sha-256.cpp
-    ../../libthoro/hashfunctions/sha-256_sources.cpp
+    ../../libthoro/filesystem/DirectoryFunctions.cpp
+    ../../libthoro/filesystem/FileFunctions.cpp
+    ../../libthoro/hash/sha256/FileSource.cpp
+    ../../libthoro/hash/sha256/FileSourceUtility.cpp
+    ../../libthoro/hash/sha256/MessageSource.cpp
+    ../../libthoro/hash/sha256/sha256.cpp
     Configuration.cpp
     GUI.cpp
     GUIMultiLinePanel.cpp

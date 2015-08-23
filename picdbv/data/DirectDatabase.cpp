@@ -22,7 +22,9 @@
 #include <iostream>
 #include <algorithm>
 #include "../../libthoro/common/DirectoryFileList.h"
-#include "../../libthoro/common/DirectoryFunctions.h"
+#include "../../libthoro/filesystem/DirectoryFunctions.hpp"
+#include "../../libthoro/filesystem/FileFunctions.hpp"
+#include "../../libthoro/hash/sha256/FileSourceUtility.hpp"
 #include "../../libthoro/common/StringUtils.h"
 #include "../common/Query.hpp"
 #include "../common/Splitter.hpp"
@@ -223,13 +225,13 @@ void DirectDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int 
 
   if (baseDir.empty())
     return;
-  if (!directoryExists(unslashify(baseDir)))
+  if (!libthoro::filesystem::Directory::exists(libthoro::filesystem::unslashify(baseDir)))
     return;
   //now do it
   std::map<std::string, PicData>::iterator iter = m_Files.begin();
   while ((limit>0) and (iter!=m_Files.end()))
   {
-    if (FileExists(baseDir+iter->first))
+    if (libthoro::filesystem::File::exists(baseDir+iter->first))
     {
       const SHA256::MessageDigest md256 = SHA256::computeFromFile(baseDir+iter->first);
       if (!md256.isNull())
@@ -361,7 +363,7 @@ std::vector<std::string> DirectDatabase::getNonexistingFiles(const std::string& 
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
-    if (!FileExists(BaseDir+iter->first))
+    if (!libthoro::filesystem::File::exists(BaseDir+iter->first))
     {
       result.push_back(iter->first);
     }
@@ -371,7 +373,7 @@ std::vector<std::string> DirectDatabase::getNonexistingFiles(const std::string& 
   std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
   while (fth_iter != m_FileToHash.end())
   {
-    if (!FileExists(BaseDir+fth_iter->first))
+    if (!libthoro::filesystem::File::exists(BaseDir+fth_iter->first))
     {
       result.push_back(fth_iter->first);
     }

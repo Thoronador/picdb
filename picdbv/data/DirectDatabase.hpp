@@ -28,7 +28,7 @@
 #include <vector>
 #include "Database.hpp"
 #include "PicData.hpp"
-#include "../../libthoro/hashfunctions/sha-256.h"
+#include "../../libthoro/hash/sha256/sha256.hpp"
 
 class DirectDatabase: public Database
 {

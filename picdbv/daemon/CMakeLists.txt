@@ -7,10 +7,13 @@ project(picdbd)
 
 set(picdbd_sources
     ../../libthoro/common/DirectoryFileList.cpp
-    ../../libthoro/common/DirectoryFunctions.cpp
     ../../libthoro/common/StringUtils.cpp
-    ../../libthoro/hashfunctions/sha-256.cpp
-    ../../libthoro/hashfunctions/sha-256_sources.cpp
+    ../../libthoro/filesystem/DirectoryFunctions.cpp
+    ../../libthoro/filesystem/FileFunctions.cpp
+    ../../libthoro/hash/sha256/FileSource.cpp
+    ../../libthoro/hash/sha256/FileSourceUtility.cpp
+    ../../libthoro/hash/sha256/MessageSource.cpp
+    ../../libthoro/hash/sha256/sha256.cpp
     ../common/escaping.cpp
     ../common/Query.cpp
     ../common/Splitter.cpp

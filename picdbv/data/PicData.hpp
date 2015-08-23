@@ -23,7 +23,7 @@
 
 #include <set>
 #include <string>
-#include "../../libthoro/hashfunctions/sha-256.h"
+#include "../../libthoro/hash/sha256/sha256.hpp"
 
 /** \brief Structure that holds information about a certain picture
  */
