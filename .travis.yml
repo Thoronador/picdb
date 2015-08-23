@@ -1,19 +1,26 @@
 language: cpp
 compiler:
-  - clang
   - gcc
+sudo: false
 branches:
   only:
     - client-server
-    - server-commands
-    - travis-ci
-before_install:
-  - sudo apt-get install cmake freeglut3-dev libjpeg8-dev libpng12-dev libxmu-dev libxmu-headers -y
+    - master
+    - coverity_scan
 script:
   - mkdir ./build
   - cd ./build
   - cmake ../
   - make -j2
   - make test
+addons:
+  apt:
+    packages:
+    - cmake
+    - freeglut3-dev
+    - libjpeg8-dev
+    - libpng12-dev
+    - libxmu-dev
+    - libxmu-headers
 notifications:
   email: false
