@@ -21,7 +21,7 @@
 #include "PicData.hpp"
 #include <iostream>
 #include "../common/Splitter.hpp"
-#include "../../libthoro/filesystem/FileFunctions.hpp"
+#include "../../libthoro/filesystem/file.hpp"
 
 void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
 {

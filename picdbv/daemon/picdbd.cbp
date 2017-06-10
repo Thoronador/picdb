@@ -38,10 +38,10 @@
 		<Unit filename="../../libthoro/common/DirectoryFileList.h" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
-		<Unit filename="../../libthoro/filesystem/DirectoryFunctions.cpp" />
-		<Unit filename="../../libthoro/filesystem/DirectoryFunctions.hpp" />
-		<Unit filename="../../libthoro/filesystem/FileFunctions.cpp" />
-		<Unit filename="../../libthoro/filesystem/FileFunctions.hpp" />
+		<Unit filename="../../libthoro/filesystem/directory.cpp" />
+		<Unit filename="../../libthoro/filesystem/directory.hpp" />
+		<Unit filename="../../libthoro/filesystem/file.cpp" />
+		<Unit filename="../../libthoro/filesystem/file.hpp" />
 		<Unit filename="../../libthoro/hash/sha-1-256_functions.hpp" />
 		<Unit filename="../../libthoro/hash/sha256/FileSource.cpp" />
 		<Unit filename="../../libthoro/hash/sha256/FileSource.hpp" />

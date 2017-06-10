@@ -22,7 +22,7 @@
 #include <string>
 #include "Configuration.hpp"
 #include "../common/Splitter.hpp"
-#include "../../libthoro/filesystem/FileFunctions.hpp"
+#include "../../libthoro/filesystem/file.hpp"
 #include "PicDatabase.hpp"
 #include "GUI.hpp"
 
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
   const std::string configFileName = "picdbv.ini";
   //load configuration, if present
   std::cout <<"Loading configuration file...";
-  if (libthoro::filesystem::File::exists(configFileName))
+  if (libthoro::filesystem::file::exists(configFileName))
   {
     if (config.loadFromFile(configFileName))
     {
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
   if (doLoad)
   {
     std::cout <<"Loading DB file...";
-    if (libthoro::filesystem::File::exists(config.DB_File))
+    if (libthoro::filesystem::file::exists(config.DB_File))
     {
       if (db.loadFromFile(config.DB_File))
       {

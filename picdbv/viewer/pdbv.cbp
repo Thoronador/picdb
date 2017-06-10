@@ -148,10 +148,10 @@
 			<Option target="Release-GLUT" />
 			<Option target="Release-GLUT Win32" />
 		</Unit>
-		<Unit filename="../../libthoro/filesystem/DirectoryFunctions.cpp" />
-		<Unit filename="../../libthoro/filesystem/DirectoryFunctions.hpp" />
-		<Unit filename="../../libthoro/filesystem/FileFunctions.cpp" />
-		<Unit filename="../../libthoro/filesystem/FileFunctions.hpp" />
+		<Unit filename="../../libthoro/filesystem/directory.cpp" />
+		<Unit filename="../../libthoro/filesystem/directory.hpp" />
+		<Unit filename="../../libthoro/filesystem/file.cpp" />
+		<Unit filename="../../libthoro/filesystem/file.hpp" />
 		<Unit filename="../../libthoro/hash/sha-1-256_functions.hpp" />
 		<Unit filename="../../libthoro/hash/sha256/FileSource.cpp" />
 		<Unit filename="../../libthoro/hash/sha256/FileSource.hpp" />

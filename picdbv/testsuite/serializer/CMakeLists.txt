@@ -10,9 +10,7 @@ set(test_serializer_sources
     ../../data/Serializer.cpp
     serializer.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions (-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+add_definitions (-Wall -O3 -fexceptions -std=c++0x)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
