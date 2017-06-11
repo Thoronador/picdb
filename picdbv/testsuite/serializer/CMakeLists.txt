@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 2.8)
 project(test_serializer)
 
 set(test_serializer_sources
-    ../../../libthoro/hash/sha256/sha256.cpp
+    ../../../libstriezel/hash/sha256/sha256.cpp
     ../../common/Splitter.cpp
     ../../data/PicData.cpp
     ../../data/Serializer.cpp

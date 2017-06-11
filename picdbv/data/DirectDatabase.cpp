@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2011, 2012, 2013, 2014, 2015  Thoronador
+    Copyright (C) 2011, 2012, 2013, 2014, 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,11 +21,11 @@
 #include "DirectDatabase.hpp"
 #include <iostream>
 #include <algorithm>
-#include "../../libthoro/common/DirectoryFileList.h"
-#include "../../libthoro/filesystem/directory.hpp"
-#include "../../libthoro/filesystem/file.hpp"
-#include "../../libthoro/hash/sha256/FileSourceUtility.hpp"
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/DirectoryFileList.hpp"
+#include "../../libstriezel/filesystem/directory.hpp"
+#include "../../libstriezel/filesystem/file.hpp"
+#include "../../libstriezel/hash/sha256/FileSourceUtility.hpp"
+#include "../../libstriezel/common/StringUtils.hpp"
 #include "../common/Query.hpp"
 #include "../common/Splitter.hpp"
 #include "../common/WhoStatRecord.hpp"
@@ -225,13 +225,13 @@ void DirectDatabase::hashUnhashedFiles(const std::string& baseDir, unsigned int 
 
   if (baseDir.empty())
     return;
-  if (!libthoro::filesystem::directory::exists(libthoro::filesystem::unslashify(baseDir)))
+  if (!libstriezel::filesystem::directory::exists(libstriezel::filesystem::unslashify(baseDir)))
     return;
   //now do it
   std::map<std::string, PicData>::iterator iter = m_Files.begin();
   while ((limit>0) and (iter!=m_Files.end()))
   {
-    if (libthoro::filesystem::file::exists(baseDir+iter->first))
+    if (libstriezel::filesystem::file::exists(baseDir+iter->first))
     {
       const SHA256::MessageDigest md256 = SHA256::computeFromFile(baseDir+iter->first);
       if (!md256.isNull())
@@ -363,7 +363,7 @@ std::vector<std::string> DirectDatabase::getNonexistingFiles(const std::string& 
   std::map<std::string, PicData>::const_iterator iter = m_Files.begin();
   while (iter != m_Files.end())
   {
-    if (!libthoro::filesystem::file::exists(BaseDir+iter->first))
+    if (!libstriezel::filesystem::file::exists(BaseDir+iter->first))
     {
       result.push_back(iter->first);
     }
@@ -373,7 +373,7 @@ std::vector<std::string> DirectDatabase::getNonexistingFiles(const std::string& 
   std::map<std::string, SHA256::MessageDigest>::const_iterator fth_iter = m_FileToHash.begin();
   while (fth_iter != m_FileToHash.end())
   {
-    if (!libthoro::filesystem::file::exists(BaseDir+fth_iter->first))
+    if (!libstriezel::filesystem::file::exists(BaseDir+fth_iter->first))
     {
       result.push_back(fth_iter->first);
     }

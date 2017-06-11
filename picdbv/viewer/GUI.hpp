@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2015  Thoronador
+    Copyright (C) 2011, 2012, 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@
 #include <set>
 #include <thread>
 #include <chrono>
-#include "../../libthoro/common/graphics/GLImageStructure.h"
+#include "../../libstriezel/common/graphics/GLImageStructure.hpp"
 #ifdef USE_GLFW_GUI
-  #include "../../libthoro/common/gui/glfwGUI.h"
+  #include "../../libstriezel/common/gui/glfwGUI.h"
 #elif defined(USE_GLUT_GUI)
-  #include "../../libthoro/common/gui/glutGUI.h"
+  #include "../../libstriezel/common/gui/glutGUI.h"
 #else
   #error No GUI defined!
 #endif

@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2015  Thoronador
+    Copyright (C) 2011, 2012, 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include <string>
 #include "Configuration.hpp"
 #include "../common/Splitter.hpp"
-#include "../../libthoro/filesystem/file.hpp"
+#include "../../libstriezel/filesystem/file.hpp"
 #include "PicDatabase.hpp"
 #include "GUI.hpp"
 
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
   const std::string configFileName = "picdbv.ini";
   //load configuration, if present
   std::cout <<"Loading configuration file...";
-  if (libthoro::filesystem::file::exists(configFileName))
+  if (libstriezel::filesystem::file::exists(configFileName))
   {
     if (config.loadFromFile(configFileName))
     {
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
   if (doLoad)
   {
     std::cout <<"Loading DB file...";
-    if (libthoro::filesystem::file::exists(config.DB_File))
+    if (libstriezel::filesystem::file::exists(config.DB_File))
     {
       if (db.loadFromFile(config.DB_File))
       {

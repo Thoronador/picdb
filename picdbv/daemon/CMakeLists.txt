@@ -6,14 +6,14 @@ project(picdbd)
 #add_definitions(-DYOUR_DEFINE_NAME_HERE)
 
 set(picdbd_sources
-    ../../libthoro/common/DirectoryFileList.cpp
-    ../../libthoro/common/StringUtils.cpp
-    ../../libthoro/filesystem/directory.cpp
-    ../../libthoro/filesystem/file.cpp
-    ../../libthoro/hash/sha256/FileSource.cpp
-    ../../libthoro/hash/sha256/FileSourceUtility.cpp
-    ../../libthoro/hash/sha256/MessageSource.cpp
-    ../../libthoro/hash/sha256/sha256.cpp
+    ../../libstriezel/common/DirectoryFileList.cpp
+    ../../libstriezel/common/StringUtils.cpp
+    ../../libstriezel/filesystem/directory.cpp
+    ../../libstriezel/filesystem/file.cpp
+    ../../libstriezel/hash/sha256/FileSource.cpp
+    ../../libstriezel/hash/sha256/FileSourceUtility.cpp
+    ../../libstriezel/hash/sha256/MessageSource.cpp
+    ../../libstriezel/hash/sha256/sha256.cpp
     ../common/escaping.cpp
     ../common/Query.cpp
     ../common/Splitter.cpp

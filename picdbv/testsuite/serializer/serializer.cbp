@@ -23,8 +23,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../../libthoro/hash/sha256/sha256.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
 		<Unit filename="../../common/Splitter.cpp" />
 		<Unit filename="../../common/Splitter.hpp" />
 		<Unit filename="../../data/PicData.cpp" />

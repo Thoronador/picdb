@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2014  Thoronador
+    Copyright (C) 2011, 2012, 2014  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,11 +21,11 @@
 #include "GUI.hpp"
 #include <iostream>
 #include <GL/gl.h>
-#include "../../libthoro/common/graphics/ImageLoader.h"
-#include "../../libthoro/common/graphics/GLfunctions.h"
-#include "../../libthoro/common/StringUtils.h"
-#include "../../libthoro/filesystem/file.hpp"
-#include "../../libthoro/hash/sha256/FileSourceUtility.hpp"
+#include "../../libstriezel/common/graphics/ImageLoader.hpp"
+#include "../../libstriezel/common/graphics/GLfunctions.hpp"
+#include "../../libstriezel/common/StringUtils.hpp"
+#include "../../libstriezel/filesystem/file.hpp"
+#include "../../libstriezel/hash/sha256/FileSourceUtility.hpp"
 #include "PicDatabase.hpp"
 #include "GUIMultiLinePanel.hpp"
 
@@ -226,7 +226,7 @@ void GUI::processInput()
     else if ("?load"==m_InputLine)
     {
       std::cout << "Loading DB requested...\n";
-      if (libthoro::filesystem::file::exists(config.DB_File))
+      if (libstriezel::filesystem::file::exists(config.DB_File))
       {
         if (PicDatabase::getSingleton().loadFromFile(config.DB_File))
         {
@@ -521,7 +521,7 @@ void GUI::showNext()
     //check for presence of file and get next file
     while (currentIndex<selectedFiles.size())
     {
-      if (!libthoro::filesystem::file::exists(config.Directory+selectedFiles[currentIndex]))
+      if (!libstriezel::filesystem::file::exists(config.Directory+selectedFiles[currentIndex]))
       {
         //delete file from the DB, it does not exist any more
         PicDatabase::getSingleton().deleteFile(selectedFiles[currentIndex]);
@@ -577,7 +577,7 @@ void GUI::showPrevious()
     //check for presence of file and get next file
     while (currentIndex<selectedFiles.size())
     {
-      if (!libthoro::filesystem::file::exists(config.Directory+selectedFiles[currentIndex]))
+      if (!libstriezel::filesystem::file::exists(config.Directory+selectedFiles[currentIndex]))
       {
         //delete file from the DB, it does not exist any more
         PicDatabase::getSingleton().deleteFile(selectedFiles[currentIndex]);

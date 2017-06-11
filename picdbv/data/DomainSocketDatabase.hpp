@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2015  Thoronador
+    Copyright (C) 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include <vector>
 #include "Database.hpp"
 #include "PicData.hpp"
-#include "../../libthoro/hashfunctions/sha-256.h"
+#include "../../libstriezel/hashfunctions/sha-256.h"
 #include "../daemon/constants.hpp"
 
 class DomainSocketDatabase: public Database

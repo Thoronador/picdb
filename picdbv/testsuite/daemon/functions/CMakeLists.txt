@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 2.8)
 project(extractStatusCode)
 
 set(extractStatusCode_sources
-    ../../../../libthoro/common/StringUtils.cpp
+    ../../../../libstriezel/common/StringUtils.cpp
     ../../../daemon/functions.cpp
     extractStatusCode.cpp)
 

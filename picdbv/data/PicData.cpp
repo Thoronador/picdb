@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2013, 2015  Thoronador
+    Copyright (C) 2011, 2012, 2013, 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "PicData.hpp"
 #include <iostream>
 #include "../common/Splitter.hpp"
-#include "../../libthoro/filesystem/file.hpp"
+#include "../../libstriezel/filesystem/file.hpp"
 
 void mergeSets(std::set<std::string>& dest, const std::set<std::string>& other)
 {

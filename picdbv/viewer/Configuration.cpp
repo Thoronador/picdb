@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2014  Thoronador
+    Copyright (C) 2011, 2014  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 #include "Configuration.hpp"
 #include <fstream>
 #include <iostream>
-#include "../../libthoro/common/DirectoryFileList.h"
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/DirectoryFileList.hpp"
+#include "../../libstriezel/common/StringUtils.hpp"
 
 const char Configuration::cCommentCharacter = '#';
 

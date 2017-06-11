@@ -23,8 +23,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../../../libthoro/common/StringUtils.h" />
+		<Unit filename="../../../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../../../libstriezel/common/StringUtils.h" />
 		<Unit filename="../../../daemon/functions.cpp" />
 		<Unit filename="../../../daemon/functions.hpp" />
 		<Unit filename="extractStatusCode.cpp" />

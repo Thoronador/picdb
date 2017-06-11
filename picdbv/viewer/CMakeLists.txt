@@ -6,30 +6,30 @@ project(picdbv)
 add_definitions(-DUSE_GLUT_GUI -std=c++0x)
 
 set(picdbv_sources
-    ../../libthoro/common/DirectoryFileList.cpp
-    ../../libthoro/common/IntegerUtils.cpp
-    ../../libthoro/common/StringUtils.cpp
-    ../../libthoro/common/graphics/Bits.cpp
-    ../../libthoro/common/graphics/GLImageStructure.cpp
-    ../../libthoro/common/graphics/GLfunctions.cpp
-    ../../libthoro/common/graphics/ImageLoader.cpp
-    ../../libthoro/common/graphics/gif/DataSubBlock.cpp
-    ../../libthoro/common/graphics/gif/Decoder.cpp
-    ../../libthoro/common/graphics/gif/ElementBase.cpp
-    ../../libthoro/common/graphics/gif/Extensions.cpp
-    ../../libthoro/common/graphics/gif/GIFStructures.cpp
-    ../../libthoro/common/graphics/readBMP.cpp
-    ../../libthoro/common/graphics/readGIF.cpp
-    ../../libthoro/common/graphics/readJPEG.cpp
-    ../../libthoro/common/graphics/readPNG.cpp
-    ../../libthoro/common/graphics/readPPM.cpp
-    ../../libthoro/common/gui/glutGUI.cpp
-    ../../libthoro/filesystem/directory.cpp
-    ../../libthoro/filesystem/file.cpp
-    ../../libthoro/hash/sha256/FileSource.cpp
-    ../../libthoro/hash/sha256/FileSourceUtility.cpp
-    ../../libthoro/hash/sha256/MessageSource.cpp
-    ../../libthoro/hash/sha256/sha256.cpp
+    ../../libstriezel/common/DirectoryFileList.cpp
+    ../../libstriezel/common/IntegerUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
+    ../../libstriezel/common/graphics/Bits.cpp
+    ../../libstriezel/common/graphics/GLImageStructure.cpp
+    ../../libstriezel/common/graphics/GLfunctions.cpp
+    ../../libstriezel/common/graphics/ImageLoader.cpp
+    ../../libstriezel/common/graphics/gif/DataSubBlock.cpp
+    ../../libstriezel/common/graphics/gif/Decoder.cpp
+    ../../libstriezel/common/graphics/gif/ElementBase.cpp
+    ../../libstriezel/common/graphics/gif/Extensions.cpp
+    ../../libstriezel/common/graphics/gif/GIFStructures.cpp
+    ../../libstriezel/common/graphics/readBMP.cpp
+    ../../libstriezel/common/graphics/readGIF.cpp
+    ../../libstriezel/common/graphics/readJPEG.cpp
+    ../../libstriezel/common/graphics/readPNG.cpp
+    ../../libstriezel/common/graphics/readPPM.cpp
+    ../../libstriezel/common/gui/glutGUI.cpp
+    ../../libstriezel/filesystem/directory.cpp
+    ../../libstriezel/filesystem/file.cpp
+    ../../libstriezel/hash/sha256/FileSource.cpp
+    ../../libstriezel/hash/sha256/FileSourceUtility.cpp
+    ../../libstriezel/hash/sha256/MessageSource.cpp
+    ../../libstriezel/hash/sha256/sha256.cpp
     Configuration.cpp
     GUI.cpp
     GUIMultiLinePanel.cpp

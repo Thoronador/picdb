@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2015  Thoronador
+    Copyright (C) 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "DomainSocketDatabase.hpp"
 #include <stdexcept>  // for "standard" exception types
 #include <utility>
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/StringUtils.h"
 #include "../sockets/UnixDomainSocketClient.hpp"
 #include "../common/escaping.hpp"
 #include "../daemon/functions.hpp"

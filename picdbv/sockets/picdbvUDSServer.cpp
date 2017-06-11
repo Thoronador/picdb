@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2014, 2015  Thoronador
+    Copyright (C) 2014, 2015  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include <limits>
 #include "../daemon/constants.hpp"
 #include "../common/escaping.hpp"
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/StringUtils.hpp"
 //all implemented commands
 // ---- built in
 #include "../daemon/commands/CmdVersion.hpp"
