@@ -21,6 +21,7 @@ addons:
     - freeglut3-dev
     - libjpeg8-dev
     - libpng12-dev
+    - libxi-dev
     - libxmu-dev
     - libxmu-headers
 notifications:
