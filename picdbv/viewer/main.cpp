@@ -208,6 +208,10 @@ int main(int argc, char **argv)
       std::cout << "DB not saved to \""<<config.DB_File<<"\" due to error.\n";
     }
   }
+  else
+  {
+    std::cout << "Not saving DB, because it has not been requested.\n";
+  }
 
   if (!onlyStats)
   {
@@ -241,7 +245,23 @@ int main(int argc, char **argv)
     //Starting GLUT
     std::cout << "start GUI main loop\n";
     GUI::getSingleton().start();
-  }//if not only stats
+  } //if not only stats
+
+  if (doSave)
+  {
+    if (db.saveToFile(config.DB_File))
+    {
+      std::cout << "DB saved successfully to \""<<config.DB_File<<"\".\n";
+    }
+    else
+    {
+      std::cout << "DB not saved to \""<<config.DB_File<<"\" due to error.\n";
+    }
+  }
+  else
+  {
+    std::cout << "Not saving DB, because it has not been requested.\n";
+  }
 
   db.showTagStatistics(std::cout);
   db.showWhoStatistics(std::cout);
