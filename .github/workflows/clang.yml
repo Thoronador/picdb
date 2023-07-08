@@ -1,0 +1,49 @@
+name: Clang
+
+on: push
+
+jobs:
+  clang:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: 7
+            os: ubuntu-20.04
+          - version: 8
+            os: ubuntu-20.04
+          - version: 9
+            os: ubuntu-20.04
+          - version: 10
+            os: ubuntu-20.04
+          - version: 11
+            os: ubuntu-22.04
+          - version: 12
+            os: ubuntu-22.04
+          - version: 13
+            os: ubuntu-22.04
+          - version: 14
+            os: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install Debian packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-${{ matrix.version }} cmake freeglut3-dev libjpeg8-dev libpng-dev libxi-dev libxmu-dev pkg-config
+      - name: Build with Clang ${{ matrix.version }}
+        run: |
+          export CXX=clang++-${{ matrix.version }}
+          export CC=clang-${{ matrix.version }}
+          cd $GITHUB_WORKSPACE
+          mkdir build
+          cd build
+          cmake ../
+          make -j2
+      - name: Tests
+        run: |
+          cd "$GITHUB_WORKSPACE"/build
+          ctest -V

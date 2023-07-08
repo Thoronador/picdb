@@ -1,0 +1,43 @@
+name: GCC
+
+on: push
+
+jobs:
+  gcc:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: 8
+            os: ubuntu-20.04
+          - version: 9
+            os: ubuntu-22.04
+          - version: 10
+            os: ubuntu-22.04
+          - version: 11
+            os: ubuntu-22.04
+          - version: 12
+            os: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install Debian packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake freeglut3-dev g++-${{ matrix.version }} libjpeg8-dev libpng-dev libxi-dev libxmu-dev pkg-config
+      - name: Build with GNU GCC ${{ matrix.version }}
+        run: |
+          export CXX=g++-${{ matrix.version }}
+          export CC=gcc-${{ matrix.version }}
+          cd $GITHUB_WORKSPACE
+          mkdir build
+          cd build
+          cmake ../
+          make -j2
+      - name: Tests
+        run: |
+          cd "$GITHUB_WORKSPACE"/build
+          ctest -V
