@@ -1,5 +1,4 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
 project(client_cli)
 
@@ -8,10 +7,9 @@ set(client_cli_sources
     ../sockets/UnixDomainSocketClient.cpp
     main.cpp)
 
-#if (CMAKE_COMPILER_IS_GNUCC)
-#    add_definitions (-Wall -O3 -fexceptions)
-#endif (CMAKE_COMPILER_IS_GNUCC)
-
-#set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_definitions (-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -fexceptions)
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
 
 add_executable(client_cli ${client_cli_sources})
