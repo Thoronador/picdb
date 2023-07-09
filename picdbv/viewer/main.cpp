@@ -66,8 +66,8 @@ int main(int argc, char **argv)
 
   config.initialiseValues();
   const std::string configFileName = "picdbv.ini";
-  //load configuration, if present
-  std::cout <<"Loading configuration file...";
+  // load configuration, if present
+  std::cout << "Loading configuration file...";
   if (libstriezel::filesystem::file::exists(configFileName))
   {
     if (config.loadFromFile(configFileName))
@@ -78,11 +78,11 @@ int main(int argc, char **argv)
   }
   else
   {
-    std::cout <<" file doesn't exist. Skipping.\n";
+    std::cout << " file doesn't exist. Skipping.\n";
   }
 
   int arg_i = 1; //zeroth parameter is file of executable, so skip it
-  while (arg_i<argc)
+  while (arg_i < argc)
   {
     const std::string arg_string = std::string(argv[arg_i]);
     //check for valid parameters
@@ -137,21 +137,21 @@ int main(int argc, char **argv)
     }
     else
     {
-      //unrecognised parameter
-      std::cout <<"Invalid parameter supplied: \""<<arg_string<<"\".\n";
-      std::cout <<"Use the parameter --help to get a list of valid parameters.\n";
+      // unrecognised parameter
+      std::cout << "Invalid parameter supplied: \"" << arg_string << "\".\n";
+      std::cout << "Use the parameter --help to get a list of valid parameters.\n";
       return 0;
     }
-    arg_i = arg_i +1;
-  }//while
-  std::cout << "Processed command line parameters: "<<argc-1<<"\n";
+    arg_i = arg_i + 1;
+  }
+  std::cout << "Processed command line parameters: " << argc-1 << "\n";
 
   std::cout << "DataBase starts now.\n";
   PicDatabase& db = PicDatabase::getSingleton();
   db.clearAllData();
   if (doSearchNewFiles)
   {
-    std::cout <<"Getting new files... ";
+    std::cout << "Getting new files... ";
     std::cout.flush();
     if (db.getFilesFromDirectory(config.Directory))
     {
@@ -161,37 +161,40 @@ int main(int argc, char **argv)
     {
       std::cout << "failed or no new files.\n";
     }
-  }//search
+  }
   if (doTagging)
   {
-    std::cout <<"AutoTagging...\n";
+    std::cout << "AutoTagging...\n";
     db.AutoTag_Splitter();
   }
-  //loading DB from file
+  // loading DB from file
   if (doLoad)
   {
-    std::cout <<"Loading DB file...";
+    std::cout << "Loading DB file...";
     if (libstriezel::filesystem::file::exists(config.DB_File))
     {
       if (db.loadFromFile(config.DB_File))
       {
         std::cout << "success.\n";
       }
-      else { std::cout << "failed.\n"; }
+      else
+      {
+        std::cout << "failed.\n";
+      }
     }
     else
     {
-      std::cout <<" file doesn't exist. Skipping.\n";
+      std::cout << " file doesn't exist. Skipping.\n";
     }
-  }//load
+  }
 
-  std::cout <<"Number of DB entries: "<<db.getNumEntries()<<"\n";
+  std::cout << "Number of DB entries: " << db.getNumEntries() << "\n";
 
   if (doPurge)
   {
     std::cout << "Purging files (this may take a while)...\n";
     std::vector<std::string> sv = db.getNonexistingFiles(config.Directory);
-    std::cout <<"Number of purgable files: "<<sv.size()<<"\n";
+    std::cout << "Number of purgable files: " << sv.size() << "\n";
     std::cout << "Purging...";
     db.purgeNonexistingFiles(config.Directory);
     std::cout << "done.\n";
@@ -201,11 +204,11 @@ int main(int argc, char **argv)
   {
     if (db.saveToFile(config.DB_File))
     {
-      std::cout << "DB saved successfully to \""<<config.DB_File<<"\".\n";
+      std::cout << "DB saved successfully to \"" << config.DB_File << "\".\n";
     }
     else
     {
-      std::cout << "DB not saved to \""<<config.DB_File<<"\" due to error.\n";
+      std::cout << "DB not saved to \"" << config.DB_File << "\" due to error.\n";
     }
   }
   else
@@ -215,8 +218,8 @@ int main(int argc, char **argv)
 
   if (!onlyStats)
   {
-    //setup GLUT/GLFW library
-    std::cout << "Initializing GUI. Used library is "<<GUI::getSingleton().getType()<<".\n";
+    // setup GLUT/GLFW library
+    std::cout << "Initializing GUI. Used library is " << GUI::getSingleton().getType() << ".\n";
     GUI::getSingleton().init();
     if (!GUI::getSingleton().createWindow(640, 400, 0, 0, "picdbv window"))
     {
@@ -224,8 +227,8 @@ int main(int argc, char **argv)
       return 0;
     }
     #ifdef APP_USING_FREEGLUT
-    //If we use freeglut API instead of the usual one, we like to return from the
-    //main loop instead of exiting without prior notice.
+    // If we use freeglut API instead of the usual one, we like to return from
+    // the main loop instead of exiting without prior notice.
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     #endif
     GUI::getSingleton().initGL();
@@ -233,29 +236,29 @@ int main(int argc, char **argv)
 
     bool success = GUI::getSingleton().setCurrentImageByIndex(0);
     unsigned int i = 1;
-    while (!success and (i<GUI::getSingleton().getNumberOfFilesInList()))
+    while (!success && (i < GUI::getSingleton().getNumberOfFilesInList()))
     {
-      //set another image
+      // set another image
       success = GUI::getSingleton().setCurrentImageByIndex(i);
       ++i;
-    }//while
+    }
 
     GUI::getSingleton().setCallbacks();
 
-    //Starting GLUT
+    // Starting GLUT
     std::cout << "start GUI main loop\n";
     GUI::getSingleton().start();
-  } //if not only stats
+  }
 
   if (doSave)
   {
     if (db.saveToFile(config.DB_File))
     {
-      std::cout << "DB saved successfully to \""<<config.DB_File<<"\".\n";
+      std::cout << "DB saved successfully to \"" << config.DB_File << "\".\n";
     }
     else
     {
-      std::cout << "DB not saved to \""<<config.DB_File<<"\" due to error.\n";
+      std::cout << "DB not saved to \"" << config.DB_File << "\" due to error.\n";
     }
   }
   else
@@ -265,9 +268,9 @@ int main(int argc, char **argv)
 
   db.showTagStatistics(std::cout);
   db.showWhoStatistics(std::cout);
-  std::cout << "untagged files: "<<db.getUntaggedFiles().size()<<"\n";
-  std::cout << "unknown artist files: " << db.getUnknownArtistFiles().size()<<"\n";
-  std::cout << "unknown who files: " << db.getUnknownWhoFiles().size()<<"\n";
+  std::cout << "untagged files: " << db.getUntaggedFiles().size() << "\n";
+  std::cout << "unknown artist files: " << db.getUnknownArtistFiles().size() << "\n";
+  std::cout << "unknown who files: " << db.getUnknownWhoFiles().size() << "\n";
 
   return 0;
 }

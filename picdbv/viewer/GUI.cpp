@@ -112,7 +112,7 @@ void GUI::keyPressed(int Key)
     return;
   }//if input box is shown
 
-  if (isESCKeyCode(Key) or (Key=='Q') or (Key=='q'))
+  if (isESCKeyCode(Key) || (Key == 'Q') || (Key == 'q'))
   {
     //Ende Gelände
     std::cout << "Quit ";
@@ -120,18 +120,18 @@ void GUI::keyPressed(int Key)
     terminate();
     return;
   }
-  else if ((Key=='R') or (Key=='r'))
+  else if ((Key == 'R') || (Key == 'r'))
   {
-    //force redisplay
+    // force redisplay
     requestRedisplay();
   }
-  else if (isRightKeyCode(Key) and (!selectedFiles.empty()))
+  else if (isRightKeyCode(Key) && (!selectedFiles.empty()))
   {
     std::cout << "right pressed\n";
     showNext();
     requestRedisplay();
   }
-  else if (isLeftKeyCode(Key) and (!selectedFiles.empty()))
+  else if (isLeftKeyCode(Key) && (!selectedFiles.empty()))
   {
     std::cout << "left pressed\n";
     showPrevious();
@@ -141,7 +141,7 @@ void GUI::keyPressed(int Key)
 
 void GUI::addPanel(GUITextPanel* panel)
 {
-  if (panel!=NULL)
+  if (panel != NULL)
     m_Panels.push_back(panel);
 }
 
@@ -151,7 +151,7 @@ void GUI::removeAllPanels()
   {
     GUITextPanel* p = m_Panels.back();
     m_Panels.pop_back();
-    if (p!=NULL)
+    if (p != NULL)
     {
       delete p;
       p = NULL;
@@ -161,19 +161,18 @@ void GUI::removeAllPanels()
 
 void GUI::drawPanels()
 {
-  unsigned int i;
-  for (i=0; i<m_Panels.size(); ++i)
+  for (unsigned int i = 0; i < m_Panels.size(); ++i)
   {
-    if (m_Panels[i]!=NULL)
+    if (m_Panels[i] != NULL)
       m_Panels[i]->draw();
-  }//for
+  }
 }
 
 void GUI::drawInput()
 {
-  const std::string::size_type len = m_InputLine.length()+2;
-  const float dx = 2.0f/static_cast<float>(getWindowWidth());
-  const float dy = 2.0f/static_cast<float>(getWindowHeight());
+  const std::string::size_type len = m_InputLine.length() + 2;
+  const float dx = 2.0f / static_cast<float>(getWindowWidth());
+  const float dy = 2.0f / static_cast<float>(getWindowHeight());
   glLineWidth(2.0f);
   const float left_bg = -dx*(len*4+3+2+3);
   const float right_bg = dx*(len*4+3+2+3);
@@ -208,22 +207,22 @@ void GUI::processInput()
   }
 
   //check for administrative tasks
-  if ('?'==m_InputLine.at(0))
+  if ('?' == m_InputLine[0])
   {
     //save requested?
-    if ("?save"==m_InputLine)
+    if ("?save" == m_InputLine)
     {
       std::cout << "Saving DB requested...\n";
       if (PicDatabase::getSingleton().saveToFile(config.DB_File))
       {
-        std::cout << "DB saved successfully to \""<<config.DB_File<<"\".\n";
+        std::cout << "DB saved successfully to \"" << config.DB_File << "\".\n";
       }
       else
       {
-        std::cout << "DB not saved to \""<<config.DB_File<<"\" due to error.\n";
+        std::cout << "DB not saved to \"" << config.DB_File << "\" due to error.\n";
       }
     }//if save
-    else if ("?load"==m_InputLine)
+    else if ("?load" == m_InputLine)
     {
       std::cout << "Loading DB requested...\n";
       if (libstriezel::filesystem::file::exists(config.DB_File))
@@ -232,63 +231,66 @@ void GUI::processInput()
         {
           std::cout << "success.\n";
         }
-        else { std::cout << "failed.\n"; }
+        else
+        {
+          std::cout << "failed.\n";
+        }
       }
       else
       {
-        std::cout <<"DB file doesn't exist. Skipping.\n";
+        std::cout << "DB file doesn't exist. Skipping.\n";
       }
     }//if save
-    else if ("?purge"==m_InputLine)
+    else if ("?purge" == m_InputLine)
     {
       std::cout << "Purging files (this may take a while)...\n";
       std::vector<std::string> sv = PicDatabase::getSingleton().getNonexistingFiles(config.Directory);
-      std::cout <<"Number of purgable files: "<<sv.size()<<"\n";
+      std::cout << "Number of purgable files: " << sv.size() <<"\n";
       std::cout << "Purging...";
       PicDatabase::getSingleton().purgeNonexistingFiles(config.Directory);
       std::cout << "done.\n";
     }//if purge
-    else if ("?all"==m_InputLine)
+    else if ("?all" == m_InputLine)
     {
       std::cout << "Resetting file list to all files...";
       getAllFiles();
       std::cout << "done.\n";
       showNext();
     }//if all
-    else if ("?untagged"==m_InputLine)
+    else if ("?untagged" == m_InputLine)
     {
       std::cout << "Requesting untagged files...\n"  ;
       std::vector<std::string> sv = PicDatabase::getSingleton().getUntaggedFiles();
-      std::cout << "Number of untagged files: "<<sv.size()<<"\n";
+      std::cout << "Number of untagged files: " << sv.size() << "\n";
       if (!sv.empty())
       {
         selectedFiles = sv;
         setCurrentImageByIndex(0);
       }
     }//if untagged
-    else if ("?unknown"==m_InputLine)
+    else if ("?unknown" == m_InputLine)
     {
       std::cout << "Requesting files with unknown persons...\n"  ;
       std::vector<std::string> sv = PicDatabase::getSingleton().getUnknownWhoFiles();
-      std::cout << "Number of files: "<<sv.size()<<"\n";
+      std::cout << "Number of files: " << sv.size() << "\n";
       if (!sv.empty())
       {
         selectedFiles = sv;
         setCurrentImageByIndex(0);
       }
     }//if unknown who
-    else if (("?unknown_artist"==m_InputLine) or ("?unknownartist"==m_InputLine))
+    else if (("?unknown_artist" == m_InputLine) || ("?unknownartist" == m_InputLine))
     {
       std::cout << "Requesting files with unknown artist...\n"  ;
       std::vector<std::string> sv = PicDatabase::getSingleton().getUnknownArtistFiles();
-      std::cout << "Number of files: "<<sv.size()<<"\n";
+      std::cout << "Number of files: " << sv.size() << "\n";
       if (!sv.empty())
       {
         selectedFiles = sv;
         setCurrentImageByIndex(0);
       }
     }//if unknown artist
-    else if (("?fullscreen"==m_InputLine) or (m_InputLine=="?fs"))
+    else if (("?fullscreen" == m_InputLine) || (m_InputLine == "?fs"))
     {
       std::cout << "Fullscreen mode requested... ";
       if (nonFullscreenData.isFullscreen)
@@ -306,7 +308,7 @@ void GUI::processInput()
         std::cout << "done.\n";
       }
     }//if fullscreen
-    else if (("?no-fullscreen"==m_InputLine) or ("?normal"==m_InputLine))
+    else if (("?no-fullscreen" == m_InputLine) || ("?normal" == m_InputLine))
     {
       std::cout << "Returning from fullscreen mode requested... ";
       if (!nonFullscreenData.isFullscreen)
@@ -321,43 +323,43 @@ void GUI::processInput()
         std::cout << "done.\n";
       }
     }//if not fullscreen
-    else if (((m_InputLine.substr(0,5)=="?jump") or (m_InputLine.substr(0,5)=="?goto"))
-          and (m_InputLine.length()>5))
+    else if (((m_InputLine.substr(0,5) == "?jump") || (m_InputLine.substr(0,5) == "?goto"))
+          && (m_InputLine.length() > 5))
     {
       std::string jump_index = m_InputLine.substr(5);
       trim(jump_index);
       int newIndex = 0;
       if (stringToInt(jump_index, newIndex))
       {
-        if ((newIndex<1) or (newIndex>selectedFiles.size()))
+        if ((newIndex < 1) || (newIndex > selectedFiles.size()))
         {
-          std::cout << "Warning; jump index "<<newIndex<<" is out of range. "
-                    << "Valid range is [1;"<<selectedFiles.size()<<"].\n";
+          std::cout << "Warning; jump index " << newIndex << " is out of range. "
+                    << "Valid range is [1;" << selectedFiles.size() << "].\n";
         }
         else
         {
-          setCurrentImageByIndex(newIndex-1);
+          setCurrentImageByIndex(newIndex - 1);
         }
       }//if conversion was successful
       else
       {
-        //conversion failed
-        std::cout << "Error: The string \""<<jump_index<<"\" does not represent a integer value.\n";
+        // conversion failed
+        std::cout << "Error: The string \"" << jump_index << "\" does not represent a integer value.\n";
       }
     }//jump/go to specified index
     else
     {
-      std::cout << "Unknown operation \""<<m_InputLine<<"\" requested!\n";
+      std::cout << "Unknown operation \"" << m_InputLine << "\" requested!\n";
       return;
     }
     m_InputLine = "";
     return;
   }//if '?'
 
-  if (m_InputLine.at(0)=='+')
+  if (m_InputLine.at(0) == '+')
   {
     //request to add something to current picture's data
-    if (m_InputLine.length()>3)
+    if (m_InputLine.length() > 3)
     {
       if (m_InputLine.substr(0, 3) == "+t ")
       {
@@ -369,7 +371,7 @@ void GUI::processInput()
           //split line into separate tags
           std::set<std::string> new_tags = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
-          for (i=new_tags.begin(); i!=new_tags.end(); ++i)
+          for (i = new_tags.begin(); i != new_tags.end(); ++i)
           {
             if (!(i->empty()))
               data.tags.insert(*i);
@@ -377,7 +379,7 @@ void GUI::processInput()
           PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
-          std::cout << "Tags \""<< m_InputLine.substr(3) << "\" added successfully.\n";
+          std::cout << "Tags \"" << m_InputLine.substr(3) << "\" added successfully.\n";
         }//if file present
       }//if +t
       else if (m_InputLine.substr(0, 3) == "+w ")
@@ -390,7 +392,7 @@ void GUI::processInput()
           //split line into separate tags
           std::set<std::string> new_whos = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
-          for (i=new_whos.begin(); i!=new_whos.end(); ++i)
+          for (i = new_whos.begin(); i != new_whos.end(); ++i)
           {
             if (!(i->empty()))
               data.who.insert(*i);
@@ -398,26 +400,26 @@ void GUI::processInput()
           PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
-          std::cout << "Who: \""<< m_InputLine.substr(3) << "\" added successfully.\n";
+          std::cout << "Who: \"" << m_InputLine.substr(3) << "\" added successfully.\n";
         }//if file present
       }//if +w
       else
       {
-        std::cout << "Unknown operation \""<<m_InputLine<<"\" requested!\n";
+        std::cout << "Unknown operation \"" << m_InputLine << "\" requested!\n";
         return;
       }
       return;
     }//if line's length > 3
   }//if '+'
 
-  if (m_InputLine.at(0)=='-')
+  if (m_InputLine.at(0) == '-')
   {
     //request to remove something from current picture's data
-    if (m_InputLine.length()>3)
+    if (m_InputLine.length() > 3)
     {
       if (m_InputLine.substr(0, 3) == "-t ")
       {
-        std::cout<< "Removing tags requested...\n";
+        std::cout << "Removing tags requested...\n";
         if (PicDatabase::getSingleton().hasFile(selectedFiles.at(currentIndex)))
         {
           //get copy of current data
@@ -425,15 +427,15 @@ void GUI::processInput()
           //split line into separate tags
           std::set<std::string> del_tags = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
-          for (i=del_tags.begin(); i!=del_tags.end(); ++i)
+          for (i = del_tags.begin(); i != del_tags.end(); ++i)
           {
             if (!(i->empty()))
               data.tags.erase(*i);
-          }//for
+          }
           PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
-          std::cout << "Tags \""<< m_InputLine.substr(3) << "\" removed.\n";
+          std::cout << "Tags \"" << m_InputLine.substr(3) << "\" removed.\n";
         }//if file present
       }//if -t
       else if (m_InputLine.substr(0, 3) == "-w ")
@@ -446,7 +448,7 @@ void GUI::processInput()
           //split line into separate tags
           std::set<std::string> del_whos = Splitter::splitAtSpace(m_InputLine.substr(3));
           std::set<std::string>::const_iterator i;
-          for (i=del_whos.begin(); i!=del_whos.end(); ++i)
+          for (i = del_whos.begin(); i != del_whos.end(); ++i)
           {
             if (!(i->empty()))
               data.who.erase(*i);
@@ -454,12 +456,12 @@ void GUI::processInput()
           PicDatabase::getSingleton().addFile(selectedFiles[currentIndex], data);
           updateInfoPanels(data.who, data.tags, data.artist);
           requestRedisplay();
-          std::cout << "Who: \""<< m_InputLine.substr(3) << "\" removed successfully.\n";
+          std::cout << "Who: \"" << m_InputLine.substr(3) << "\" removed successfully.\n";
         }//if file present
       }//if +w
       else
       {
-        std::cout << "Unknown removal operation \""<<m_InputLine<<"\" requested!\n";
+        std::cout << "Unknown removal operation \"" << m_InputLine << "\" requested!\n";
         return;
       }
       return;
@@ -467,15 +469,15 @@ void GUI::processInput()
   }//if '-'
 
   //must be a query instead
-  std::cout << "You have entered the query \""<<m_InputLine<<"\".\n";
+  std::cout << "You have entered the query \"" << m_InputLine << "\".\n";
   std::cout << "Performing query...";
   std::vector<std::string> query_result = PicDatabase::getSingleton().executeQuery(m_InputLine);
-  std::cout << "done.\nResults: "<<query_result.size()<<"\n";
+  std::cout << "done.\nResults: " << query_result.size() << "\n";
   if (!query_result.empty())
   {
-    //set result as new selected files
+    // set result as new selected files
     selectedFiles = query_result;
-    //set new first image
+    // set new first image
     if (setCurrentImageByIndex(0))
     {
       if (PicDatabase::getSingleton().hasFile(selectedFiles.at(0)))
@@ -495,11 +497,11 @@ void GUI::getAllFiles()
   currentIndex = -1;
   const std::set<std::string> fileset = PicDatabase::getSingleton().getListedFiles();
   std::set<std::string>::const_iterator iter = fileset.begin();
-  while (iter!=fileset.end())
+  while (iter != fileset.end())
   {
     selectedFiles.push_back(*iter);
     ++iter;
-  }//while
+  }
   freeGLTexture();
   glis.freeBuffer();
 }
@@ -512,21 +514,21 @@ unsigned int GUI::getNumberOfFilesInList() const
 void GUI::showNext()
 {
   ++currentIndex;
-  //are we out of range?
-  if ((currentIndex>=selectedFiles.size()) or (currentIndex<0))
-    currentIndex = 0; //reset to begin
+  // Are we out of range?
+  if ((currentIndex >= selectedFiles.size()) || (currentIndex < 0))
+    currentIndex = 0; // reset to begin
 
   if (!selectedFiles.empty())
   {
-    //check for presence of file and get next file
+    // check for presence of file and get next file
     while (currentIndex<selectedFiles.size())
     {
-      if (!libstriezel::filesystem::file::exists(config.Directory+selectedFiles[currentIndex]))
+      if (!libstriezel::filesystem::file::exists(config.Directory + selectedFiles[currentIndex]))
       {
-        //delete file from the DB, it does not exist any more
+        // delete file from the DB, it does not exist any more
         PicDatabase::getSingleton().deleteFile(selectedFiles[currentIndex]);
-        //delete file from the selected files vector, too
-        selectedFiles.erase(selectedFiles.begin()+currentIndex);
+        // delete file from the selected files vector, too
+        selectedFiles.erase(selectedFiles.begin() + currentIndex);
       }//if
       else
       {
@@ -536,27 +538,27 @@ void GUI::showNext()
 
     if (currentIndex>=selectedFiles.size())
     {
-      //no image
+      // no image
       std::cout << "No next image in list.\n";
       freeGLTexture();
       glis.freeBuffer();
       removeAllPanels();
       return;
     }
-    //try to display image
+    // try to display image
     if (PicDatabase::getSingleton().hasFile(selectedFiles[currentIndex]))
     {
       const PicData& info = PicDatabase::getSingleton().getData(selectedFiles[currentIndex]);
       if (setCurrentImageByIndex(currentIndex))
       {
-        //update info stuff
+        // update info stuff
         updateInfoPanels(info.who, info.tags, info.artist);
       }
     }
     else
     {
-      //no such file in DB, no new image
-      std::cout << "No image named \""<< selectedFiles[currentIndex]<<"\" in DB.\n";
+      // no such file in DB, no new image
+      std::cout << "No image named \"" << selectedFiles[currentIndex] << "\" in DB.\n";
       freeGLTexture();
       glis.freeBuffer();
       removeAllPanels();
@@ -569,28 +571,28 @@ void GUI::showPrevious()
   std::cout << "DBG: showPrev\n";
   --currentIndex;
   //are we out of range?
-  if ((currentIndex<0) or (currentIndex>=selectedFiles.size()))
-    currentIndex = selectedFiles.size()-1; //reset to end
+  if ((currentIndex < 0) || (currentIndex >= selectedFiles.size()))
+    currentIndex = selectedFiles.size() - 1; //reset to end
 
   if (!selectedFiles.empty())
   {
     //check for presence of file and get next file
     while (currentIndex<selectedFiles.size())
     {
-      if (!libstriezel::filesystem::file::exists(config.Directory+selectedFiles[currentIndex]))
+      if (!libstriezel::filesystem::file::exists(config.Directory + selectedFiles[currentIndex]))
       {
-        //delete file from the DB, it does not exist any more
+        // delete file from the DB, it does not exist any more
         PicDatabase::getSingleton().deleteFile(selectedFiles[currentIndex]);
-        //delete file from the selected files vector, too
+        // delete file from the selected files vector, too
         selectedFiles.erase(selectedFiles.begin()+currentIndex);
-      }//if
+      }
       else
       {
         break; //break out of loop
       }
     }//while
 
-    if (currentIndex>=selectedFiles.size())
+    if (currentIndex >= selectedFiles.size())
     {
       //no image
       removeAllPanels();
@@ -615,7 +617,7 @@ void GUI::showPrevious()
     {
       //no such file in DB, no new image
       removeAllPanels();
-      std::cout << "No image named \""<< selectedFiles[currentIndex]<<"\" in DB.\n";
+      std::cout << "No image named \"" << selectedFiles[currentIndex] << "\" in DB.\n";
       freeGLTexture();
       glis.freeBuffer();
     }
@@ -625,13 +627,13 @@ void GUI::showPrevious()
 /*
 void GUI::specialKeyPressed(int Key)
 {
-  if (isRightKeyCode(Key) and (!selectedFiles.empty()))
+  if (isRightKeyCode(Key) && (!selectedFiles.empty()))
   {
     std::cout << "right pressed\n";
     showNext();
     requestRedisplay();
   }
-  else if (isLeftKeyCode(Key) and (!selectedFiles.empty()))
+  else if (isLeftKeyCode(Key) && (!selectedFiles.empty()))
   {
     std::cout << "left pressed\n";
     showPrevious();
@@ -645,9 +647,9 @@ void GUI::draw(void)
   glClear(GL_COLOR_BUFFER_BIT);
   glClear(GL_DEPTH_BUFFER_BIT);
 
-  if ((image_tex!=0) and glis.isLoaded())
+  if ((image_tex != 0) && glis.isLoaded())
   {
-    //we have an image, draw it
+    // we have an image, draw it
     GLfloat l, r, b, t;
     if (getCorners(getWindowWidth(), getWindowHeight(), glis.getWidth(), glis.getHeight(), l, r, b, t))
     {
@@ -670,7 +672,7 @@ void GUI::draw(void)
         }
         else
         {
-          //we've got rectangular target here
+          // we've got rectangular target here
           glTexCoord2f(0.0, glis.getHeight());//upper left
           glVertex3f(l, t, 0.0);
           glTexCoord2f(0.0, 0.0);//lower left
@@ -697,20 +699,20 @@ void GUI::draw(void)
 
 void GUI::performIdleTasks()
 {
-  //hash checks or updates
+  // hash checks or updates
   if (!m_IdleHashUpdateFiles.empty())
   {
     const std::string currFile = *(m_IdleHashUpdateFiles.begin());
     const SHA256::MessageDigest sha_md = SHA256::computeFromFile(currFile);
     if (!sha_md.isNull())
     {
-      //hash found
+      // hash found
       if (PicDatabase::getSingleton().hasFile(currFile))
       {
         PicData tempData = PicDatabase::getSingleton().getData(currFile);
         if (tempData.hash_sha256!=sha_md)
         {
-          //hash difference found
+          // hash difference found
           if (tempData.hash_sha256.isNull())
           {
             //no previous hash set, silent update
@@ -760,15 +762,15 @@ void GUI::performIdleTasks()
   }//if not empty
   else
   {
-    //update some unhashed files instead
+    // update some unhashed files instead
     const unsigned int uh = PicDatabase::getSingleton().getNumUnhashed();
-    if (uh>0)
+    if (uh > 0)
     {
       const unsigned int info_step = 100;
-      static unsigned int next_info_at = uh - (uh%info_step);
-      if (uh<next_info_at)
+      static unsigned int next_info_at = uh - (uh % info_step);
+      if (uh < next_info_at)
       {
-        std::cout << "Info: unhashed files: "<<uh<<"\n";
+        std::cout << "Info: unhashed files: " << uh << "\n";
         next_info_at = next_info_at > info_step ? next_info_at-info_step : 1;
       }
       PicDatabase::getSingleton().hashUnhashedFiles(config.Directory, 2);
@@ -783,8 +785,8 @@ void GUI::writeText(const std::string& text, const float x, const float y, const
 
 void GUI::centerText(const std::string& text, const float y, const float z)
 {
-  float dx = 2.0f/static_cast<float>(getWindowWidth());
-  writeText(text, -dx*text.length()*4, y, z);
+  const float dx = 2.0f / static_cast<float>(getWindowWidth());
+  writeText(text, -dx * text.length() * 4, y, z);
 }
 
 bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortName, const int32_t index_first, const int32_t index_total)
@@ -796,7 +798,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
 
   if (!ImageLoader::isSupportedImage(i_type))
   {
-    std::cout << "File \""<<FileName<<"\" seems to be neither BMP, nor JPEG, nor PNG, nor PPM.\n";
+    std::cout << "File \"" << FileName << "\" seems to be neither BMP, nor JPEG, nor PNG, nor PPM.\n";
     setWindowTitle("picdbv");
     removeAllPanels();
     updateCenterTopPanel(shortName);
@@ -807,7 +809,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
 
   if (!glis.isLoaded())
   {
-    std::cout << "File \""<<FileName<<"\" could not be loaded.\n";
+    std::cout << "File \"" << FileName << "\" could not be loaded.\n";
     setWindowTitle("picdbv");
     removeAllPanels();
     updateCenterTopPanel(shortName);
@@ -823,7 +825,7 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
     getNPOTTextureTargets(getNPOTSupport(), texTarget, proxyTarget);
   }
 
-  //make sure our texture target is enabled
+  // make sure our texture target is enabled
   if (!glIsEnabled(texTarget))
   {
     glEnable(texTarget);
@@ -832,26 +834,26 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   glBindTexture(texTarget, image_tex);
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  if ((glis.getFormatGL()==GL_RGB) or (glis.getFormatGL()==GL_BGR))
+  if ((glis.getFormatGL() == GL_RGB) || (glis.getFormatGL() == GL_BGR))
   {
-    //proxy stuff
+    // proxy stuff
     glTexImage2D(proxyTarget, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
     GLint test_width = 0;
     glGetTexLevelParameteriv(proxyTarget, 0, GL_TEXTURE_WIDTH, &test_width);
-    if (test_width!=0)
+    if (test_width != 0)
     {
-      //the real stuff
+      // the real stuff
       glTexImage2D(texTarget, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
     }
     else
     {
-      //proxy test failed
+      // proxy test failed
       std::cout << "Your GL implementation cannot handle this texture size ("
-                << glis.getWidth()<<"x"<<glis.getHeight()<<"px) properly! Trying"
+                << glis.getWidth() << "x" << glis.getHeight() << "px) properly! Trying"
                 << " half size.\n";
       if (glis.resizeToHalf())
       {
-        //the real stuff
+        // the real stuff
         glTexImage2D(texTarget, 0, 3, glis.getWidth(), glis.getHeight(), 0, glis.getFormatGL(), GL_UNSIGNED_BYTE, glis.getBufferPointer());
       }
       else
@@ -861,26 +863,26 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
       }
     }
   }
-  else if (glis.getFormatGL()==GL_RGBA)
+  else if (glis.getFormatGL() == GL_RGBA)
   {
     //proxy stuff
     glTexImage2D(proxyTarget, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
     GLint test_width = 0;
     glGetTexLevelParameteriv(proxyTarget, 0, GL_TEXTURE_WIDTH, &test_width);
-    if (test_width!=0)
+    if (test_width != 0)
     {
-      //the real stuff
+      // the real stuff
       glTexImage2D(texTarget, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
     }
     else
     {
-      //proxy test failed
+      // proxy test failed
       std::cout << "Your GL implementation cannot handle this texture size ("
-                << glis.getWidth()<<"x"<<glis.getHeight()<<"px) properly! Trying"
-                << " half size.\n";
+                << glis.getWidth() << "x" << glis.getHeight() << "px) properly!"
+                << " Trying half size.\n";
       if (glis.resizeToHalf())
       {
-        //the real stuff
+        // the real stuff
         glTexImage2D(texTarget, 0, 4, glis.getWidth(), glis.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, glis.getBufferPointer());
       }
       else
@@ -902,34 +904,34 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   glTexParameteri(texTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(texTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   updateCenterTopPanel(shortName);
-  if ((index_first<=0) or (index_total<=0))
+  if ((index_first <= 0) || (index_total <= 0))
   {
-    setWindowTitle("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px)");
+    setWindowTitle("picdbv - " + shortName + " (" + intToString(glis.getWidth()) + "x" + intToString(glis.getHeight()) + "px)");
   }
   else
   {
-    //show title with index
-    setWindowTitle("picdbv - "+shortName+" ("+intToString(glis.getWidth())+"x"+intToString(glis.getHeight())+"px) "
-                      +intToString(index_first)+" of "+intToString(index_total));
+    // show title with index
+    setWindowTitle("picdbv - " + shortName + " (" + intToString(glis.getWidth()) + "x" + intToString(glis.getHeight()) + "px) "
+                      + intToString(index_first) + " of " + intToString(index_total));
   }
   requestRedisplay();
-  std::cout << "Info: Successfully set new image \""<<shortName<<"\" as active image.\n";
-  //mark file for hash update
+  std::cout << "Info: Successfully set new image \"" << shortName << "\" as active image.\n";
+  // mark file for hash update
   m_IdleHashUpdateFiles.insert(FileName);
-  //save current texture target
+  // save current texture target
   m_CurrentTextureTarget = texTarget;
   return true;
 }
 
 bool GUI::setCurrentImageByIndex(const int32_t idx)
 {
-  //check range
-  if ((idx<0) or (idx>=selectedFiles.size()))
+  // check range
+  if ((idx < 0) || (idx >= selectedFiles.size()))
     return false;
-  if (setCurrentImage(config.Directory+selectedFiles.at(idx), selectedFiles.at(idx), idx+1, selectedFiles.size()))
+  if (setCurrentImage(config.Directory+selectedFiles.at(idx), selectedFiles.at(idx), idx + 1, selectedFiles.size()))
   {
     currentIndex = idx;
-    std::cout << "Info: Successfully set new image index "<<idx<<" as active image.\n";
+    std::cout << "Info: Successfully set new image index " << idx << " as active image.\n";
     return true;
   }
   return false;
@@ -937,22 +939,21 @@ bool GUI::setCurrentImageByIndex(const int32_t idx)
 
 void GUI::updateCenterTopPanel(const std::string& new_msg)
 {
-  unsigned int i;
-  for (i=0; i<m_Panels.size(); ++i)
+  for (unsigned int i = 0; i < m_Panels.size(); ++i)
   {
     GUIAdjustedTextPanel* atp = dynamic_cast<GUIAdjustedTextPanel*>(m_Panels[i]);
-    if (atp!=NULL)
+    if (atp != NULL)
     {
-      if (atp->getAdjustment()==GUIAdjustedTextPanel::paCenterTop)
+      if (atp->getAdjustment() == GUIAdjustedTextPanel::paCenterTop)
       {
-        //it's the one we are looking for!
+        // it's the one we are looking for!
         atp->setString(new_msg);
         requestRedisplay();
         return;
       }
-    }//if
-  }//for
-  //if we get to this place, then there is no such panel yet
+    }
+  }
+  // if we get to this place, then there is no such panel yet
   addPanel(new GUIAdjustedTextPanel(new_msg, GUIAdjustedTextPanel::paCenterTop, 0.2, 1.0, 0.2));
   requestRedisplay();
   return;
@@ -960,23 +961,22 @@ void GUI::updateCenterTopPanel(const std::string& new_msg)
 
 void GUI::updateMultiLinePanel(const GUIAdjustedTextPanel::PanelAdjustment adj, const std::string& head, const std::set<std::string>& items)
 {
-  unsigned int i;
-  for (i=0; i<m_Panels.size(); ++i)
+  for (unsigned int i = 0; i < m_Panels.size(); ++i)
   {
     GUIMultiLineAdjustedPanel* mlap = dynamic_cast<GUIMultiLineAdjustedPanel*>(m_Panels[i]);
     if (mlap!=NULL)
     {
-      if (mlap->getAdjustment()==adj)
+      if (mlap->getAdjustment() == adj)
       {
-        //it's the one we are looking for!
+        // it's the one we are looking for!
         mlap->setString(head);
         mlap->addLines(items);
         requestRedisplay();
         return;
       }
-    }//if
-  }//for
-  //if we get to this place, then there is no such panel yet
+    }
+  }
+  // if we get to this place, then there is no such panel yet
   GUIMultiLineAdjustedPanel* mlap = new GUIMultiLineAdjustedPanel(head, adj);
   mlap->setString(head);
   mlap->addLines(items);
@@ -1001,7 +1001,7 @@ void GUI::updateInfoPanels(const std::set<std::string>& who, const std::set<std:
   }
   if (!tag.empty())
   {
-    updateMultiLinePanel(GUIAdjustedTextPanel::paRightTop, "tags ("+intToString(tag.size())+"):", tag);
+    updateMultiLinePanel(GUIAdjustedTextPanel::paRightTop, "tags (" + intToString(tag.size()) + "):", tag);
   }
   else
   {
@@ -1021,12 +1021,11 @@ void GUI::updateInfoPanels(const std::set<std::string>& who, const std::set<std:
     temp.insert("(unknown)");
     updateMultiLinePanel(GUIAdjustedTextPanel::paLeftBottom, "artist:", temp);
   }
-
 }
 
 void GUI::freeGLTexture()
 {
-  if ((image_tex!=0) and (glIsTexture(image_tex)==GL_TRUE))
+  if ((image_tex != 0) && (glIsTexture(image_tex) == GL_TRUE))
   {
     glDeleteTextures(1, &image_tex);
     image_tex = 0;
@@ -1037,44 +1036,44 @@ bool getCorners(const int window_width, const int window_height, const int img_w
                 const int img_height, GLfloat& left, GLfloat&right, GLfloat& bottom,
                 GLfloat& top)
 {
-  if ((window_width==0) or (window_height==0) or (img_width==0) or (img_height==0))
+  if ((window_width == 0) || (window_height == 0) || (img_width == 0) || (img_height == 0))
     return false;
 
-  if ((window_width>=img_width) and (window_height>=img_height))
+  if ((window_width >= img_width) && (window_height >= img_height))
   {
-    //image fits in without resizing
-    left = -1.0f + 0.5* ((1.0-static_cast<float>(img_width)/static_cast<float>(window_width))*2.0f);
-    right = 1.0f - 0.5* ((1.0-static_cast<float>(img_width)/static_cast<float>(window_width))*2.0f);
-    bottom = -1.0f + 0.5* ((1.0-static_cast<float>(img_height)/static_cast<float>(window_height))*2.0f);
-    top = 1.0f - 0.5* ((1.0-static_cast<float>(img_height)/static_cast<float>(window_height))*2.0f);
+    // image fits in without resizing
+    left = -1.0f + 0.5 * ((1.0 - static_cast<float>(img_width) / static_cast<float>(window_width)) * 2.0f);
+    right = 1.0f - 0.5 * ((1.0 - static_cast<float>(img_width) / static_cast<float>(window_width)) * 2.0f);
+    bottom = -1.0f + 0.5* ((1.0 - static_cast<float>(img_height) / static_cast<float>(window_height)) * 2.0f);
+    top = 1.0f - 0.5* ((1.0 - static_cast<float>(img_height) / static_cast<float>(window_height)) * 2.0f);
     return true;
   }
 
-  const float img_ratio = static_cast<float>(img_width)/static_cast<float>(img_height);
-  const float wnd_ratio = static_cast<float>(window_width)/static_cast<float>(window_height);
+  const float img_ratio = static_cast<float>(img_width) / static_cast<float>(img_height);
+  const float wnd_ratio = static_cast<float>(window_width) / static_cast<float>(window_height);
 
   if (img_ratio > wnd_ratio)
   {
-    //width is limiting stuff here
-    //so left and right are window border
+    // width is limiting stuff here
+    // so left and right are window border
     left = -1.0f;
     right = 1.0f;
-    //get new actual height of image in pixels
-    const float h = static_cast<float>(window_width)/img_ratio;
-    bottom = -1.0f +0.5*((1.0-h/static_cast<float>(window_height))*2.0f);
-    top = 1.0f -0.5*((1.0-h/static_cast<float>(window_height))*2.0f);
+    // get new actual height of image in pixels
+    const float h = static_cast<float>(window_width) / img_ratio;
+    bottom = -1.0f + 0.5 * ((1.0 - h / static_cast<float>(window_height)) * 2.0f);
+    top = 1.0f - 0.5 * ((1.0 - h / static_cast<float>(window_height)) * 2.0f);
     return true;
   }
   else
   {
-    //height is limiting stuff here
-    //so top and bottom are clear
+    // height is limiting stuff here
+    // so top and bottom are clear
     top = 1.0f;
     bottom = -1.0f;
-    //get new actual width of image in pixels
+    // get new actual width of image in pixels
     const float w = window_height*img_ratio;
-    left = -1.0f + 0.5*((1.0-w/static_cast<float>(window_width))*2.0f);
-    right = 1.0f - 0.5*((1.0-w/static_cast<float>(window_width))*2.0f);
+    left = -1.0f + 0.5 * ((1.0 - w / static_cast<float>(window_width)) * 2.0f);
+    right = 1.0f - 0.5 * ((1.0 - w / static_cast<float>(window_width)) * 2.0f);
     return true;
   }
 }

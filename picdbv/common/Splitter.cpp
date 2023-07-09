@@ -23,21 +23,11 @@
 TwoStrings::TwoStrings()
 : Name(""),
   Artist("")
-  {
-  }
+{
+}
 
 const std::string Splitter::cSplitString = "_by_";
 const std::string Splitter::cUnknownArtist = "(unknown)";
-
-Splitter::Splitter()
-{
-  //empty
-}
-
-Splitter::~Splitter()
-{
-  //empty
-}
 
 std::vector<TwoStrings> Splitter::splitFileNames(const std::vector<FileEntry>& files)
 {
@@ -46,8 +36,7 @@ std::vector<TwoStrings> Splitter::splitFileNames(const std::vector<FileEntry>& f
   TwoStrings temp;
   std::string suffix = "";
   size_t pos = 0;
-  unsigned int i;
-  for (i=0; i<files.size(); i=i+1)
+  for (unsigned int i = 0; i < files.size(); i = i + 1)
   {
     if (!(files.at(i).IsDirectory))
     {
@@ -56,21 +45,21 @@ std::vector<TwoStrings> Splitter::splitFileNames(const std::vector<FileEntry>& f
       {
         temp.Name = files.at(i).FileName.substr(0, pos);
         temp.Artist = files.at(i).FileName.substr(pos+cSplitString.length());
-        if (temp.Artist.length()>4)
+        if (temp.Artist.length () > 4)
         {
-          //strip file suffix
-          suffix = temp.Artist.substr(temp.Artist.length()-4);
+          // strip file suffix
+          suffix = temp.Artist.substr(temp.Artist.length() - 4);
           if (suffix == ".gif" || suffix == ".jpg" || suffix == ".png")
           {
-            temp.Artist = temp.Artist.substr(0, temp.Artist.length()-4);
-          }//if
-        }//if
+            temp.Artist = temp.Artist.substr(0, temp.Artist.length() - 4);
+          }
+        }
       }
       else
       {
         temp.Name = files.at(i).FileName;
         temp.Artist = cUnknownArtist;
-      } //else
+      }
       result.push_back(temp);
     }//if
   }//for
@@ -86,13 +75,13 @@ std::set<std::string> Splitter::splitAtSpace(std::string line)
     result.insert("");
     return result;
   }
-  size_t pos =line.find(' ');
+  size_t pos = line.find(' ');
   while (pos != std::string::npos)
   {
     result.insert(line.substr(0, pos));
-    line = line.substr(pos+1);
+    line = line.substr(pos + 1);
     pos = line.find(' ');
-  }//while
+  }
   if (!line.empty())
   {
     result.insert(line);
@@ -113,9 +102,9 @@ std::vector<std::string> Splitter::splitAtSpaceVector(std::string line)
   while (pos != std::string::npos)
   {
     result.push_back(line.substr(0, pos));
-    line = line.substr(pos+1);
+    line = line.substr(pos + 1);
     pos = line.find(' ');
-  }//while
+  }
   if (!line.empty())
   {
     result.push_back(line);
@@ -135,7 +124,7 @@ std::vector<std::string> Splitter::splitAtSeparator(std::string line, const char
   while (pos != std::string::npos)
   {
     result.push_back(line.substr(0, pos));
-    line = line.substr(pos+1);
+    line = line.substr(pos + 1);
     pos = line.find(separator);
   }//while
   if (!line.empty())
@@ -153,7 +142,7 @@ std::string Splitter::joinWithSeparator(const std::vector<std::string>& elems, c
   std::string result = elems[0];
   const std::vector<std::string>::size_type len = elems.size();
   std::vector<std::string>::size_type i = 1;
-  for ( ; i<len; ++i)
+  for ( ; i < len; ++i)
   {
     result += std::string(1, separator) + elems[i];
   } //for

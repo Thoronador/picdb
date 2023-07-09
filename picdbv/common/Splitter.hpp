@@ -38,15 +38,6 @@ struct TwoStrings
 class Splitter
 {
   public:
-    /** \brief constructor */
-    Splitter();
-
-    /** \brief empty copy constructor */
-    Splitter(const Splitter& op) {}
-
-    /* destructor */
-    virtual ~Splitter();
-
     static std::vector<TwoStrings> splitFileNames(const std::vector<FileEntry>& files);
 
     /** \brief splits the given string into pieces, treating space characters as the
