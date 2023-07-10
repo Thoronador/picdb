@@ -114,7 +114,7 @@ class GUI: public glutGUI
     GUI();
 
     /* copy constructor */
-    GUI(const GUI& op) {}
+    GUI(const GUI& op) = delete;
 
     //internal image structure
     GLImageStructure glis;

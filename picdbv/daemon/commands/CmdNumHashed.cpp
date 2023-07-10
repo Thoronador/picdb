@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "CmdNumHashed.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
-#include "../../../libstriezel/common/StringUtils.hpp"
 
 CommandNumHashed::CommandNumHashed()
 : Command("num_hashed")
@@ -33,12 +32,12 @@ bool CommandNumHashed::processMessage(const std::string& message, std::string& a
   if (message.size() > 11 && (message.substr(0, 11) == "num_hashed "))
   {
     std::string db_name = message.substr(11);
-    //check for spaces in name
-    if (db_name.find(' ')==std::string::npos)
+    // check for spaces in name
+    if (db_name.find(' ') == std::string::npos)
     {
       const bool exists = DatabaseManager::get().hasDatabase(db_name);
       if (exists)
-        answer = codeOK + intToString(DatabaseManager::get().getDatabase(db_name).getNumHashed()) + " hashed files in database " + db_name;
+        answer = codeOK + std::to_string(DatabaseManager::get().getDatabase(db_name).getNumHashed()) + " hashed files in database " + db_name;
       else
       {
         answer = codeBadRequest + " database " + db_name + " does not exist";
@@ -46,7 +45,7 @@ bool CommandNumHashed::processMessage(const std::string& message, std::string& a
     }
     else
     {
-      //name contains spaces
+      // name contains spaces
       answer = codeBadRequest + " database names shall not contain whitespace characters";
     }
     return true;

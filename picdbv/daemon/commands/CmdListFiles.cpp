@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "CmdListFiles.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
-#include "../../../libstriezel/common/StringUtils.hpp"
 
 CommandListFiles::CommandListFiles()
 : Command("list_files")
@@ -33,7 +32,7 @@ bool CommandListFiles::processMessage(const std::string& message, std::string& a
   if (message.size() > 11 && (message.substr(0, 11) == "list_files "))
   {
     const std::string db_name = message.substr(11);
-    //check for spaces in name
+    // check for spaces in name
     if (db_name.find(' ') == std::string::npos)
     {
       if (DatabaseManager::get().hasDatabase(db_name))
@@ -45,7 +44,7 @@ bool CommandListFiles::processMessage(const std::string& message, std::string& a
         }
         else
         {
-          answer = codeOK + " database " + db_name + " contains " + uintToString(result.size()) + " files";
+          answer = codeOK + " database " + db_name + " contains " + std::to_string(result.size()) + " files";
           std::set<std::string>::const_iterator setIterator = result.begin();
           while (setIterator != result.end())
           {

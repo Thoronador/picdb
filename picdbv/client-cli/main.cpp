@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdb.
-    Copyright (C) 2014, 2015  Dirk Stolle
+    Copyright (C) 2014, 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -58,42 +58,42 @@ int main(int argc, char **argv)
   std::string request;
   //bool interactive = false;
 
-  if (argc>1 and argv!=NULL)
+  if (argc > 1 && argv != nullptr)
   {
-    int i=1;
-    while (i<argc)
+    int i = 1;
+    while (i < argc)
     {
-      if (argv[i]!=NULL)
+      if (argv[i] != nullptr)
       {
         const std::string param = std::string(argv[i]);
-        //help parameter
-        if ((param=="--help") or (param=="-h") or (param=="-?") or (param=="/?"))
+        // help parameter
+        if ((param == "--help") || (param == "-h") || (param == "-?") || (param == "/?"))
         {
           showHelp();
           return 0;
         }//if help wanted
-        //version information requested?
-        else if (param=="--version")
+        // version information requested?
+        else if (param == "--version")
         {
           showVersion();
           return 0;
         }
         /*
         //interactive mode
-        else if ((param=="--interactive") or (param=="-i"))
+        else if ((param == "--interactive") || (param == "-i"))
         {
           interactive = true;
           std::cout << "Requested interactive mode.\n";
         }//interactive mode
         */
-        else if (param.substr(0, 2)=="--")
+        else if (param.substr(0, 2) == "--")
         {
-          //unknown or wrong parameter
-          std::cout << "Invalid parameter given: \""<<param<<"\".\n"
+          // unknown or wrong parameter
+          std::cout << "Invalid parameter given: \"" << param << "\".\n"
                     << "Use --help to get a list of valid parameters.\n";
           return rcInvalidParameter;
         }
-        //argument is part of request?
+        // argument is part of request?
         else
         {
           if (request.empty())
@@ -104,14 +104,14 @@ int main(int argc, char **argv)
       }//parameter exists
       else
       {
-        std::cout << "Error: Parameter at index "<<i<<" is NULL.\n";
+        std::cout << "Error: Parameter at index " << i << " is NULL.\n";
         return rcInvalidParameter;
       }
-      ++i;//on to next parameter
+      ++i; // on to next parameter
     }//while
   }//if argc
 
-  //is there any request so far?
+  // Is there any request so far?
   if (request.empty() /* and !interactive*/)
   {
     std::cout << "Error: No request string given as argument!\n";
@@ -145,6 +145,6 @@ int main(int argc, char **argv)
     std::cout << "Received empty answer from server, this should not happen!\n";
     return rcSocketError;
   }
-  std::cout << answer<<"\n";
+  std::cout << answer << "\n";
   return 0;
 }

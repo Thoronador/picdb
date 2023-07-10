@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2014, 2015  Dirk Stolle
+    Copyright (C) 2014, 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include <limits>
 #include "../daemon/constants.hpp"
 #include "../common/escaping.hpp"
-#include "../../libstriezel/common/StringUtils.hpp"
 //all implemented commands
 // ---- built in
 #include "../daemon/commands/CmdVersion.hpp"
@@ -64,7 +63,7 @@ std::string padString(std::string str, const std::string::size_type n)
   const std::string::size_type len = str.size();
   if (n <= len || n == std::string::npos)
     return str;
-  return str + std::string(n-len, ' ');
+  return str + std::string(n - len, ' ');
 }
 
 picdbvUDSServer::picdbvUDSServer()
@@ -127,7 +126,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
       helpTexts["supported_commands"] = "prints a list of supported commands";
       helpTexts["stats"] = "shows how often some commands were invoked";
       helpTexts["optimize"] = "reorders commands for faster processing";
-      std::string::size_type padding = 18; //length of "supported_commands"
+      std::string::size_type padding = 18; // length of string "supported_commands"
       std::vector<std::unique_ptr<Command> >::const_iterator cmdIter = m_Commands.begin();
       while (cmdIter != m_Commands.end())
       {
@@ -157,7 +156,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     }
     else if (message == "supported_commands")
     {
-      answer = codeOK +" optimize stats stop supported_commands";
+      answer = codeOK + " optimize stats stop supported_commands";
       std::vector<std::unique_ptr<Command> >::const_iterator iter = m_Commands.begin();
       while (iter != m_Commands.end())
       {
@@ -190,7 +189,7 @@ void picdbvUDSServer::serveClient(const int client_socket_fd, bool& closeWhenDon
     if (!answer.empty())
       sendString(client_socket_fd, escape(answer));
     else
-      sendString(client_socket_fd, codeInternalServerError+" Server did not generate a response");
+      sendString(client_socket_fd, codeInternalServerError + " Server did not generate a response");
   }
 }
 
@@ -218,11 +217,10 @@ void picdbvUDSServer::optimizeCommandOrder()
   } //while
 
   //sort them
-  unsigned int i, j;
-  for (i = 0; i < m_Commands.size()-1; ++i)
+  for (unsigned int i = 0; i < m_Commands.size() - 1; ++i)
   {
     bool swapped = false;
-    for (j = i + 1; j < m_Commands.size(); ++j)
+    for (unsigned int j = i + 1; j < m_Commands.size(); ++j)
     {
       if (m_CommandCount[m_Commands[i]->getName()] < m_CommandCount[m_Commands[j]->getName()])
       {
@@ -242,11 +240,9 @@ void picdbvUDSServer::showCommandStats(std::string& answer) const
   else
   {
     answer = codeOK + " command counts:";
-    auto cIter = m_CommandCount.begin();
-    while (cIter != m_CommandCount.end())
+    for (const auto& [key, value]: m_CommandCount)
     {
-      answer += "\n" + cIter->first + ": " + intToString(cIter->second);
-      ++cIter;
-    } //while
-  } //else
+      answer += "\n" + key + ": " + std::to_string(value);
+    }
+  }
 }

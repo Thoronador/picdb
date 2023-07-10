@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "CmdFilesForHash.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
-#include "../../../libstriezel/common/StringUtils.hpp"
 
 CommandFilesForHash::CommandFilesForHash()
 : Command("files_for_hash")
@@ -42,7 +41,7 @@ bool CommandFilesForHash::processMessage(const std::string& message, std::string
       const std::string db_name = args[0];
       if (!DatabaseManager::get().hasDatabase(db_name))
       {
-        answer = codeBadRequest + " unknown database "+db_name;
+        answer = codeBadRequest + " unknown database " + db_name;
       }
       else
       {
@@ -57,7 +56,7 @@ bool CommandFilesForHash::processMessage(const std::string& message, std::string
           const std::set<std::string> result = db.getAllFilesForHash(paramHash);
           if (!result.empty())
           {
-            answer = codeOK + " found " + intToString(result.size()) + " file(s) for hash " + args[1] + " in database " + db_name;
+            answer = codeOK + " found " + std::to_string(result.size()) + " file(s) for hash " + args[1] + " in database " + db_name;
             std::set<std::string>::const_iterator iter = result.begin();
             while (iter != result.end())
             {

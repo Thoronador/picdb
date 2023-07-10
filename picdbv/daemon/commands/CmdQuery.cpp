@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "CmdQuery.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
-#include "../../../libstriezel/common/StringUtils.hpp"
 
 CommandQuery::CommandQuery()
 : Command("query")
@@ -33,29 +32,29 @@ bool CommandQuery::processMessage(const std::string& message, std::string& answe
   if (message.size() > 6 && (message.substr(0, 6) == "query "))
   {
     std::string db_name = "";
-    std::string::const_iterator iter = message.begin()+6;
+    std::string::const_iterator iter = message.begin() + 6;
     while ((iter != message.end()) && (*iter != ' '))
     {
       db_name.push_back(*iter);
       ++iter;
     } //while
-    if (iter==message.end())
+    if (iter == message.end())
     {
-      //Valid string shall contain query string after db_name.
+      // Valid string shall contain query string after db_name.
       answer = codeBadRequest + " query needs exactly two arguments: DB name without spaces and query string";
       return true;
     }
-    //move to character after space
+    // move to character after space
     ++iter;
-    if (iter==message.end())
+    if (iter == message.end())
     {
-      //Valid string shall contain query string after db_name and space.
+      // Valid string shall contain query string after db_name and space.
       answer = codeBadRequest + " query needs exactly two arguments: DB name without spaces and query string";
       return true;
     }
     if (!DatabaseManager::get().hasDatabase(db_name))
     {
-      answer = codeBadRequest + " unknown database "+db_name;
+      answer = codeBadRequest + " unknown database " + db_name;
       return true;
     }
     const std::vector<std::string> qResult = DatabaseManager::get().getDatabase(db_name).executeQuery(std::string(iter, message.end()));
@@ -65,7 +64,7 @@ bool CommandQuery::processMessage(const std::string& message, std::string& answe
     }
     else
     {
-      answer = codeOK + " query returned " + intToString(qResult.size()) + " match(es)";
+      answer = codeOK + " query returned " + std::to_string(qResult.size()) + " match(es)";
       std::vector<std::string>::const_iterator vecIter = qResult.begin();
       while (vecIter != qResult.end())
       {

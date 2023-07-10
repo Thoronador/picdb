@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of picdbd.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "CmdNumEntries.hpp"
 #include "../constants.hpp"
 #include "../../data/DatabaseManager.hpp"
-#include "../../../libstriezel/common/StringUtils.hpp"
 
 CommandNumEntries::CommandNumEntries()
 : Command("num_entries")
@@ -33,12 +32,12 @@ bool CommandNumEntries::processMessage(const std::string& message, std::string& 
   if (message.size() > 12 && (message.substr(0, 12) == "num_entries "))
   {
     std::string db_name = message.substr(12);
-    //check for spaces in name
-    if (db_name.find(' ')==std::string::npos)
+    // check for spaces in name
+    if (db_name.find(' ') == std::string::npos)
     {
       const bool exists = DatabaseManager::get().hasDatabase(db_name);
       if (exists)
-        answer = codeOK + intToString(DatabaseManager::get().getDatabase(db_name).getNumEntries()) + " entries in database " + db_name;
+        answer = codeOK + std::to_string(DatabaseManager::get().getDatabase(db_name).getNumEntries()) + " entries in database " + db_name;
       else
       {
         answer = codeBadRequest + " database " + db_name + " does not exist";
@@ -46,11 +45,11 @@ bool CommandNumEntries::processMessage(const std::string& message, std::string& 
     }
     else
     {
-      //name contains spaces
+      // name contains spaces
       answer = codeBadRequest + " database names shall not contain whitespace characters";
     }
     return true;
-  } //if num_entries
+  } // if num_entries
   else
     return false;
 }

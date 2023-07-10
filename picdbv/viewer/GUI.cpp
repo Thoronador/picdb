@@ -1,7 +1,7 @@
 /*
  -----------------------------------------------------------------------------
     This file is part of picdbv.
-    Copyright (C) 2011, 2012, 2014  Dirk Stolle
+    Copyright (C) 2011, 2012, 2014, 2023  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ GUI::GUI()
 {
   glis.setHeight(0);
   glis.setWidth(0);
-  glis.setBuffer(NULL);
+  glis.setBuffer(nullptr);
   glis.setFormat(0);
   nonFullscreenData.isFullscreen = false;
   nonFullscreenData.window_width = 50;
@@ -90,20 +90,20 @@ void GUI::keyPressed(int Key)
 
   if (m_showInput)
   {
-    //change displayed text according to pressed key
-    //backspace or del
+    // change displayed text according to pressed key
+    // backspace or del
     if (isBackspaceKeyCode(Key) or isDeleteKeyCode(Key))
     {
       if (!m_InputLine.empty())
         m_InputLine.erase(m_InputLine.length()-1);
     }
-    //escape
+    // escape
     else if (isESCKeyCode(Key))
     {
       m_showInput = false;
     }
-    //some other printable character
-    else if (Key>=32)
+    // some other printable character
+    else if (Key >= 32)
     {
       m_InputLine.append(1, Key);
     }
@@ -141,7 +141,7 @@ void GUI::keyPressed(int Key)
 
 void GUI::addPanel(GUITextPanel* panel)
 {
-  if (panel != NULL)
+  if (panel != nullptr)
     m_Panels.push_back(panel);
 }
 
@@ -151,20 +151,20 @@ void GUI::removeAllPanels()
   {
     GUITextPanel* p = m_Panels.back();
     m_Panels.pop_back();
-    if (p != NULL)
+    if (p != nullptr)
     {
       delete p;
-      p = NULL;
+      p = nullptr;
     }
   }
 }
 
 void GUI::drawPanels()
 {
-  for (unsigned int i = 0; i < m_Panels.size(); ++i)
+  for (auto panel: m_Panels)
   {
-    if (m_Panels[i] != NULL)
-      m_Panels[i]->draw();
+    if (panel != nullptr)
+      panel->draw();
   }
 }
 
@@ -174,11 +174,11 @@ void GUI::drawInput()
   const float dx = 2.0f / static_cast<float>(getWindowWidth());
   const float dy = 2.0f / static_cast<float>(getWindowHeight());
   glLineWidth(2.0f);
-  const float left_bg = -dx*(len*4+3+2+3);
-  const float right_bg = dx*(len*4+3+2+3);
-  const float top_bg = dy*(8+3+2+3);
-  const float bottom_bg = -dy*(8+3+2+3);
-  //background
+  const float left_bg = -dx * (len * 4 + 3 + 2 + 3);
+  const float right_bg = dx * (len * 4 + 3 + 2 + 3);
+  const float top_bg = dy * (8 + 3 + 2 + 3);
+  const float bottom_bg = -dy * (8 + 3 + 2 + 3);
+  // background
   glBegin(GL_QUADS);
     glColor3f(1.0, 0.5, 0.25);
     glVertex3f(left_bg, top_bg, 0.0);
@@ -186,15 +186,15 @@ void GUI::drawInput()
     glVertex3f(right_bg, bottom_bg, 0.0);
     glVertex3f(right_bg, top_bg, 0.0);
   glEnd();
-  //border
+  // border
   glBegin(GL_LINE_LOOP);
     glColor3f(0.25, 0.25, 1.0);
-    glVertex3f(left_bg+3*dx, top_bg-4*dy, 0.0);
-    glVertex3f(left_bg+3*dx, bottom_bg+3*dy, 0.0);
-    glVertex3f(right_bg-4*dx, bottom_bg+3*dy, 0.0);
-    glVertex3f(right_bg-4*dx, top_bg-4*dy, 0.0);
+    glVertex3f(left_bg + 3 * dx, top_bg - 4 * dy, 0.0);
+    glVertex3f(left_bg + 3 * dx, bottom_bg + 3 * dy, 0.0);
+    glVertex3f(right_bg - 4 * dx, bottom_bg + 3 * dy, 0.0);
+    glVertex3f(right_bg - 4 * dx, top_bg - 4 * dy, 0.0);
   glEnd();
-  writeText(m_InputLine, left_bg+12*dx, bottom_bg+10*dy, 0.0f);
+  writeText(m_InputLine, left_bg + 12 * dx, bottom_bg + 10 * dy, 0.0f);
 }
 
 void GUI::processInput()
@@ -536,7 +536,7 @@ void GUI::showNext()
       }
     }//while
 
-    if (currentIndex>=selectedFiles.size())
+    if (currentIndex >= selectedFiles.size())
     {
       // no image
       std::cout << "No next image in list.\n";
@@ -710,14 +710,14 @@ void GUI::performIdleTasks()
       if (PicDatabase::getSingleton().hasFile(currFile))
       {
         PicData tempData = PicDatabase::getSingleton().getData(currFile);
-        if (tempData.hash_sha256!=sha_md)
+        if (tempData.hash_sha256 != sha_md)
         {
           // hash difference found
           if (tempData.hash_sha256.isNull())
           {
             //no previous hash set, silent update
             tempData.hash_sha256 = sha_md;
-            const bool could_use_update = (tempData.tags.empty() or tempData.who.empty() or tempData.artist.empty());
+            const bool could_use_update = (tempData.tags.empty() || tempData.who.empty() || tempData.artist.empty());
             bool dataUpdated = false;
             if (could_use_update and PicDatabase::getSingleton().hasDataForHash(sha_md))
             {
@@ -744,7 +744,7 @@ void GUI::performIdleTasks()
             //set new data
             PicDatabase::getSingleton().addFile(currFile, tempData);
             //do we need to update the panels?
-            if (dataUpdated and (currFile==selectedFiles[currentIndex]))
+            if (dataUpdated && (currFile == selectedFiles[currentIndex]))
             {
               updateInfoPanels(tempData.who, tempData.tags, tempData.artist);
             }
@@ -906,13 +906,13 @@ bool GUI::setCurrentImage(const std::string& FileName, const std::string& shortN
   updateCenterTopPanel(shortName);
   if ((index_first <= 0) || (index_total <= 0))
   {
-    setWindowTitle("picdbv - " + shortName + " (" + intToString(glis.getWidth()) + "x" + intToString(glis.getHeight()) + "px)");
+    setWindowTitle("picdbv - " + shortName + " (" + std::to_string(glis.getWidth()) + "x" + std::to_string(glis.getHeight()) + "px)");
   }
   else
   {
     // show title with index
-    setWindowTitle("picdbv - " + shortName + " (" + intToString(glis.getWidth()) + "x" + intToString(glis.getHeight()) + "px) "
-                      + intToString(index_first) + " of " + intToString(index_total));
+    setWindowTitle("picdbv - " + shortName + " (" + std::to_string(glis.getWidth()) + "x" + std::to_string(glis.getHeight()) + "px) "
+                      + std::to_string(index_first) + " of " + std::to_string(index_total));
   }
   requestRedisplay();
   std::cout << "Info: Successfully set new image \"" << shortName << "\" as active image.\n";
@@ -939,10 +939,10 @@ bool GUI::setCurrentImageByIndex(const int32_t idx)
 
 void GUI::updateCenterTopPanel(const std::string& new_msg)
 {
-  for (unsigned int i = 0; i < m_Panels.size(); ++i)
+  for (auto* panel: m_Panels)
   {
-    GUIAdjustedTextPanel* atp = dynamic_cast<GUIAdjustedTextPanel*>(m_Panels[i]);
-    if (atp != NULL)
+    GUIAdjustedTextPanel* atp = dynamic_cast<GUIAdjustedTextPanel*>(panel);
+    if (atp != nullptr)
     {
       if (atp->getAdjustment() == GUIAdjustedTextPanel::paCenterTop)
       {
@@ -961,10 +961,10 @@ void GUI::updateCenterTopPanel(const std::string& new_msg)
 
 void GUI::updateMultiLinePanel(const GUIAdjustedTextPanel::PanelAdjustment adj, const std::string& head, const std::set<std::string>& items)
 {
-  for (unsigned int i = 0; i < m_Panels.size(); ++i)
+  for (auto* panel: m_Panels)
   {
-    GUIMultiLineAdjustedPanel* mlap = dynamic_cast<GUIMultiLineAdjustedPanel*>(m_Panels[i]);
-    if (mlap!=NULL)
+    GUIMultiLineAdjustedPanel* mlap = dynamic_cast<GUIMultiLineAdjustedPanel*>(panel);
+    if (mlap != nullptr)
     {
       if (mlap->getAdjustment() == adj)
       {
@@ -1001,7 +1001,7 @@ void GUI::updateInfoPanels(const std::set<std::string>& who, const std::set<std:
   }
   if (!tag.empty())
   {
-    updateMultiLinePanel(GUIAdjustedTextPanel::paRightTop, "tags (" + intToString(tag.size()) + "):", tag);
+    updateMultiLinePanel(GUIAdjustedTextPanel::paRightTop, "tags (" + std::to_string(tag.size()) + "):", tag);
   }
   else
   {
